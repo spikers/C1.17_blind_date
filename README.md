@@ -7,7 +7,7 @@ We put users on blind dates. Going to a blind activity. And a blind restaurant. 
 ##Demographic
 Young, urban professionals who are tech-savvy and looking for a fun and low-stress way to meet new people and try new things.
 
-##Technologies Used
+##Technologies (tentative)
 - HTML
 - CSS
 - ReactJS
@@ -15,10 +15,7 @@ Young, urban professionals who are tech-savvy and looking for a fun and low-stre
 - Babel
 - Javascript
 - SQL
-- MongoDB
-- Firebase
-- NodeJS
-- ExpressJS
+- PHP
 - Webpack
 - Stripe API / PayPal API / Square API
 - Google Maps API
