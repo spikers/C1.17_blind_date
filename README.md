@@ -1,6 +1,6 @@
 # c1.17_blind_date
 ##What We Do
-We take the planning out of first dates. Our platform connects users and suggests an activity and restaurant so you don't have to plan.
+We take the planning out of first dates. Our platform connects users with an activity and restaurant so you don't have to plan.
 
 We put users on blind dates. Going to a blind activity. And a blind restaurant. Blind people can use it too.😎
 
@@ -23,7 +23,7 @@ Young, urban professionals who are tech-savvy and looking for a fun and low-stre
 
 ##Branches
 ###Master
-DO NOT TOUCH THIS BRANCH. THis is for the latest STABLE release. Pushing to this branch is prohibited. Changes must be merged in.
+DO NOT TOUCH THIS BRANCH. This is for the latest STABLE release. Pushing to this branch is prohibited. Changes must be merged in.
 
 ###Dev
 Make feature branches off this branch. Merge changes into this branch.
