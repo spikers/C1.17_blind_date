@@ -4,6 +4,9 @@ We take the planning out of first dates. Our platform connects users and suggest
 
 We put users on blind dates. Going to a blind activity. And a blind restaurant. Blind people can use it too.😎
 
+##Demographic
+Young, urban professionals who are tech-savvy and looking for a fun and low-stress way to meet new people and try new things.
+
 ##Technologies Used
 - HTML
 - CSS
