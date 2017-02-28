@@ -2,8 +2,6 @@
 ##What We Do
 We take the planning out of first dates. Our platform connects users with an activity and restaurant so you don't have to plan.
 
-We put users on blind dates. Going to a blind activity. And a blind restaurant. Blind people can use it too.😎
-
 ##Demographic
 Young, urban professionals who are tech-savvy and looking for a fun and low-stress way to meet new people and try new things.
 
@@ -11,11 +9,10 @@ Young, urban professionals who are tech-savvy and looking for a fun and low-stre
 - HTML
 - CSS
 - ReactJS
-- React Native
 - Babel
 - Javascript
-- SQL
-- PHP
+- MongoDB
+- Node.js
 - Webpack
 - Stripe API / PayPal API / Square API
 - Google Maps API
