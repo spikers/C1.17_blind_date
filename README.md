@@ -36,3 +36,14 @@ Download the `package.json`
 ###Web
 - https://s7.postimg.org/m1mk5p1yz/web1.png
 - https://s7.postimg.org/76xyrise3/web2.png
+
+###Members
+- ####Sr Members
+  - Michael
+  - Gwen
+  - Tim
+  - Yaeri
+- ####Jr Members
+  - Miranda
+  - Brian
+  - Jinwoo
