@@ -1,0 +1,27 @@
+{
+  "name": "blind_date",
+  "version": "1.0.0",
+  "description": "We take the planning out of first dates. Our platform connects users with an activity and restaurant so you don't have to plan.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Learning-Fuze/C1.17_blind_date.git"
+  },
+  "keywords": [
+    "dating"
+  ],
+  "author": "Gwen, Michael, Tim, Yaeri",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Learning-Fuze/C1.17_blind_date/issues"
+  },
+  "homepage": "https://github.com/Learning-Fuze/C1.17_blind_date#readme",
+  "dependencies": {
+    "express": "^4.14.1",
+    "mongoose": "^4.8.5"
+  }
+}
