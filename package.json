@@ -21,7 +21,11 @@
   },
   "homepage": "https://github.com/Learning-Fuze/C1.17_blind_date#readme",
   "dependencies": {
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.0",
     "express": "^4.14.1",
-    "mongoose": "^4.8.5"
+    "jsonwebtoken": "^7.3.0",
+    "mongoose": "^4.8.5",
+    "morgan": "^1.8.1"
   }
 }

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Blind Date App Submit</title>
+  <script type="text/javascript">
+    window.addEventListener('load', () => {
+      let username = document.getElementById('username'),
+        /*password = document.getElementById('password'),*/
+        name = document.getElementById('name'),
+        email = document.getElementById('email'),
+        age = document.getElementById('age'),
+        gender = document.getElementById('gender'),
+        biography = document.getElementById('biography');
+
+      let submit = document.getElementById('submit');
+      submit.addEventListener('click', () => {
+        console.log(username.value, name.value, email.value, age.value, biography.value);
+        let encodedURI = encodeURI('username=' + username.value + 
+          '&name=' + name.value + '&email=' + email.value + '&age=' + 
+          age.value + '&gender=' + gender.value + '&biography=' + biography.value);
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.addEventListener('load', function(data) {
+          console.log('Worked', data);
+        });
+
+        xhr.open('POST', 'http://localhost:8000/api/user');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+
+        xhr.send(encodedURI);
+        console.log(encodedURI);
+      });
+
+    });
+  </script>
+  <style>
+    input, textarea {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <form id="form">
+    Username: <input id="username">
+    <!--Password: <input id="password" type="password">Waiting until the end to do this-->
+    Name: <input id="name">
+    Email: <input id="email" type="email">
+    Gender: <input id="gender">
+    Age: <input id="age" type="number">
+    Biography: <textarea id="biography"></textarea>
+    <button id="submit" type="button">Submit</button>
+  </form>
+</body>
+</html>
