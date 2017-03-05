@@ -2,9 +2,45 @@
 <html>
 <head>
   <title>Blind Date App Submit</title>
+  <script src="./app/js/fbLogin.js"></script>
   <script type="text/javascript">
+    //This is so dirty. I'm gonna fix this. 
+    function createUser() {
+      console.log('called');
+      FB.api('/me?fields=first_name,last_name,gender,email', (info) => {
+        //Cannot get age
+        console.log('yay', info);
+        let name = '', gender = '', email = ''; 
+        name = `${info.first_name} ${info.last_name}`;
+        gender = info.gender;
+        email = info.email;
+
+        document.getElementById('name').value = name;
+        document.getElementById('gender').value = gender;
+        document.getElementById('email').value = email;
+      });
+    }
+
     window.addEventListener('load', () => {
-      let username = document.getElementById('username'),
+      //I need this to fix the race condition. Replace with a Promise or a generator
+      window.setTimeout(createUser, 1000);
+      //createUser();
+      let submit = document.getElementById('submit');
+      submit.addEventListener('click', submitForm);
+    });
+
+
+    function submitForm() {
+      /*Async Pyramid of Doom*/
+      FB.api('/me', (res) => {
+
+        /*You're gonna comment this stuff out for production*/
+        // let res = {};
+        // res.id = document.getElementById('facebook').value;
+        /*Yes, comment the stuff out above this line.*/
+
+
+        let username = document.getElementById('username'),
         /*password = document.getElementById('password'),*/
         name = document.getElementById('name'),
         email = document.getElementById('email'),
@@ -12,12 +48,10 @@
         gender = document.getElementById('gender'),
         biography = document.getElementById('biography');
 
-      let submit = document.getElementById('submit');
-      submit.addEventListener('click', () => {
-        console.log(username.value, name.value, email.value, age.value, biography.value);
         let encodedURI = encodeURI('username=' + username.value + 
           '&name=' + name.value + '&email=' + email.value + '&age=' + 
-          age.value + '&gender=' + gender.value + '&biography=' + biography.value);
+          age.value + '&gender=' + gender.value + '&biography=' + biography.value + 
+          '&fbToken=' + res.id);
 
         let xhr = new XMLHttpRequest();
 
@@ -25,14 +59,18 @@
           console.log('Worked', data);
         });
 
-        xhr.open('POST', 'http://localhost:8000/api/user');
+        xhr.open('PUT', 'http://localhost:8000/api/user/' + res.id);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
 
         xhr.send(encodedURI);
         console.log(encodedURI);
       });
+    }
 
-    });
+    // Testing Purposes Only
+    // function getFakeFacebookId() {
+    //   return Math.floor(Math.random()*32);
+    // }
   </script>
   <style>
     input, textarea {
@@ -41,9 +79,12 @@
   </style>
 </head>
 <body>
+  <div id="status">
+  </div>
   <form id="form">
     Username: <input id="username">
     <!--Password: <input id="password" type="password">Waiting until the end to do this-->
+    <!-- Facebook ID (Testing Purposes Only): <input id="facebook"> -->
     Name: <input id="name">
     Email: <input id="email" type="email">
     Gender: <input id="gender">
@@ -51,5 +92,7 @@
     Biography: <textarea id="biography"></textarea>
     <button id="submit" type="button">Submit</button>
   </form>
+  
+
 </body>
 </html>
