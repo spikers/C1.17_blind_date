@@ -12,7 +12,7 @@ var fs = require('fs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var port = process.env.PORT || 8000;
+var port = process.env.PORT || 3000;
 
 /*Database Part*/
 var mongoose = require('mongoose');
@@ -39,7 +39,7 @@ The reason why this works is I'm using the variable 'router', not 'apiRouter'.
 'router' is bound below, in my `app.use('/', router);`
 */
 router.get('/', function(req, res) {
-  fs.readFile('./index.html', 'utf8', (err, data) => {
+  fs.readFile('./login.html', 'utf8', (err, data) => {
     if (err) res.send(err);
     res.send(data);
   });
