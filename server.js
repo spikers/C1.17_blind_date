@@ -46,11 +46,15 @@ app.use(morgan('dev'));
   Created 2 routers. One for 'localhost/' and 'localhost/api'. I coulda used 1, but why not 2*/
 var router = express.Router();
 var apiRouter = express.Router();
+var userRouter = express.Router();
+var hangoutRouter = express.Router();
 
 /*Need to initialize this here*/
 router.use(function(req, res, next) {
   next();
 });
+
+app.use(express.static('public'));
 
 /*
 If you go to 'localhost/' then send the index.html file.
@@ -58,7 +62,7 @@ The reason why this works is I'm using the variable 'router', not 'apiRouter'.
 'router' is bound below, in my `app.use('/', router);`
 */
 router.get('/', function(req, res) {
-  fs.readFile('./index.html', 'utf8', (err, data) => {
+  fs.readFile('./public/index.html', 'utf8', (err, data) => {
     if (err) {
       res.send(err);
       return;
@@ -68,19 +72,13 @@ router.get('/', function(req, res) {
 });
 
 router.get('/login', function(req, res) {
-  fs.readFile('./login.html', 'utf8', (err, data) => {
+  fs.readFile('./public/login.html', 'utf8', (err, data) => {
     res.send(data);
   });
 });
 
-router.get('/app/css/:css', function(req, res) {
-  fs.readFile('./app/css/' + req.params.css, 'utf8', (err, data) => {
-    res.send(data);
-  });
-});
-
-router.get('/app/js/:js', function(req, res) {
-  fs.readFile('./app/js/' + req.params.js, 'utf8', (err, data) => {
+router.get('/choose', function (req, res) {
+  fs.readFile('./public/choose.html', 'utf8', (err, data) => {
     res.send(data);
   });
 });
@@ -101,6 +99,16 @@ So when you get a Post, create the user. When you receieve a Get, get all users.
 The reason why it's different from above is I'm trying to handle Post and Get requests
 */
 apiRouter.route('/user')
+  .get(function(req, res) {
+    User.find(function(err, users) {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      res.json(users);
+    });
+  })
+
   .post(function(req, res) {
     var user = new User();
     // user.username = req.body.username;
@@ -128,16 +136,6 @@ apiRouter.route('/user')
 
     });
   })
-
-  .get(function(req, res) {
-    User.find(function(err, users) {
-      if (err) {
-        res.send(err);
-        return;
-      }
-      res.json(users);
-    });
-  });
 
 
 /*The '/user/:user_id' is this:
@@ -211,10 +209,23 @@ function handlePut(err, user, req, res) {
 }
 
 
+apiRouter.route('/hangout')
+  .get(function(req, res) {
+    res.json({'Cool': 'man'});
+  })
+
+  .post(function(req, res) {
+    console.log(req);
+    res.json(req.body);
+  });
+
+
 /*Register Our Routes Here****************/
 
 app.use('/', router);
 app.use('/api', apiRouter);
+app.use('/api/user', userRouter);
+app.use('/api/hangout', hangoutRouter);
 
 app.listen(port, () => {
   console.log('Magic happens on port ' + port); 

@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-module.exports = mongoose.model('User', new Schema({
+//Mongoose automatically finds collection 'users'
+module.exports = mongoose.model('user', new Schema({
   username: String,
   /*password: {type: String, required: true},*/
   name: String,

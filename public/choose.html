@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>2 Buttons</title>
+  <script src="js/fbLogin.js"></script>
+  <script>
+    window.addEventListener('load', () => {
+      let buttonContainer = document.getElementById('button-container');
+      buttonContainer.addEventListener('click', function (e) {
+        let thingClicked = e.target.innerText;
+
+        addActivityToAccount(thingClicked);
+      });
+
+      function addActivityToAccount(category) {
+        console.log(category);
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8000/api/hangout');
+        xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+
+        xhr.addEventListener('load', sendData);
+
+        xhr.send(`choice=${category}&user=tim`);
+      }
+    });
+
+
+    function sendData(data) {
+      console.log(data);
+    }
+
+
+  </script>
+</head>
+<body>
+  <div id="button-container">
+    <button id="movie">Movies</button>
+    <button id="bowling">Bowling</button>
+  </div>
+</body>
+</html>

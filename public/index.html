@@ -2,28 +2,12 @@
 <html>
 <head>
   <title>Blind Date App Submit</title>
-  <script src="./app/js/fbLogin.js"></script>
+  <script src="./js/fbLogin.js"></script>
   <script type="text/javascript">
     //This is so dirty. I'm gonna fix this. 
-    function createUser() {
-      console.log('called');
-      FB.api('/me?fields=first_name,last_name,gender,email', (info) => {
-        //Cannot get age
-        console.log('yay', info);
-        let name = '', gender = '', email = ''; 
-        name = `${info.first_name} ${info.last_name}`;
-        gender = info.gender;
-        email = info.email;
-
-        document.getElementById('name').value = name;
-        document.getElementById('gender').value = gender;
-        document.getElementById('email').value = email;
-      });
-    }
 
     window.addEventListener('load', () => {
       //I need this to fix the race condition. Replace with a Promise or a generator
-      window.setTimeout(createUser, 1000);
       //createUser();
       let submit = document.getElementById('submit');
       submit.addEventListener('click', submitForm);
@@ -57,10 +41,11 @@
 
         xhr.addEventListener('load', function(data) {
           console.log('Worked', data);
+          console.log(data.target.response);
         });
 
-        xhr.open('PUT', 'http://localhost:8000/api/user/' + res.id);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+        xhr.open('GET', 'http://localhost:8000/api/user/' + res.id);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
         xhr.send(encodedURI);
         console.log(encodedURI);

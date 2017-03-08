@@ -9,7 +9,13 @@ function statusChangeCallback(response) {
   // for FB.getLoginStatus().
   if (response.status === 'connected') {
     // Logged into your app and Facebook.
-    console.log("got it");
+
+
+
+
+    
+    //This calls a function in the other file
+    createUser();
     testAPI();
   } else if (response.status === 'not_authorized') {
     // The person is logged into Facebook, but not your app.
@@ -93,4 +99,25 @@ function postToMongo(id) {
     console.log(e);
   }
   console.log('sent');
+}
+
+
+function createUser() {
+  //This is called from the fbLogin.js file
+  FB.api('/me?fields=first_name,last_name,gender,email', (info) => {
+    //Cannot get age
+    console.log('yay', info);
+    let name = '', gender = '', email = ''; 
+    name = `${info.first_name} ${info.last_name}`;
+    gender = info.gender;
+    email = info.email;
+
+    try {
+      document.getElementById('name').value = name;
+      document.getElementById('gender').value = gender;
+      document.getElementById('email').value = email;
+    } catch (e) {
+      return false;
+    }
+  });
 }
