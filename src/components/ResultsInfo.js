@@ -1,10 +1,8 @@
 import React from 'react'
-
+import styles from './styles/resultsinfo.css'
 const ResultsInfo = () => {
   return (
-    <div>
-      Hello.
-    </div>
+    <div className={styles.content + ' ' + styles.hide}>Hey Guys!</div>
   )
 }
 

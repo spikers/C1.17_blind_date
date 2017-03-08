@@ -1,11 +1,24 @@
 .container{
+  width: 100%;
   display:flex;
   justify-content: center;
   align-items: center;
+  perspective: 200%;
 }
 .circle{
-  border-radius: 100%;
+  border-radius: 50%;
+  width: 50%;
 }
-.red{
-  color:red;
+
+@keyframes spin {
+  from {transform: none;}
+  to {transform: rotateY(360deg)}
+}
+
+.spinning{
+  transform-style: preserve-3d;
+  animation-name: spin; 
+  animation-duration: .3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in;
 }
