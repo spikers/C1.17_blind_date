@@ -1,13 +1,19 @@
-import React from 'react';
-import {Link} from 'react-router'
+import React, {Component} from 'react';
+import {Link} from 'react-router';
+import ResultsItem from './resultsitem';
 
-const ResultsPage = () => {
+class ResultsPage extends Component {
+  render(){
   return (
     <div>
       <h1>Results</h1>
       <Link to="/profile">Profile</Link>
+      <ResultsItem/>
+      <ResultsItem/>
+      <ResultsItem/>
     </div>
   )
+  }
 }
 
 export default ResultsPage;

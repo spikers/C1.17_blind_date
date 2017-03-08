@@ -8,7 +8,7 @@ class LoginPage extends Component {
         return(
           <div className="container">
             <h1>Login Page</h1>
-            <Link to='/profile'>Submit</Link>
+            <Link to={path}>Submit</Link>
           </div>
         )
     }
