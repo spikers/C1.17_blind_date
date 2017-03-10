@@ -1,11 +1,17 @@
-.input{
+.input_div{
     width: 50%;
-    height: 30%;
-    margin: 0 auto;
     display: block;
+    margin: 0 auto;
+}
+.input{
+    font-family: Raleway;
+    width: 100%;
+    font-size: 3vh;
+    margin: 3% auto;
+    border-radius: 1vh;
 }
 .fb{
-    width: 50%;
+    width: 60%;
     margin: 0 auto;
     display: block;
 }
