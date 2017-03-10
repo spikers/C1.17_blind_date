@@ -18,8 +18,9 @@ const EventsCarousel = React.createClass({
     this.props.updateButton(selectedIndex)
   },
 
-  componentWillReceiveProps(){
-    this.setState((prevState, props)=>({index:props.indexSelection}));
+  componentWillReceiveProps(newProp){
+    let direction = newProp.indexSelection > this.state.index ? 'next' : 'prev'
+    this.setState((prevState, props)=>({index:props.indexSelection, direction: direction}));
   },
 
   render() {
