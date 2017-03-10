@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router';
 import Logo from './Logo';
 import style from './styles/profile.css';
+import Logo from './logo'
 
 class ProfilePage extends Component {
     render(){
@@ -23,5 +24,4 @@ class ProfilePage extends Component {
       )
     }
   }
-
 export default ProfilePage;
