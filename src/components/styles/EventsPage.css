@@ -1,0 +1,11 @@
+.carouselcontainer{
+  width: 90%;
+  margin: auto;
+}
+
+.carouselcontainer img {
+  margin: auto;
+}
+.container{
+  text-align: center;
+}

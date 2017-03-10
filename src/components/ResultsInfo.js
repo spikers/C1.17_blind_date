@@ -1,8 +1,9 @@
 import React from 'react'
 import styles from './styles/resultsinfo.css'
-const ResultsInfo = () => {
+const ResultsInfo = (props) => {
+  let infoClass = props.clicked ? '' : styles.hide;
   return (
-    <div className={styles.content + ' ' + styles.hide}>Hey Guys!</div>
+    <div className={styles.content + ' ' + infoClass}> Hey Guys </div>
   )
 }
 
