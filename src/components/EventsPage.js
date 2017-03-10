@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router';
 import EventsCarousel from './eventscarousel';
 import EventsButtonGroup from './eventsbuttongroup';
+import Logo from './logo'
 import styles from './styles/eventspage.css';
 
 class EventsPage extends Component {
@@ -209,6 +210,7 @@ updateButton(index){
   render() {
         return(
           <div className={styles.container}>
+            <Logo/>
             <div><h1>Events Page</h1></div>
             <div className={styles.carouselcontainer}>
               <EventsCarousel 
@@ -224,7 +226,7 @@ updateButton(index){
             handleButtonPress = {(e)=>this.handleButtonPress(e)}
             activeButton = {this.state.index}
             />
-            <Link to="/results">Results</Link>
+            <Link to="/results"><img src= {require('./img/flip.png')}   alt="flip"/></Link>
           </div>
         )
     }
