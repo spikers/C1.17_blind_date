@@ -199,7 +199,12 @@ class EventsPage extends Component {
 
 handleButtonPress(e){
   let index = parseInt(e.target.id);
-  this.setState({index: index})
+  this.setState({index: index});
+}
+
+updateButton(index){
+  console.log('hey updateButton called ' + index);
+  this.setState({index:index});
 }
   render() {
         return(
@@ -212,9 +217,13 @@ handleButtonPress(e){
               movies={this.state.data.movies}
               live={this.state.data.live}
               indexSelection = {this.state.index}
+              updateButton = {(index)=>(this.updateButton(index))}
                />
             </div>
-            <EventsButtonGroup handleButtonPress = {(e)=>this.handleButtonPress(e)}/>
+            <EventsButtonGroup 
+            handleButtonPress = {(e)=>this.handleButtonPress(e)}
+            activeButton = {this.state.index}
+            />
             <Link to="/results">Results</Link>
           </div>
         )

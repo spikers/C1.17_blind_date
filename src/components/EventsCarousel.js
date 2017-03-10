@@ -11,16 +11,11 @@ const EventsCarousel = React.createClass({
   },
 
   handleSelect(selectedIndex, e) {
-    console.log(e.target);
-    if (!e){
-      e = {
-        direction: "next"
-      }
-    }
     this.setState({
       index: selectedIndex,
       direction: e.direction
     });
+    this.props.updateButton(selectedIndex)
   },
 
   componentWillReceiveProps(){
