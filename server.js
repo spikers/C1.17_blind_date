@@ -58,40 +58,38 @@ router.use(function(req, res, next) {
   next();
 });
 
-app.use(express.static('public'));
-
 /*
 If you go to 'localhost/' then send the index.html file.
 The reason why this works is I'm using the variable 'router', not 'apiRouter'. 
 'router' is bound below, in my `app.use('/', router);`
 */
-// router.get('/', function(req, res) {
-//   // fs.readFile('./public/index.html', 'utf8', (err, data) => {
-//   //   if (err) {
-//   //     res.send(err);
-//   //     return;
-//   //   }
-//   //   res.send(data);
-//   // });
-// });
+router.get('/', function(req, res) {
+  fs.readFile('./index.html', 'utf8', (err, data) => {
+    if (err) {
+      res.send(err);
+      return;
+    }
+    res.send(data);
+  });
+});
 
-// router.get('/login', function(req, res) {
-//   fs.readFile('./login.html', 'utf8', (err, data) => {
-//     res.send(data);
-//   });
-// });
+router.get('/login', function(req, res) {
+  fs.readFile('./login.html', 'utf8', (err, data) => {
+    res.send(data);
+  });
+});
 
-// router.get('/app/css/:css', function(req, res) {
-//   fs.readFile('./app/css/' + req.params.css, 'utf8', (err, data) => {
-//     res.send(data);
-//   });
-// });
+router.get('/app/css/:css', function(req, res) {
+  fs.readFile('./app/css/' + req.params.css, 'utf8', (err, data) => {
+    res.send(data);
+  });
+});
 
-// router.get('/app/js/:js', function(req, res) {
-//   fs.readFile('./app/js/' + req.params.js, 'utf8', (err, data) => {
-//     res.send(data);
-//   });
-// });
+router.get('/app/js/:js', function(req, res) {
+  fs.readFile('./app/js/' + req.params.js, 'utf8', (err, data) => {
+    res.send(data);
+  });
+});
 
 /*Initialization. But this time, it's for 'localhost/api'*/
 apiRouter.use(function(req, res, next) {
@@ -220,6 +218,7 @@ function handlePut(err, user, req, res) {
 }
 
 
+<<<<<<< HEAD
 
 
 /*********
