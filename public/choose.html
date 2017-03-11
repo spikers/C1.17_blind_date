@@ -6,16 +6,17 @@
   <script src="js/fbLogin.js"></script>
   <script>
     var activityXHR = new XMLHttpRequest();
-    activityXHR.open('post', 'http://localhost:8000/hangout/activity');
+    activityXHR.open('post', 'http://localhost:8000/api/hangout/activity');
     activityXHR.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
     activityXHR.addEventListener('load', function(data) {
+      console.log(data);
       console.log('activityXHR loaded, data:', JSON.parse(data.target.response));
     });
     activityXHR.send();
 
 
     var restaurantXHR = new XMLHttpRequest();
-    restaurantXHR.open('post', 'http://localhost:8000/hangout/restaurant');
+    restaurantXHR.open('post', 'http://localhost:8000/api/hangout/restaurant');
     restaurantXHR.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
     restaurantXHR.addEventListener('load', function(data) {
       console.log('activityXHR loaded, data:', JSON.parse(data.target.response));

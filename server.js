@@ -5,7 +5,9 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var jwt = require('jsonwebtoken');
 var config = require('./config');
+
 var User = require('./app/models/user');
+var Hangout = require('./app/models/hangout');
 
 /*Yelp*/
 var request = require('request');
@@ -40,7 +42,7 @@ app.use(morgan('dev'));
 //   clientID: '1339417492768524', 
 //   clientSecret: 'b6aada4109d1e978da7206aa0f3096bc',
 //   callback: 'http://localhost:8000'
-// }, function(accessToken, refreshToken, profile, done) {
+// }, function (accessToken, refreshToken, profile, done) {
 //     User.findOrCreate(..., function (err, user) {
 //       if (err) return done(err);
 //       done(null, user);
@@ -54,7 +56,7 @@ var router = express.Router();
 var apiRouter = express.Router();
 
 /*Need to initialize this here*/
-router.use(function(req, res, next) {
+router.use(function (req, res, next) {
   next();
 });
 
@@ -63,7 +65,7 @@ If you go to 'localhost/' then send the index.html file.
 The reason why this works is I'm using the variable 'router', not 'apiRouter'. 
 'router' is bound below, in my `app.use('/', router);`
 */
-router.get('/', function(req, res) {
+router.get('/', function (req, res) {
   fs.readFile('./public/index.html', 'utf8', (err, data) => {
     if (err) {
       res.send(err);
@@ -74,7 +76,7 @@ router.get('/', function(req, res) {
 });
 
 
-router.get('/choose', function(req, res) {
+router.get('/choose', function (req, res) {
   fs.readFile('./public/choose.html', 'utf8', (err, data) => {
     if (err) {
       res.send(err);
@@ -85,32 +87,32 @@ router.get('/choose', function(req, res) {
 });
 
 
-router.get('/login', function(req, res) {
+router.get('/login', function (req, res) {
   fs.readFile('./public/login.html', 'utf8', (err, data) => {
     if (err) res.send(err);
     res.send(data);
   });
 });
 
-router.get('/css/:css', function(req, res) {
+router.get('/css/:css', function (req, res) {
   fs.readFile('./public/css/' + req.params.css, 'utf8', (err, data) => {
     res.send(data);
   });
 });
 
-router.get('/js/:js', function(req, res) {
+router.get('/js/:js', function (req, res) {
   fs.readFile('./public/js/' + req.params.js, 'utf8', (err, data) => {
     res.send(data);
   });
 });
 
 /*Initialization. But this time, it's for 'localhost/api'*/
-apiRouter.use(function(req, res, next) {
+apiRouter.use(function (req, res, next) {
   next();
 });
 
 /*I do it this way because it's one route and I'm only doing 'get' on it*/
-apiRouter.get('/', function(req, res) {
+apiRouter.get('/', function (req, res) {
   res.json({ message: 'Hooray! Welcome to our API!'});
 });
 
@@ -120,7 +122,7 @@ So when you get a Post, create the user. When you receieve a Get, get all users.
 The reason why it's different from above is I'm trying to handle Post and Get requests
 */
 apiRouter.route('/user')
-  .post(function(req, res) {
+  .post(function (req, res) {
     var user = new User();
     // user.username = req.body.username;
     // //user.password = req.body.password;
@@ -136,20 +138,18 @@ apiRouter.route('/user')
       if (_USER) return;
 
       //If it's a new user, create the user
-      user.save(function(err) {
+      user.save(function (err) {
         if (err) {
           res.send(err);
           return;
         }
-
         res.json({message: 'User Created!'});
       });
-
     });
   })
 
-  .get(function(req, res) {
-    User.find(function(err, users) {
+  .get(function (req, res) {
+    User.find(function (err, users) {
       if (err) {
         res.send(err);
         return;
@@ -171,9 +171,9 @@ User.findById is probably a mongoose method used to interface with the mongo db
 */
 
 apiRouter.route('/user/:user_id')
-  .get(function(req, res) {
-    //User.findById(req.params.user_id, function(err, user) {
-    User.findOne({'fbToken': req.params.user_id}, function(err, user) {
+  .get(function (req, res) {
+    //User.findById(req.params.user_id, function (err, user) {
+    User.findOne({'fbToken': req.params.user_id}, function (err, user) {
       if (err) {
         res.send(err);
         return;
@@ -183,7 +183,7 @@ apiRouter.route('/user/:user_id')
     });
   })
 
-  .put(function(req, res) {
+  .put(function (req, res) {
     User.findOne({ 'fbToken': req.params.user_id }, (err, user) => {
       if (err) {
         res.send(err);
@@ -194,10 +194,10 @@ apiRouter.route('/user/:user_id')
   })
 
   //change this for the love of god as a soft delete
-  .delete(function(req, res) {
+  .delete(function (req, res) {
     User.remove({
       _id: req.params.user_id
-    }, function(err, user) {
+    }, function (err, user) {
       if (err) {
         res.send(err);
         return;
@@ -221,7 +221,7 @@ function handlePut(err, user, req, res) {
   if (req.body.biography) user.biography = req.body.biography;
   //user.fbToken = req.body.fbToken;
 
-  user.save(function(err) {
+  user.save(function (err) {
     if (err) {
       res.send(err);
       return;
@@ -243,7 +243,7 @@ var yelpToken = config.yelpToken;
 Remove this for now. We could use it, but it counts towards our API calls. We only get 25k.
 Save the oAuth2.0 token for later. They're valid for 150 days. Every 100 days, get a new one.
 */
-// var request_yelp = function(set_parameters, callback) {
+// var request_yelp = function (set_parameters, callback) {
 //   //Get token first
 //   request({
 //     method: 'POST', 
@@ -254,27 +254,47 @@ Save the oAuth2.0 token for later. They're valid for 150 days. Every 100 days, g
 
 // };
 
-var dateRouter = express.Router();
+var hangoutRouter = express.Router();
 var yelpRouter = express.Router();
 
-yelpRouter.use(function(req, res, next) {
+yelpRouter.use(function (req, res, next) {
   next();
 });
 
 yelpRouter.route('/')
-  .get(function(req, res) {
+  .get(function (req, res) {
     fs.readFile('./public/yelp.html', 'utf8', (err, data) => {
       if (err) res.send(err);
       res.send(data);
     });
   });
 
-dateRouter.use(function(req, res, next) {
+hangoutRouter.use(function (req, res, next) {
   next();
 });
 
-dateRouter.route('/restaurant')
-  .post(function(req, res) {
+hangoutRouter.route('/user/:user_id')
+  .post(function (req, res) {
+    Hangout.findOne({
+      $or: [
+        {'first_person': req.params.user_id}, 
+        {'second_person': req.params.user_id}
+      ]}, (err, hangoutObject) => {
+        console.log(hangoutObject);
+        res.json(hangoutObject);
+    });
+  });
+
+hangoutRouter.route('/hangout/:hangout_id')
+  .post(function (req, res) {
+    Hangout.findById(req.params.hangout_id, (err, hangoutObject) => {
+      res.json(hangoutObject);
+    });
+  });
+
+//This can probably be a GET request
+hangoutRouter.route('/restaurant')
+  .post(function (req, res) {
 
     //TPADD Planning to use the DB to pull the location
     req.body.latitude = 33.6506;
@@ -300,8 +320,8 @@ dateRouter.route('/restaurant')
     }).catch(err => {console.log(err)});
   })
 
-dateRouter.route('/activity')
-  .post(function(req, res) {
+hangoutRouter.route('/activity')
+  .post(function (req, res) {
     console.log('Activity Endpoint Called');
     req.body.latitude = 33.6506;
     req.body.longitude = -117.7435; //irvine spectrum
@@ -322,8 +342,8 @@ dateRouter.route('/activity')
     }).catch(err => {console.log(err)});
   })
 
-app.use('/yelp', yelpRouter);
-app.use('/hangout', dateRouter);
+app.use('/api/yelp', yelpRouter);
+app.use('/api/hangout', hangoutRouter);
 
 /**
  * This returns an array of promises. This is misnamed. This can be an activity or restaurant. 
