@@ -5,17 +5,39 @@
   <title>2 Buttons</title>
   <script src="js/fbLogin.js"></script>
   <script>
-    var thing;
+    var activityXHR = new XMLHttpRequest();
+    activityXHR.open('post', 'http://localhost:8000/hangout/activity');
+    activityXHR.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+    activityXHR.addEventListener('load', function(data) {
+      console.log('activityXHR loaded, data:', JSON.parse(data.target.response));
+    });
+    activityXHR.send();
+
+
+    var restaurantXHR = new XMLHttpRequest();
+    restaurantXHR.open('post', 'http://localhost:8000/hangout/restaurant');
+    restaurantXHR.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+    restaurantXHR.addEventListener('load', function(data) {
+      console.log('activityXHR loaded, data:', JSON.parse(data.target.response));
+    });
+    restaurantXHR.send();
+
     window.addEventListener('load', () => {
+      let me;
+      FB.api('/me', (res) => {
+        me = res;
+      });
+
       let buttonContainer = document.getElementById('button-container');
       buttonContainer.addEventListener('click', function (e) {
         let thingClicked = e.target.innerText;
 
-        addActivityToAccount('POST', 'api/hangout/', thingClicked).then((e) => {
-          console.log('Promise resolved: ', e.target.response);
-        }, (e) => {
-          console.log('Error: ', e);
-        });
+        addActivityToAccount('POST', 'api/hangout/', thingClicked)
+          .then((e) => {
+            console.log('Promise resolved: ', e.target.response);
+          }, (e) => {
+            console.log('Error: ', e);
+          });
       });   
     });
 
