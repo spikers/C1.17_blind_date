@@ -64,7 +64,7 @@ The reason why this works is I'm using the variable 'router', not 'apiRouter'.
 'router' is bound below, in my `app.use('/', router);`
 */
 router.get('/', function(req, res) {
-  fs.readFile('./index.html', 'utf8', (err, data) => {
+  fs.readFile('./public/index.html', 'utf8', (err, data) => {
     if (err) {
       res.send(err);
       return;
@@ -73,20 +73,33 @@ router.get('/', function(req, res) {
   });
 });
 
+
+router.get('/choose', function(req, res) {
+  fs.readFile('./public/choose.html', 'utf8', (err, data) => {
+    if (err) {
+      res.send(err);
+      return;
+    }
+    res.send(data);
+  });
+});
+
+
 router.get('/login', function(req, res) {
-  fs.readFile('./login.html', 'utf8', (err, data) => {
+  fs.readFile('./public/login.html', 'utf8', (err, data) => {
+    if (err) res.send(err);
     res.send(data);
   });
 });
 
-router.get('/app/css/:css', function(req, res) {
-  fs.readFile('./app/css/' + req.params.css, 'utf8', (err, data) => {
+router.get('/css/:css', function(req, res) {
+  fs.readFile('./public/css/' + req.params.css, 'utf8', (err, data) => {
     res.send(data);
   });
 });
 
-router.get('/app/js/:js', function(req, res) {
-  fs.readFile('./app/js/' + req.params.js, 'utf8', (err, data) => {
+router.get('/js/:js', function(req, res) {
+  fs.readFile('./public/js/' + req.params.js, 'utf8', (err, data) => {
     res.send(data);
   });
 });
@@ -216,9 +229,6 @@ function handlePut(err, user, req, res) {
     res.json({message: 'User Updated'});
   })
 }
-
-
-<<<<<<< HEAD
 
 
 /*********
