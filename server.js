@@ -9,7 +9,7 @@ var config = require('./config');
 var User = require('./app/models/user');
 var Hangout = require('./app/models/hangout');
 
-/*Yelp*/
+//Yelp
 var request = require('request');
 var qs = require('querystring');
 
@@ -50,21 +50,21 @@ app.use(morgan('dev'));
 //   }
 // ));
 
-/*Routing Part Just ignore everything below this line for ease. I'll figure it out later
-  Created 2 routers. One for 'localhost/' and 'localhost/api'. I coulda used 1, but why not 2*/
+// Routing Part Just ignore everything below this line for ease. I'll figure it out later
+//   Created 2 routers. One for 'localhost/' and 'localhost/api'. I coulda used 1, but why not 2
 var router = express.Router();
 var apiRouter = express.Router();
 
-/*Need to initialize this here*/
+// Need to initialize this here
 router.use(function (req, res, next) {
   next();
 });
 
-/*
-If you go to 'localhost/' then send the index.html file.
-The reason why this works is I'm using the variable 'router', not 'apiRouter'. 
-'router' is bound below, in my `app.use('/', router);`
-*/
+
+// If you go to 'localhost/' then send the index.html file.
+// The reason why this works is I'm using the variable 'router', not 'apiRouter'. 
+// 'router' is bound below, in my `app.use('/', router);`
+
 router.get('/', function (req, res) {
   fs.readFile('./public/index.html', 'utf8', (err, data) => {
     if (err) {
@@ -106,12 +106,12 @@ router.get('/js/:js', function (req, res) {
   });
 });
 
-/*Initialization. But this time, it's for 'localhost/api'*/
+// Initialization. But this time, it's for 'localhost/api'
 apiRouter.use(function (req, res, next) {
   next();
 });
 
-/*I do it this way because it's one route and I'm only doing 'get' on it*/
+// I do it this way because it's one route and I'm only doing 'get' on it
 apiRouter.get('/', function (req, res) {
   res.json({ message: 'Hooray! Welcome to our API!'});
 });
@@ -120,11 +120,11 @@ apiRouter.post('/', function(req, res) {
   res.json({ message: 'Yay Post' });
 });
 
-/*This is the biggie.
-So when you get a Post, create the user. When you receieve a Get, get all users.
+// This is the biggie.
+// So when you get a Post, create the user. When you receieve a Get, get all users.
 
-The reason why it's different from above is I'm trying to handle Post and Get requests
-*/
+// The reason why it's different from above is I'm trying to handle Post and Get requests
+
 apiRouter.route('/user')
   .post(function (req, res) {
     var user = new User();
@@ -163,16 +163,16 @@ apiRouter.route('/user')
   });
 
 
-/*The '/user/:user_id' is this:
-:user_id is stored inside req.params.user_id
-:chess_war would be automatically stored inside req.params.chess_war
-:hey is stored in req.params.hey
+// The '/user/:user_id' is this:
+// :user_id is stored inside req.params.user_id
+// :chess_war would be automatically stored inside req.params.chess_war
+// :hey is stored in req.params.hey
 
-So if you did a Get request to '/user/gagaga', and it was written '/user/:name'
-You can access 'gagaga' in req.params.name
+// So if you did a Get request to '/user/gagaga', and it was written '/user/:name'
+// You can access 'gagaga' in req.params.name
 
-User.findById is probably a mongoose method used to interface with the mongo db
-*/
+// User.findById is probably a mongoose method used to interface with the mongo db
+
 
 apiRouter.route('/user/:user_id')
   .get(function (req, res) {
@@ -235,18 +235,15 @@ function handlePut(err, user, req, res) {
 }
 
 
-/*********
-Yelp
-*********/
-/************
-Refresh this token every 100 days
-*/
+
+// Yelp ****************************
+// Refresh this token every 100 days
+
 var yelpToken = config.yelpToken;
 
-/*************
-Remove this for now. We could use it, but it counts towards our API calls. We only get 25k.
-Save the oAuth2.0 token for later. They're valid for 150 days. Every 100 days, get a new one.
-*/
+// Remove this for now. We could use it, but it counts towards our API calls. We only get 25k.
+// Save the oAuth2.0 token for later. They're valid for 150 days. Every 100 days, get a new one.
+
 // var request_yelp = function (set_parameters, callback) {
 //   //Get token first
 //   request({
@@ -409,9 +406,8 @@ hangoutRouter.route('/activity')
 app.use('/api/yelp', yelpRouter);
 app.use('/api/hangout', hangoutRouter);
 
-/**
- * This returns an array of promises. This is misnamed. This can be an activity or restaurant. 
- */
+// This returns an array of promises. This is misnamed. This can be an activity or restaurant. 
+
 function getEvent(params, categories) {
   params['sort_by'] = 'rating';
   //params.radius = params.radius || 22500; //meters
@@ -435,7 +431,7 @@ function getYelpData(params) {
       
 
 
-    /*I'm sorry about this. This is to handle the fact that I can't figure out how to nest promises*/
+    // I'm sorry about this. This is to handle the fact that I can't figure out how to nest promises
     function recursiveYelpHandler(paramStr) {
       request({
         method: 'GET',
@@ -497,16 +493,16 @@ function parseJSON(item, times = 0) {
 
 
 //This helper function just makes [restaurant] & [{yelpObj}, {yelpObj}] into 
-/*
-{
-  restaurant: {
-    businesses: [
-      {yelpObj}, 
-      {yelpObj}
-    ]
-  }
-}
-*/
+
+// {
+//   restaurant: {
+//     businesses: [
+//       {yelpObj}, 
+//       {yelpObj}
+//     ]
+//   }
+// }
+
 function convertValueArrayAndCategoriesToObject(valueArray, categories) {
   let valueObject = {};
   for (let i = 0; i < categories.length; i++) {
@@ -516,18 +512,17 @@ function convertValueArrayAndCategoriesToObject(valueArray, categories) {
 }
 
 function getRestaurant(params, res) {
-  /*************
+
   //Use the token to gain access
   //token = parseJSON(body)['access_token'];
-  */
   //console.log(process.env.token);
-  /*
-    Epoch timestamp: 1488034800
-    Timestamp in milliseconds: 1488034800
-    Use 1488034800
-    Human time (GMT): Sat, 25 Feb 2017 15:00:00 GMT
-    Human time (your time zone): 2/25/2017, 7:00:00 AM
-  */
+  
+  //   Epoch timestamp: 1488034800
+  //   Timestamp in milliseconds: 1488034800
+  //   Use 1488034800
+  //   Human time (GMT): Sat, 25 Feb 2017 15:00:00 GMT
+  //   Human time (your time zone): 2/25/2017, 7:00:00 AM
+
   //term=restaurants&latitude=' + params.lat + '&longitude=' + params.long + '&limit=2&price=1,2&sort_by=rating&radius=500&open_at=1488034800
   //params.term = 'restaurants';
   //params.term = 'activities';
@@ -572,9 +567,9 @@ function randomizeSelection(choicesObject) {
 
 
 
-/****************
-Register Our Routes Here
-****************/
+// ************************
+// Register Our Routes Here
+// ************************
 
 app.use('/', router);
 app.use('/api', apiRouter);
