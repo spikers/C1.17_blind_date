@@ -22,7 +22,7 @@ apiRouter.post('/', function(req, res) {
 });
 
 // This is the biggie.
-// So when you get a Post, create the user. When you receieve a Get, get all users.
+// So when you get a Post, create the user. When you receive a Get, get all users.
 
 // The reason why it's different from above is I'm trying to handle Post and Get requests
 

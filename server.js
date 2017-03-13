@@ -52,14 +52,19 @@ app.use(morgan('dev'));
 
 // Routing Part Just ignore everything below this line for ease. I'll figure it out later
 //   Created 2 routers. One for 'localhost/' and 'localhost/api'. I coulda used 1, but why not 2
+/*
 var router = express.Router();
+*/
 
 /*
 var apiRouter = express.Router();
 */
 
 import apiRouter from './app/routing/api_router';
+import router from './app/routing/router';
+import getYelpData from './app/routing/yelp_data';
 
+/*
 // Need to initialize this here
 router.use(function (req, res, next) {
   next();
@@ -110,7 +115,7 @@ router.get('/js/:js', function (req, res) {
     res.send(data);
   });
 });
-
+*/
 
 /*
 // Initialization. But this time, it's for 'localhost/api'
@@ -414,6 +419,8 @@ hangoutRouter.route('/activity')
 app.use('/api/yelp', yelpRouter);
 app.use('/api/hangout', hangoutRouter);
 
+
+/*
 // This returns an array of promises. This is misnamed. This can be an activity or restaurant. 
 
 function getEvent(params, categories) {
@@ -481,6 +488,7 @@ function getYelpData(params) {
 
   })
 }
+*/
 
 
 
@@ -581,6 +589,7 @@ function randomizeSelection(choicesObject) {
 
 app.use('/', router);
 app.use('/api', apiRouter);
+
 
 app.listen(port, () => {
   console.log('Magic happens on port ' + port); 
