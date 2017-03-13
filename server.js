@@ -63,6 +63,7 @@ var apiRouter = express.Router();
 import apiRouter from './app/routing/api_router';
 import router from './app/routing/router';
 import getYelpData from './app/routing/yelp_data';
+import yelpRouter from './app/routing/yelp_router';
 
 /*
 // Need to initialize this here
@@ -269,8 +270,12 @@ var yelpToken = config.yelpToken;
 // };
 
 var hangoutRouter = express.Router();
-var yelpRouter = express.Router();
 
+/*
+var yelpRouter = express.Router();
+*/
+
+/*
 yelpRouter.use(function (req, res, next) {
   next();
 });
@@ -282,6 +287,7 @@ yelpRouter.route('/')
       res.send(data);
     });
   });
+*/
 
 hangoutRouter.use(function (req, res, next) {
   next();
@@ -416,7 +422,11 @@ hangoutRouter.route('/activity')
     }).catch(err => {console.log(err)});
   })
 
+
+/*
 app.use('/api/yelp', yelpRouter);
+*/
+
 app.use('/api/hangout', hangoutRouter);
 
 
@@ -574,7 +584,7 @@ function getRestaurant(params, res) {
 
 function randomizeSelection(choicesObject) {
   let index = Math.floor(Math.random() * Object.keys(choicesObject).length);
-  let selection = choicesObject[index];;
+  let selection = choicesObject[index];
   console.log(selection);
   return selection;
 }
@@ -589,6 +599,7 @@ function randomizeSelection(choicesObject) {
 
 app.use('/', router);
 app.use('/api', apiRouter);
+app.use('/api/yelp', yelpRouter);
 
 
 app.listen(port, () => {
