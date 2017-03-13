@@ -116,6 +116,10 @@ apiRouter.get('/', function (req, res) {
   res.json({ message: 'Hooray! Welcome to our API!'});
 });
 
+apiRouter.post('/', function(req, res) {
+  res.json({ message: 'Yay Post' });
+});
+
 /*This is the biggie.
 So when you get a Post, create the user. When you receieve a Get, get all users.
 
@@ -273,8 +277,15 @@ hangoutRouter.use(function (req, res, next) {
   next();
 });
 
+hangoutRouter.route('/')
+  .get(function (req, res) {
+    res.json({ 'message': 'Welcome to the Hangouts API' });
+  })
+  
 hangoutRouter.route('/user/:user_id')
-  .post(function (req, res) {
+  
+  //GET: Returns the user
+  .get(function (req, res) {
     Hangout.findOne({
       $or: [
         {'first_person': req.params.user_id}, 
@@ -283,11 +294,64 @@ hangoutRouter.route('/user/:user_id')
         console.log(hangoutObject);
         res.json(hangoutObject);
     });
+  })
+
+  //POST: Searches the database for an empty secondPerson. If it finds an open date, 
+  //      If it can't, 
+  //      Creates new date object in DB. Populates the firstPerson and Event simultaneously      
+  .post(function (req, res) {
+    let hangout = new Hangout();
+
+      hangout.first_person = req.body.first_person;
+      hangout.activity = JSON.parse(req.body.activity);
+
+      hangout.save(function (err) {
+        if (err) {
+          res.json('Error', err);
+          return;
+        }
+        res.json({ 'message': 'hangout saved' });
+      })
+  })
+
+  //PUT: Adds to User Document in the Database (Used for restaurant finder and user finder)
+  .put(function (req, res) {
+    Hangout.findOne({
+      $or: [
+        {'first_person': req.params.user_id},
+        {'second_person': req.params.user_id}
+      ]}, (err, hangoutObject) => {
+        console.log(hangoutObject.activity);
+        res.json(hangoutObject);
+      }
+    );
   });
 
+// localhost:8000/api/chicken/nuggets
+
+// localhost:8000
+
+// Router:        /
+// apiRouter:     /api/
+// hangoutRouter: /api/hangout/
+
+// apiRouter.route('/chicken/nuggets')
+//   .get((req, res) => {
+//     res.json({gwen: 'is cool'});
+//   })
+
+hangoutRouter.route('/test')
+  .get(function (req, res) {
+    Hangout.findOne({ 'activity.display_phone': '(949) 786-9625' }, function(err, hangout) {
+      console.log(err);
+      res.json(hangout);
+    })
+  })
+
 hangoutRouter.route('/hangout/:hangout_id')
-  .post(function (req, res) {
+  .get(function (req, res) {
     Hangout.findById(req.params.hangout_id, (err, hangoutObject) => {
+      console.log(hangoutObject.activity.rating);
       res.json(hangoutObject);
     });
   });

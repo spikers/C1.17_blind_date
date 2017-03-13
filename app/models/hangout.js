@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-mongoose.model('yelp', new Schema(
+let yelp = new Schema(
   {
     'id': String,
     'distance': Number,
@@ -36,11 +36,11 @@ mongoose.model('yelp', new Schema(
       }
     ]
   }
-));
+);
 
 module.exports = mongoose.model('hangout', new Schema({
   'first_person': String,
   'second_person': String,
-  'restaurant': Schema.Types.Mixed,
-  'activity': Schema.Types.Mixed
+  'restaurant': yelp,
+  'activity': yelp
 }));
