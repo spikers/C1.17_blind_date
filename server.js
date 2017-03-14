@@ -62,9 +62,12 @@ var apiRouter = express.Router();
 
 import apiRouter from './app/routing/api_router';
 import router from './app/routing/router';
-import getYelpData from './app/routing/yelp_data';
+//import getYelpData from './app/routing/yelp_data';
+import getEvent from './app/routing/yelp_data';
+
 import yelpRouter from './app/routing/yelp_router';
 import hangoutRouter from './app/routing/hangoutRouter';
+import parseJSON from './app/routing/parse_json';
 
 /*
 // Need to initialize this here
@@ -254,7 +257,10 @@ function handlePut(err, user, req, res) {
 // Yelp ****************************
 // Refresh this token every 100 days
 
+
+/*
 var yelpToken = config.yelpToken;
+*/
 
 // Remove this for now. We could use it, but it counts towards our API calls. We only get 25k.
 // Save the oAuth2.0 token for later. They're valid for 150 days. Every 100 days, get a new one.
@@ -506,7 +512,7 @@ function getYelpData(params) {
 
 
 
-
+/*
 //Always wrap your JSON.parse in a try-catch block. This simply replaces JSON.parse with the safer version
 function parseJSON(item, times = 0) {
   try {
@@ -520,7 +526,7 @@ function parseJSON(item, times = 0) {
     }
   }
 }
-
+*/
 
 //This helper function just makes [restaurant] & [{yelpObj}, {yelpObj}] into 
 
@@ -533,6 +539,7 @@ function parseJSON(item, times = 0) {
 //   }
 // }
 
+/*
 function convertValueArrayAndCategoriesToObject(valueArray, categories) {
   let valueObject = {};
   for (let i = 0; i < categories.length; i++) {
@@ -540,6 +547,7 @@ function convertValueArrayAndCategoriesToObject(valueArray, categories) {
   }
   return valueObject;
 }
+*/
 
 function getRestaurant(params, res) {
 
@@ -586,12 +594,14 @@ function getRestaurant(params, res) {
   //fs.writeFile('./losangeles.json', body, 'utf-8');
 }
 
+/*
 function randomizeSelection(choicesObject) {
   let index = Math.floor(Math.random() * Object.keys(choicesObject).length);
   let selection = choicesObject[index];
   console.log(selection);
   return selection;
 }
+*/
 
 //getYelpData({ latitude: '33.946232', longitude: '-117.678676', 'open_at': 1488672409 });
 

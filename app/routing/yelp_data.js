@@ -1,7 +1,12 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import User from '../models/user';
+import qs from 'querystring';
+import request from 'request';
+import config from '../../config';
+import parseJSON from './parse_json';
 
+const yelpToken = config.yelpToken;
 
 // This returns an array of promises. This is misnamed. This can be an activity or restaurant.
 
@@ -71,4 +76,4 @@ function getYelpData(params) {
     })
 }
 
-export default getYelpData;
+export default getEvent;
