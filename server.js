@@ -7,7 +7,10 @@ var jwt = require('jsonwebtoken');
 var config = require('./config');
 
 var User = require('./app/models/user');
-var Hangout = require('./app/models/hangout');
+//var Hangout = require('./app/models/hangout');
+import Hangout from './app/models/hangout';
+
+import { hangout as hangoutSchema } from './app/models/hangout.js';
 
 //Yelp
 var request = require('request');
@@ -27,6 +30,7 @@ var port = process.env.PORT || 8000;
 //Database Part************************
 var mongoose = require('mongoose');
 mongoose.Promise = Promise;
+mongoose.promise = Promise;
 
 mongoose.connect(config.database);
 app.set('secret', config.secret);
@@ -187,6 +191,9 @@ apiRouter.route('/user/:user_id')
     });
   })
 
+
+  
+
   .put(function (req, res) {
     User.findOne({ 'fbToken': req.params.user_id }, (err, user) => {
       if (err) {
@@ -278,51 +285,94 @@ hangoutRouter.route('/')
   .get(function (req, res) {
     res.json({ 'message': 'Welcome to the Hangouts API' });
   })
-  
-hangoutRouter.route('/user/:user_id')
-  
-  //GET: Returns the user
-  .get(function (req, res) {
-    Hangout.findOne({
-      $or: [
-        {'first_person': req.params.user_id}, 
-        {'second_person': req.params.user_id}
-      ]}, (err, hangoutObject) => {
-        console.log(hangoutObject);
-        res.json(hangoutObject);
-    });
-  })
 
-  //POST: Searches the database for an empty secondPerson. If it finds an open date, 
+  //POST: Searches the database for an empty secondPerson. If it finds an open date, add user to Hangout obj
+  //      Adds date to User obj
   //      If it can't, 
-  //      Creates new date object in DB. Populates the firstPerson and Event simultaneously      
+  //      Creates new date object in DB. Populates the firstPerson and Event simultaneously. 
+  //      Then adds it to the user object
   .post(function (req, res) {
     let hangout = new Hangout();
+    let activityObject = parseJSON(req.body.hangout);
 
-      hangout.first_person = req.body.first_person;
-      hangout.activity = JSON.parse(req.body.activity);
+    let checkOpenDates = Hangout.findOne({
+      $and: [
+      {
+        $or: [{ 'first_person': null }, { 'second_person': null }]
+      },
+        {'activity': activityObject}
+      ]}
+    );
 
-      hangout.save(function (err) {
+    checkOpenDates.then(function (value) {
+      if (value === null) {
+        res.json('nope');
+      } else if (value) {
+        
+
+
+
+
+      } else {
+        "Cosmic Rays: hangoutRouter.route('/').post()";
+      }
+    });
+/*
+    hangout.first_person = req.body.user;
+    hangout.activity = parseJSON(req.body.activity);
+
+    let userPromise;
+    User.findOne({'fbToken': req.body.user}, function (err, userObj) {
+      userObj.hangouts.push(hangout);
+      userPromise = userObj.save(function (err) {
         if (err) {
-          res.json('Error', err);
+          res.status(401).json('Error', err);
           return;
         }
-        res.json({ 'message': 'hangout saved' });
-      })
+      });
+    });
+
+    let hangoutPromise = hangout.save(function (err) {
+      if (err) {
+        res.status(401).json('Error', err);
+        return;
+      }
+    });
+
+    Promise.all([userPromise, hangoutPromise]).then(function (values) {
+      console.log('arrivated');
+      res.status(200).json({ 'message': 'hangout saved'});
+    });
+    */
   })
 
   //PUT: Adds to User Document in the Database (Used for restaurant finder and user finder)
+  //Maybe delete this? Not sure
   .put(function (req, res) {
     Hangout.findOne({
       $or: [
-        {'first_person': req.params.user_id},
-        {'second_person': req.params.user_id}
+        {'first_person': req.params.user_fb_token},
+        {'second_person': req.params.user_fb_token}
       ]}, (err, hangoutObject) => {
         console.log(hangoutObject.activity);
         res.json(hangoutObject);
       }
     );
   });
+  
+hangoutRouter.route('/user/:user_fb_token')
+  
+  //GET: Returns the user
+  .get(function (req, res) {
+    Hangout.findOne({
+      $or: [
+        {'first_person': req.params.user_fb_token}, 
+        {'second_person': req.params.user_fb_token}
+      ]}, (err, hangoutObject) => {
+        console.log(hangoutObject);
+        res.json(hangoutObject);
+    });
+  })
 
 // localhost:8000/api/chicken/nuggets
 
@@ -343,7 +393,7 @@ hangoutRouter.route('/test')
       console.log(err);
       res.json(hangout);
     })
-  })
+  });
 
 hangoutRouter.route('/hangout/:hangout_id')
   .get(function (req, res) {
@@ -379,7 +429,7 @@ hangoutRouter.route('/restaurant')
 
       res.status(200).json(randomizedRestaurant);
     }).catch(err => {console.log(err)});
-  })
+  });
 
 hangoutRouter.route('/activity')
   .post(function (req, res) {
@@ -388,7 +438,7 @@ hangoutRouter.route('/activity')
     req.body.longitude = -117.7435; //irvine spectrum
 
     //If you want less activities, then change this
-    req.body.limit = 3;
+    req.body.limit = 1;
 
     //TPADD Planning on making these categories dynamic based on the week
     let categories = ['movietheaters', 'bowling', 'museums', 'artclasses'];
@@ -401,7 +451,7 @@ hangoutRouter.route('/activity')
       let activityListObject = convertValueArrayAndCategoriesToObject(values, categories);
       res.status(200).json(activityListObject);
     }).catch(err => {console.log(err)});
-  })
+  });
 
 app.use('/api/yelp', yelpRouter);
 app.use('/api/hangout', hangoutRouter);

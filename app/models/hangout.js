@@ -37,10 +37,13 @@ let yelp = new Schema(
     ]
   }
 );
-
-module.exports = mongoose.model('hangout', new Schema({
+let hangout = new Schema({
   'first_person': String,
   'second_person': String,
   'restaurant': yelp,
   'activity': yelp
-}));
+});
+
+export { hangout };
+
+export default mongoose.model('hangout', hangout);
