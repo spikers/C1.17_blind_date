@@ -7,8 +7,6 @@ import hangoutRouter from './hangoutRouter';
 const app = express();
 const restaurantActivity = express.Router();
 
-console.log("****************", hangoutRouter);
-
 hangoutRouter.route('/test')
     .get(function (req, res) {
         Hangout.findOne({ 'activity.display_phone': '(949) 786-9625' }, function(err, hangout) {
