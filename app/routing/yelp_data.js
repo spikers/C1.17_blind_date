@@ -30,9 +30,6 @@ function getYelpData(params) {
     return new Promise((resolve, reject) => {
         recursiveYelpHandler(paramString);
 
-
-
-
         // I'm sorry about this. This is to handle the fact that I can't figure out how to nest promises
         function recursiveYelpHandler(paramStr) {
             request({
@@ -65,13 +62,6 @@ function getYelpData(params) {
                 }
             });
         }
-
-
-
-
-
-
-
 
     })
 }

@@ -2,66 +2,20 @@ import express from 'express';
 import mongoose from 'mongoose';
 import User from '../models/user';
 import getEvent from './yelp_data';
+import hangoutRouter from './hangoutRouter';
 
 const app = express();
-const hangoutRouter = express.Router();
+const restaurantActivity = express.Router();
 
-app.use('/', hangoutRouter);
+console.log("****************", hangoutRouter);
 
-hangoutRouter.use(function (req, res, next) {
-    next();
-});
-
-hangoutRouter.route('/')
-    .get(function (req, res) {
-        res.json({ 'message': 'Welcome to the Hangouts API' });
-    });
-
-hangoutRouter.route('/user/:user_id')
-
-    .get(function (req, res) {
-        Hangout.findOne({
-            $or: [
-                {'first_person': req.params.user_id},
-                {'second_person': req.params.user_id}
-            ]}, (err, hangoutObject) => {
-            console.log(hangoutObject);
-            res.json(hangoutObject);
-        });
-    })
-    .post(function (req, res) {
-        let hangout = new Hangout();
-
-        hangout.first_person = req.body.first_person;
-        hangout.activity = JSON.parse(req.body.activity);
-
-        hangout.save(function (err) {
-            if (err) {
-                res.json('Error', err);
-                return;
-            }
-            res.json({ 'message': 'hangout saved' });
-        })
-    })
-    .put(function (req, res) {
-        Hangout.findOne({
-                $or: [
-                    {'first_person': req.params.user_id},
-                    {'second_person': req.params.user_id}
-                ]}, (err, hangoutObject) => {
-                console.log(hangoutObject.activity);
-                res.json(hangoutObject);
-            }
-        );
-    });
-/*
 hangoutRouter.route('/test')
     .get(function (req, res) {
         Hangout.findOne({ 'activity.display_phone': '(949) 786-9625' }, function(err, hangout) {
             console.log(err);
             res.json(hangout);
         })
-    })
+    });
 
 hangoutRouter.route('/hangout/:hangout_id')
     .get(function (req, res) {
@@ -70,7 +24,6 @@ hangoutRouter.route('/hangout/:hangout_id')
             res.json(hangoutObject);
         });
     });
-
 
 hangoutRouter.route('/restaurant')
     .post(function (req, res) {
@@ -88,7 +41,7 @@ hangoutRouter.route('/restaurant')
 
             res.status(200).json(randomizedRestaurant);
         }).catch(err => {console.log(err)});
-    })
+    });
 
 hangoutRouter.route('/activity')
     .post(function (req, res) {
@@ -102,7 +55,7 @@ hangoutRouter.route('/activity')
             let activityListObject = convertValueArrayAndCategoriesToObject(values, categories);
             res.status(200).json(activityListObject);
         }).catch(err => {console.log(err)});
-    })
+    });
 function convertValueArrayAndCategoriesToObject(valueArray, categories) {
     let valueObject = {};
     for (let i = 0; i < categories.length; i++) {
@@ -116,6 +69,5 @@ function randomizeSelection(choicesObject) {
     console.log(selection);
     return selection;
 }
-*/
 
-export default hangoutRouter;
+export default restaurantActivity;

@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import User from '../models/user';
 import fs from 'fs';
 
-
 const app = express();
 const router = express.Router();
 
@@ -11,7 +10,6 @@ const router = express.Router();
 router.use(function (req, res, next) {
     next();
 });
-
 
 // If you go to 'localhost/' then send the index.html file.
 // The reason why this works is I'm using the variable 'router', not 'apiRouter'.
@@ -27,7 +25,6 @@ router.get('/', function (req, res) {
     });
 });
 
-
 router.get('/choose', function (req, res) {
     fs.readFile('./public/choose.html', 'utf8', (err, data) => {
         if (err) {
@@ -37,7 +34,6 @@ router.get('/choose', function (req, res) {
         res.send(data);
     });
 });
-
 
 router.get('/login', function (req, res) {
     fs.readFile('./public/login.html', 'utf8', (err, data) => {

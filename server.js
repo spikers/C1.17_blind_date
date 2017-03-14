@@ -67,6 +67,7 @@ import getEvent from './app/routing/yelp_data';
 
 import yelpRouter from './app/routing/yelp_router';
 import hangoutRouter from './app/routing/hangoutRouter';
+import restaurantActivity from './app/routing/restaurant_activity';
 import parseJSON from './app/routing/parse_json';
 
 /*
