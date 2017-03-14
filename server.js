@@ -29,8 +29,7 @@ var port = process.env.PORT || 8000;
 
 //Database Part************************
 var mongoose = require('mongoose');
-mongoose.Promise = Promise;
-mongoose.promise = Promise;
+mongoose.Promise = require('bluebird');
 
 mongoose.connect(config.database);
 app.set('secret', config.secret);
@@ -130,6 +129,17 @@ apiRouter.post('/', function(req, res) {
 // The reason why it's different from above is I'm trying to handle Post and Get requests
 
 apiRouter.route('/user')
+
+  .get(function (req, res) {
+    User.find(function (err, users) {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      res.json(users);
+    });
+  });
+
   .post(function (req, res) {
     var user = new User();
     // user.username = req.body.username;
@@ -156,16 +166,6 @@ apiRouter.route('/user')
     });
   })
 
-  .get(function (req, res) {
-    User.find(function (err, users) {
-      if (err) {
-        res.send(err);
-        return;
-      }
-      res.json(users);
-    });
-  });
-
 
 // The '/user/:user_id' is this:
 // :user_id is stored inside req.params.user_id
@@ -190,9 +190,6 @@ apiRouter.route('/user/:user_id')
       res.json(user);
     });
   })
-
-
-  
 
   .put(function (req, res) {
     User.findOne({ 'fbToken': req.params.user_id }, (err, user) => {
@@ -293,23 +290,73 @@ hangoutRouter.route('/')
   //      Then adds it to the user object
   .post(function (req, res) {
     let hangout = new Hangout();
-    let activityObject = parseJSON(req.body.hangout);
+    let activityObject = parseJSON(req.body.activity);
+    console.log('URL', activityObject.url);
 
     let checkOpenDates = Hangout.findOne({
       $and: [
       {
         $or: [{ 'first_person': null }, { 'second_person': null }]
       },
-        {'activity': activityObject}
-      ]}
+        {'activity.url': activityObject.url}
+      ]}, function (value) {
+        console.log('In fake promise: ', value);
+      }
     );
 
     checkOpenDates.then(function (value) {
       if (value === null) {
-        res.json('nope');
-      } else if (value) {
-        
+        console.log(value);
+        res.status(200).json({'message': 'null'});
 
+        hangout.first_person = req.body.user;
+        hangout.activity = activityObject;
+        console.log(hangout);
+
+        // Saves to the USER and HANGOUT document
+
+        let hangoutPromise = hangout.save(function (err) {
+          if (err) {
+            res.status(401).json('Error', err);
+            return;
+          }
+        });
+
+        let userPromise;
+        User.findOne({'fbToken': req.body.user}, function (err, userObj) {
+          userObj.hangouts.push(hangout);
+          userPromise = userObj.save(function (err) {
+            if (err) {
+              res.status(401).json('Error', err);
+              return;
+            }
+          });
+        });
+
+
+        Promise.all([userPromise, hangoutPromise]).then(function (values) {
+          console.log('arrivated');
+          console.log(values);
+          res.status(200).json({ 'message': 'hangout saved'});
+        });
+
+        //Done
+
+        //res.json('nope');
+      } else if (value) {
+
+        //Work From Here
+
+        if (!value.second_person) {
+          console.log(value.first_person);
+        } 
+
+        if (!value.first_person) {
+          console.log(value.second_person);
+        }
+
+
+        res.status(200).json(value);
 
 
 
@@ -317,34 +364,16 @@ hangoutRouter.route('/')
         "Cosmic Rays: hangoutRouter.route('/').post()";
       }
     });
-/*
-    hangout.first_person = req.body.user;
-    hangout.activity = parseJSON(req.body.activity);
 
-    let userPromise;
-    User.findOne({'fbToken': req.body.user}, function (err, userObj) {
-      userObj.hangouts.push(hangout);
-      userPromise = userObj.save(function (err) {
-        if (err) {
-          res.status(401).json('Error', err);
-          return;
-        }
-      });
-    });
 
-    let hangoutPromise = hangout.save(function (err) {
-      if (err) {
-        res.status(401).json('Error', err);
-        return;
-      }
-    });
-
-    Promise.all([userPromise, hangoutPromise]).then(function (values) {
-      console.log('arrivated');
-      res.status(200).json({ 'message': 'hangout saved'});
-    });
-    */
   })
+
+  // //AC2
+  // function dothings() {
+
+    
+
+  // }
 
   //PUT: Adds to User Document in the Database (Used for restaurant finder and user finder)
   //Maybe delete this? Not sure
