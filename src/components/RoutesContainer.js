@@ -4,14 +4,14 @@ import {pink700, pink900, purple800, white, darkWhite, grey100, grey300, grey400
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Container from './container';
-import LoginPage from './loginpage';
-import EventsPage from './eventspage';
-import ResultsPage from './resultspage';
-import ResultsInfo from './resultsinfo';
-import ProfilePage from './profilepage';
-import NotFound from './notfound';
-import Nav from './nav';
+import Container from './Container';
+import LoginPage from './LoginPage';
+import EventsPage from './EventsPage';
+import ResultsPage from './ResultsPage';
+import ResultsInfo from './ResultsInfo';
+import ProfilePage from './ProfilePage';
+import NotFound from './NotFound';
+import Nav from './Nav';
 
 injectTapEventPlugin();
 

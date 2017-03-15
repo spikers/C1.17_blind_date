@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router';
 import styles from './styles/LoginPage.css';
 import TextField from 'material-ui/TextField';
-import Logo from './logo';
+import Logo from './Logo';
 import {white} from 'material-ui/styles/colors';
 
 const inputStyle = {
