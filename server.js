@@ -55,9 +55,26 @@ app.use(morgan('dev'));
 
 // Routing Part Just ignore everything below this line for ease. I'll figure it out later
 //   Created 2 routers. One for 'localhost/' and 'localhost/api'. I coulda used 1, but why not 2
+/*
 var router = express.Router();
-var apiRouter = express.Router();
+*/
 
+/*
+var apiRouter = express.Router();
+*/
+
+import apiRouter from './app/routing/api_router';
+import router from './app/routing/router';
+//import getYelpData from './app/routing/yelp_data';
+import getEvent from './app/routing/yelp_data';
+
+import yelpRouter from './app/routing/yelp_router';
+import hangoutRouter from './app/routing/hangout_router';
+import restaurantActivity from './app/routing/restaurant_activity';
+import parseJSON from './app/routing/parse_json';
+//import convertAndRandomize from './app/routing/convert_and_randomize';
+
+/*
 // Need to initialize this here
 router.use(function (req, res, next) {
   next();
@@ -108,7 +125,9 @@ router.get('/js/:js', function (req, res) {
     res.send(data);
   });
 });
+*/
 
+/*
 // Initialization. But this time, it's for 'localhost/api'
 apiRouter.use(function (req, res, next) {
   next();
@@ -146,7 +165,7 @@ apiRouter.route('/user')
     // //user.password = req.body.password;
     // user.email = req.body.email;
     // user.name = req.body.name;
-    // user.age = req.body.age;  
+    // user.age = req.body.age;
     // user.gender = req.body.gender;
     // user.biography = req.body.biography;
     user.fbToken = req.body.fbToken;
@@ -237,13 +256,17 @@ function handlePut(err, user, req, res) {
     res.json({message: 'User Updated'});
   })
 }
+*/
 
 
 
 // Yelp ****************************
 // Refresh this token every 100 days
 
+
+/*
 var yelpToken = config.yelpToken;
+*/
 
 // Remove this for now. We could use it, but it counts towards our API calls. We only get 25k.
 // Save the oAuth2.0 token for later. They're valid for 150 days. Every 100 days, get a new one.
@@ -259,9 +282,13 @@ var yelpToken = config.yelpToken;
 
 // };
 
+/*
 var hangoutRouter = express.Router();
-var yelpRouter = express.Router();
 
+var yelpRouter = express.Router();
+*/
+
+/*
 yelpRouter.use(function (req, res, next) {
   next();
 });
@@ -273,7 +300,9 @@ yelpRouter.route('/')
       res.send(data);
     });
   });
+*/
 
+/*
 hangoutRouter.use(function (req, res, next) {
   next();
 });
@@ -533,9 +562,17 @@ hangoutRouter.route('/activity')
     }).catch(err => {console.log(err)});
   });
 
-app.use('/api/yelp', yelpRouter);
-app.use('/api/hangout', hangoutRouter);
+*/
 
+
+/*
+app.use('/api/yelp', yelpRouter);
+
+app.use('/api/hangout', hangoutRouter);
+*/
+
+
+/*
 // This returns an array of promises. This is misnamed. This can be an activity or restaurant. 
 
 function getEvent(params, categories) {
@@ -603,10 +640,11 @@ function getYelpData(params) {
 
   })
 }
+*/
 
 
 
-
+/*
 //Always wrap your JSON.parse in a try-catch block. This simply replaces JSON.parse with the safer version
 function parseJSON(item, times = 0) {
   try {
@@ -620,7 +658,7 @@ function parseJSON(item, times = 0) {
     }
   }
 }
-
+*/
 
 //This helper function just makes [restaurant] & [{yelpObj}, {yelpObj}] into 
 
@@ -633,6 +671,7 @@ function parseJSON(item, times = 0) {
 //   }
 // }
 
+/*
 function convertValueArrayAndCategoriesToObject(valueArray, categories) {
   let valueObject = {};
   for (let i = 0; i < categories.length; i++) {
@@ -640,6 +679,7 @@ function convertValueArrayAndCategoriesToObject(valueArray, categories) {
   }
   return valueObject;
 }
+*/
 
 function getRestaurant(params, res) {
 
@@ -686,12 +726,14 @@ function getRestaurant(params, res) {
   //fs.writeFile('./losangeles.json', body, 'utf-8');
 }
 
+/*
 function randomizeSelection(choicesObject) {
   let index = Math.floor(Math.random() * Object.keys(choicesObject).length);
-  let selection = choicesObject[index];;
+  let selection = choicesObject[index];
   console.log(selection);
   return selection;
 }
+*/
 
 //getYelpData({ latitude: '33.946232', longitude: '-117.678676', 'open_at': 1488672409 });
 
@@ -703,6 +745,9 @@ function randomizeSelection(choicesObject) {
 
 app.use('/', router);
 app.use('/api', apiRouter);
+app.use('/api/yelp', yelpRouter);
+app.use('/api/hangout', hangoutRouter);
+
 
 app.listen(port, () => {
   console.log('Magic happens on port ' + port); 
