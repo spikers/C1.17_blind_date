@@ -77,25 +77,4 @@ apiRouter.route('/user/:user_id')
         });
     });
 
-// function handlePut(err, user, req, res) {
-//     if (err) {
-//         res.send('Error Saving User. Please try again.');
-//         return;
-//     }
-//     if (req.body.username) user.username = req.body.username;
-//     //user.password = req.body.password;
-//     if (req.body.email) user.email = req.body.email;
-//     if (req.body.name) user.name = req.body.name;
-//     if (req.body.age) user.age = req.body.age;
-//     if (req.body.gender) user.gender = req.body.gender;
-//     if (req.body.biography) user.biography = req.body.biography;
-//     user.save(function (err) {
-//         if (err) {
-//             res.send(err);
-//             return;
-//         }
-//         res.json({message: 'User Updated'});
-//     })
-// }
-
 export default apiRouter;
