@@ -2,6 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import User from '../models/user';
 import getEvent from './yelp_data';
+import convertValueArrayAndCategoriesToObject from './convert_to_object';
+import randomizeSelection from './randomize';
 //import restaurantActivity from './restaurant_activity';
 
 const app = express();

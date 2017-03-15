@@ -3,7 +3,9 @@ import mongoose from 'mongoose';
 import User from '../models/user';
 import getEvent from './yelp_data';
 import hangoutRouter from './hangout_router';
-//import convertAndRandomize from './convert_and_randomize';
+// import convertValueArrayAndCategoriesToObject from './convert_to_object';
+// import randomizeSelection from './randomize';
+
 
 const app = express();
 const restaurantActivity = express.Router();
