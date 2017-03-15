@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 import User from '../models/user';
 import getEvent from './yelp_data';
 import hangoutRouter from './hangout_router';
-// import convertValueArrayAndCategoriesToObject from './convert_to_object';
-// import randomizeSelection from './randomize';
+import convertValueArrayAndCategoriesToObject from './convert_to_object';
+import randomizeSelection from './randomize';
 
 
 const app = express();
@@ -58,19 +58,19 @@ hangoutRouter.route('/activity')
         }).catch(err => {console.log(err)});
     });
 
-function convertValueArrayAndCategoriesToObject(valueArray, categories) {
-    let valueObject = {};
-    for (let i = 0; i < categories.length; i++) {
-        valueObject[categories[i]] = valueArray[i];
-    }
-    return valueObject;
-}
-function randomizeSelection(choicesObject) {
-    let index = Math.floor(Math.random() * Object.keys(choicesObject).length);
-    let selection = choicesObject[index];
-    console.log(selection);
-    return selection;
-}
+// function convertValueArrayAndCategoriesToObject(valueArray, categories) {
+//     let valueObject = {};
+//     for (let i = 0; i < categories.length; i++) {
+//         valueObject[categories[i]] = valueArray[i];
+//     }
+//     return valueObject;
+// }
+// function randomizeSelection(choicesObject) {
+//     let index = Math.floor(Math.random() * Object.keys(choicesObject).length);
+//     let selection = choicesObject[index];
+//     console.log(selection);
+//     return selection;
+// }
 
 
 export default restaurantActivity;
