@@ -518,7 +518,7 @@ hangoutRouter.route('/activity')
     req.body.longitude = -117.7435; //irvine spectrum
 
     //If you want less activities, then change this
-    req.body.limit = 1;
+    req.body.limit = 3;
 
     //TPADD Planning on making these categories dynamic based on the week
     let categories = ['movietheaters', 'bowling', 'museums', 'artclasses'];
