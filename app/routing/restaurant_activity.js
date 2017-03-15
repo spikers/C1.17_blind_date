@@ -2,7 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import User from '../models/user';
 import getEvent from './yelp_data';
-import hangoutRouter from './hangoutRouter';
+import hangoutRouter from './hangout_router';
+//import convertAndRandomize from './convert_and_randomize';
 
 const app = express();
 const restaurantActivity = express.Router();
@@ -54,6 +55,7 @@ hangoutRouter.route('/activity')
             res.status(200).json(activityListObject);
         }).catch(err => {console.log(err)});
     });
+
 function convertValueArrayAndCategoriesToObject(valueArray, categories) {
     let valueObject = {};
     for (let i = 0; i < categories.length; i++) {
@@ -67,5 +69,6 @@ function randomizeSelection(choicesObject) {
     console.log(selection);
     return selection;
 }
+
 
 export default restaurantActivity;

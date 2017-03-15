@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import User from '../models/user';
 import getEvent from './yelp_data';
+//import restaurantActivity from './restaurant_activity';
 
 const app = express();
 const hangoutRouter = express.Router();

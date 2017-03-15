@@ -66,9 +66,10 @@ import router from './app/routing/router';
 import getEvent from './app/routing/yelp_data';
 
 import yelpRouter from './app/routing/yelp_router';
-import hangoutRouter from './app/routing/hangoutRouter';
+import hangoutRouter from './app/routing/hangout_router';
 import restaurantActivity from './app/routing/restaurant_activity';
 import parseJSON from './app/routing/parse_json';
+//import convertAndRandomize from './app/routing/convert_and_randomize';
 
 /*
 // Need to initialize this here
