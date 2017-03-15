@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import ResultsImage from './resultsimage';
-import ResultsInfo from './resultsinfo';
-import styles from './styles/resultsitem.css';
+import ResultsImage from './ResultsImage';
+import ResultsInfo from './ResultsInfo';
+import styles from './styles/ResultsItem.css';
 
 class ResultsItem extends Component {
   constructor(){

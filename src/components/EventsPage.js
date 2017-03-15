@@ -1,235 +1,80 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
-import EventsCarousel from './eventscarousel';
-import EventsButtonGroup from './eventsbuttongroup';
-import Logo from './logo'
-import styles from './styles/eventspage.css';
+import {Tabs, Tab} from 'material-ui/Tabs';
+import SwipeableViews from 'react-swipeable-views';
+import Paper from 'material-ui/Paper';
+import AppBar from 'material-ui/AppBar';
+import FlatButton from 'material-ui/FlatButton';
+import EventsGrid from './EventsGrids';
 
-class EventsPage extends Component {
-  constructor(){
-    super();
+const styles = {
+  headline: {
+    fontSize: 24,
+    paddingTop: 16,
+    marginBottom: 12,
+    fontWeight: 400,
+  },
+  slide: {
+    padding: 10,
+  },
+};
+
+const paperStyle = {
+    margin: 10,
+    height: "90vh"
+}
+
+export default class EventsPage extends React.Component {
+
+  constructor(props) {
+    super(props);
     this.state = {
-      data: {},
-      index: null
-    }
+      slideIndex: 0,
+    };
   }
-  componentWillMount(){
-    this.getEventData();
-  }
-  getEventData() {
-  const data = {
-    "activities" :  {
-        "id": "phans55-irvine-4",
-        "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/hbb7jBeR_MhZfHdLvuwuSg/o.jpg",
-        "name": "Phans55",
-        "price": "$$",
-        "distance": "1065.560268334",
-        "review_count": "87",
-        "url": "https://www.yelp.com/biz/phans55-irvine-4?adjust_creative=RacSYb9qeA-Ow3Om2\u2026api_v3&utm_medium=api_v3_business_search&utm_source=RacSYb9qeA-Ow3Om2netXA",
-        "coordinates": {
-            "longitude": "-117.743181797897",
-            "latitude": "33.6451163040219"
-        },
-        "is_closed": "false",
-        "categories": [
-            {
-                "title": "Vietnamese",
-                "alias": "vietnamese"
-            },
-            {
-                "title": "Diners",
-                "alias": "diners"
-            },
-            {
-                "title": "Seafood",
-                "alias": "seafood"
-            }
-        ],
-        "display_phone": "(949) 825-5117",
-        "phone": "+19498255117",
-        "location": {
-            "state": "CA",
-            "address2": "",
-            "city": "Irvine",
-            "address3": "",
-            "zip_code": "92618",
-            "country": "US",
-            "display_address": [
-                "8557 Irvine Center Dr",
-                "Irvine, CA 92618"
-            ],
-            "address1": "8557 Irvine Center Dr"
-        },
-        "rating": "3.5"
-},
-"outdoors" :  {
-        "id": "phans55-irvine-4",
-        "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/hbb7jBeR_MhZfHdLvuwuSg/o.jpg",
-        "name": "Phans55",
-        "price": "$$",
-        "distance": "1065.560268334",
-        "review_count": "87",
-        "url": "https://www.yelp.com/biz/phans55-irvine-4?adjust_creative=RacSYb9qeA-Ow3Om2\u2026api_v3&utm_medium=api_v3_business_search&utm_source=RacSYb9qeA-Ow3Om2netXA",
-        "coordinates": {
-            "longitude": "-117.743181797897",
-            "latitude": "33.6451163040219"
-        },
-        "is_closed": "false",
-        "categories": [
-            {
-                "title": "Vietnamese",
-                "alias": "vietnamese"
-            },
-            {
-                "title": "Diners",
-                "alias": "diners"
-            },
-            {
-                "title": "Seafood",
-                "alias": "seafood"
-            }
-        ],
-        "display_phone": "(949) 825-5117",
-        "phone": "+19498255117",
-        "location": {
-            "state": "CA",
-            "address2": "",
-            "city": "Irvine",
-            "address3": "",
-            "zip_code": "92618",
-            "country": "US",
-            "display_address": [
-                "8557 Irvine Center Dr",
-                "Irvine, CA 92618"
-            ],
-            "address1": "8557 Irvine Center Dr"
-        },
-        "rating": "3.5"
-}, 
-"movies" :  {
-        "id": "phans55-irvine-4",
-        "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/hbb7jBeR_MhZfHdLvuwuSg/o.jpg",
-        "name": "Phans55",
-        "price": "$$",
-        "distance": "1065.560268334",
-        "review_count": "87",
-        "url": "https://www.yelp.com/biz/phans55-irvine-4?adjust_creative=RacSYb9qeA-Ow3Om2\u2026api_v3&utm_medium=api_v3_business_search&utm_source=RacSYb9qeA-Ow3Om2netXA",
-        "coordinates": {
-            "longitude": "-117.743181797897",
-            "latitude": "33.6451163040219"
-        },
-        "is_closed": "false",
-        "categories": [
-            {
-                "title": "Vietnamese",
-                "alias": "vietnamese"
-            },
-            {
-                "title": "Diners",
-                "alias": "diners"
-            },
-            {
-                "title": "Seafood",
-                "alias": "seafood"
-            }
-        ],
-        "display_phone": "(949) 825-5117",
-        "phone": "+19498255117",
-        "location": {
-            "state": "CA",
-            "address2": "",
-            "city": "Irvine",
-            "address3": "",
-            "zip_code": "92618",
-            "country": "US",
-            "display_address": [
-                "8557 Irvine Center Dr",
-                "Irvine, CA 92618"
-            ],
-            "address1": "8557 Irvine Center Dr"
-        },
-        "rating": "3.5"
-},
-"live" :  {
-        "id": "phans55-irvine-4",
-        "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/hbb7jBeR_MhZfHdLvuwuSg/o.jpg",
-        "name": "Phans55",
-        "price": "$$",
-        "distance": "1065.560268334",
-        "review_count": "87",
-        "url": "https://www.yelp.com/biz/phans55-irvine-4?adjust_creative=RacSYb9qeA-Ow3Om2\u2026api_v3&utm_medium=api_v3_business_search&utm_source=RacSYb9qeA-Ow3Om2netXA",
-        "coordinates": {
-            "longitude": "-117.743181797897",
-            "latitude": "33.6451163040219"
-        },
-        "is_closed": "false",
-        "categories": [
-            {
-                "title": "Vietnamese",
-                "alias": "vietnamese"
-            },
-            {
-                "title": "Diners",
-                "alias": "diners"
-            },
-            {
-                "title": "Seafood",
-                "alias": "seafood"
-            }
-        ],
-        "display_phone": "(949) 825-5117",
-        "phone": "+19498255117",
-        "location": {
-            "state": "CA",
-            "address2": "",
-            "city": "Irvine",
-            "address3": "",
-            "zip_code": "92618",
-            "country": "US",
-            "display_address": [
-                "8557 Irvine Center Dr",
-                "Irvine, CA 92618"
-            ],
-            "address1": "8557 Irvine Center Dr"
-        },
-        "rating": "3.5"
-    }
-  }
-  this.setState({data: data});
-}
 
-handleButtonPress(e){
-  let index = parseInt(e.target.id);
-  this.setState({index: index});
-}
+  handleChange = (value) => {
+    this.setState({
+      slideIndex: value,
+    });
+  };
 
-updateButton(index){
-  console.log('hey updateButton called ' + index);
-  this.setState({index:index});
-}
   render() {
-        return(
-          <div className={styles.container}>
-            <Logo/>
-            <div><h1>Events Page</h1></div>
-            <div className={styles.carouselcontainer}>
-              <EventsCarousel 
-              activities={this.state.data.activities}
-              outdoors={this.state.data.outdoors}
-              movies={this.state.data.movies}
-              live={this.state.data.live}
-              indexSelection = {this.state.index}
-              updateButton = {(index)=>(this.updateButton(index))}
-               />
-            </div>
-            <EventsButtonGroup 
-            handleButtonPress = {(e)=>this.handleButtonPress(e)}
-            activeButton = {this.state.index}
-            />
-            <Link to="/results"><img src= {require('./img/flip.png')}   alt="flip"/></Link>
+    return (
+      <div>
+        <AppBar 
+          title="Events"
+          iconElementRight={<FlatButton label = "Log Out"/>}
+          />
+        <Paper style={paperStyle}> 
+        <Tabs
+          onChange={this.handleChange}
+          value={this.state.slideIndex}
+        >
+          <Tab label="Activities" value={0} />
+          <Tab label="Movies" value={1} />
+          <Tab label="Live" value={2} />
+          <Tab label="Outdoors" value={3} />
+        </Tabs>
+        <SwipeableViews
+          index={this.state.slideIndex}
+          onChangeIndex={this.handleChange}
+        >
+          <div>
+            <EventsGrid/>
           </div>
-        )
-    }
+          <div style={styles.slide}>
+            <EventsGrid/>
+          </div>
+          <div style={styles.slide}>
+            <EventsGrid/>
+          </div>
+          <div style={styles.slide}>
+            <EventsGrid/>
+          </div>
+        </SwipeableViews>
+        </Paper>
+      </div>
+    );
   }
-
-export default EventsPage;
+}

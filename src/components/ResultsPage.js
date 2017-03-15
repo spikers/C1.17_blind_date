@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
-import ResultsItem from './resultsitem';
-import Logo from './logo'
+import ResultsItem from './ResultsItem';
+import Logo from './Logo'
 
 class ResultsPage extends Component {
   render(){
