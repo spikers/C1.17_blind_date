@@ -112,6 +112,7 @@ class ProfilePage extends Component {
   }
     render(){
       const {handleSubmit} = this.props;
+      console.log(this.props.user);
       return (
         <div> 
           <AppBar 
@@ -119,7 +120,7 @@ class ProfilePage extends Component {
           iconElementRight={<FlatButton label = "Log Out"/>}
           />
           <Paper style={containerStyle} zDepth={1}>
-            <h3>What's up, User?</h3>
+            <h3>What's up, {this.props.user !== null ? this.props.user.username: 'User'}?</h3>
               <Paper style={picStyle} circle={true} zDepth={2}>
                 <img style={{
                   width:'100%', 
@@ -142,7 +143,7 @@ class ProfilePage extends Component {
               <RaisedButton 
                style={buttonStyle} label="Update Profile" primary={true}
                type="submit"/>
-              <RaisedButton style={buttonStyle} label="Save Profile" secondary={true}/>
+              <RaisedButton style={buttonStyle} label="Save" secondary={true}/>
               <Link to='/events'><RaisedButton>Cancel</RaisedButton></Link>
           </form>
         </Paper>
@@ -162,13 +163,6 @@ function mapStateToProps(state){
     initialValues: state.user.user
   }
 }
-
-// ProfilePage = connect(
-//   state => ({
-//     initialValues: state.user.user
-//   }),
-//   {getProfile}
-// )
 
 export default connect(mapStateToProps, {getProfile, updateProfile})(reduxForm({
   form: 'Profile',
