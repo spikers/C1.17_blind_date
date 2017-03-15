@@ -11,10 +11,6 @@ router.use(function (req, res, next) {
     next();
 });
 
-// If you go to 'localhost/' then send the index.html file.
-// The reason why this works is I'm using the variable 'router', not 'apiRouter'.
-// 'router' is bound below, in my `app.use('/', router);`
-
 router.get('/', function (req, res) {
     fs.readFile('./public/index.html', 'utf8', (err, data) => {
         if (err) {
