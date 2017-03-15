@@ -3,6 +3,11 @@ import {Link} from 'react-router';
 import styles from './styles/LoginPage.css';
 import TextField from 'material-ui/TextField';
 import Logo from './logo';
+import {white} from 'material-ui/styles/colors';
+
+const inputStyle = {
+    color: white
+};
 
 class LoginPage extends Component {
     render(){
@@ -14,16 +19,16 @@ class LoginPage extends Component {
                   <Logo classNameName="LogoStyles.logo"/>
                   <form>
                       <TextField
-                      className={styles.biggerText}
                       floatingLabelText="Email"
                       hintText="Email"
-                      inputStyle={{"fontSize" : "20px"}}
+                      inputStyle = {inputStyle}
                        /><br/>
                       <TextField
-                      className={styles.biggerText}
                       floatingLabelText="Password" 
                       type="password"
-                      hintText="Password"/>
+                      hintText="Password"
+                      inputStyle = {inputStyle}
+                      />
                   </form>
                   <Link to={path}><img src={require('./img/fb_login.png')}/></Link>
               </div>
