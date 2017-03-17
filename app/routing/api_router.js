@@ -24,13 +24,16 @@ apiRouter.route('/user')
 
         user.fbToken = req.body.fbToken;
         User.findOne({'fbToken': req.body.fbToken}, (err, _USER) => {
-            if (_USER) return;
+            if (_USER) {
+                res.json({'status': 52, 'new_user': false});
+                return;
+            }
             user.save(function (err) {
                 if (err) {
                     res.send(err);
                     return;
                 }
-                res.json({message: 'User Created!'});
+                res.json({'status': 51, 'new_user': true});
             });
         });
     })
