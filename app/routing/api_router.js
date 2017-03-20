@@ -7,6 +7,7 @@ const app = express();
 const apiRouter = express.Router();
 
 apiRouter.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     next();
 });
 
