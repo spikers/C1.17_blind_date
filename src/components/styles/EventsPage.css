@@ -1,11 +1,13 @@
-.carouselcontainer{
-  width: 90%;
-  margin: auto;
+.flip{
+  width: 100%;
 }
 
-.carouselcontainer img {
-  margin: auto;
+.shadow{
+  border-radius: 50%;
+  width:50vw;
 }
 .container{
-  text-align: center;
+  width:100%;
+  display:flex;
+  justify-content: center;
 }

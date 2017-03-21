@@ -1,7 +1,9 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {GridList, GridTile} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
+import {getEvents} from './actions'
 
 const styles = {
   root: {
@@ -35,11 +37,20 @@ const tilesData = [
   }
 ];
 
-/**
- * This example demonstrates "featured" tiles, using the `rows` and `cols` props to adjust the size of the tile.
- * The tiles have a customised title, positioned at the top and with a custom gradient `titleBackground`.
- */
-const EventsGrids = () => (
+
+const EventsGrids = (props) => {
+  console.log('this is the props in EventsGrid', props.events.data[props.activity].businesses)
+  let eventsArr=props.events.data[props.activity].businesses
+  let tilesData = eventsArr.map((location, index)=>(
+    {
+      img: location.image_url,
+      title: location.name,
+      featured: index === 0 ? true : false
+    }
+    ))
+  console.log('this is tilesData', tilesData)
+
+  return (
   <div style={styles.root}>
     <GridList
       cols={2}
@@ -63,6 +74,10 @@ const EventsGrids = () => (
       ))}
     </GridList>
   </div>
-);
+)};
 
-export default EventsGrids;
+function mapStateToProps(state){
+  return {events: state.events.events}
+}
+
+export default connect(mapStateToProps)(EventsGrids)
