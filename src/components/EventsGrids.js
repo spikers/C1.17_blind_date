@@ -14,7 +14,7 @@ const styles = {
   },
   gridList: {
     width: 500,
-    height: 600,
+    height: 540,
     overflowY: 'auto',
   },
 };
@@ -75,7 +75,7 @@ const EventsGrids = (props) => {
     >
       <GridList
         cols={2}
-        cellHeight={200}
+        cellHeight={180}
         padding={1}
         style={styles.gridList}
       >
