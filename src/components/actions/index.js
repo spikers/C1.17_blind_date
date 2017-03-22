@@ -14,6 +14,7 @@ export const SAVE_PROFILE = 'SAVE_PROFILE';
 export const GET_EVENTS = 'GET_EVENTS';
 export const SEND_EVENT_CHOICE = 'SEND_EVENT_CHOICE';
 export const SEND_LOGIN = "SEND_LOGIN";
+export const SET_EVENT_CHOICE="SET_EVENT_CHOICE";
 
 const BASE_URL = 'http://54.202.15.233:8000/api/';
 
@@ -62,5 +63,12 @@ export function sendEventChoice(choice){
   return({
     type:SEND_EVENT_CHOICE,
     payload: request
+  })
+}
+
+export function setEventChoice(choice){
+  return({
+    type:SET_EVENT_CHOICE,
+    payload: choice
   })
 }

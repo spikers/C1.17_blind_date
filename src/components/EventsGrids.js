@@ -3,7 +3,8 @@ import {connect} from 'react-redux';
 import {GridList, GridTile} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
-import {getEvents} from './actions'
+import Star from 'material-ui/svg-icons/toggle/star';
+import {getEvents, setEventChoice} from './actions'
 
 const styles = {
   root: {
@@ -18,52 +19,36 @@ const styles = {
   },
 };
 
-const tilesData = [
-  {
-    img: 'https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/5/005/095/0d0/0796c17.jpg?234324',
-    title: 'Breakfast',
-    author: 'jill111',
-    featured: true,
-  },
-  {
-    img: 'https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/5/005/095/0d0/0796c17.jpg?65236325',
-    title: 'Tasty burger',
-    author: 'pashminu',
-  },
-  {
-    img: 'https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/5/005/095/0d0/0796c17.jpg?6524332324',
-    title: 'Camera',
-    author: 'Danson67',
-  }
-];
-
-
 const EventsGrids = (props) => {
-  console.log('this is the props in EventsGrid', props.events.data[props.activity].businesses)
+
   let eventsArr=props.events.data[props.activity].businesses
   let tilesData = eventsArr.map((location, index)=>(
     {
       img: location.image_url,
       title: location.name,
-      featured: index === 0 ? true : false
+      featured: index === 0 ? true : false,
     }
     ))
-  console.log('this is tilesData', tilesData)
 
-  return (
-  <div style={styles.root}>
-    <GridList
-      cols={2}
-      cellHeight={200}
-      padding={1}
-      style={styles.gridList}
-    >
-      {tilesData.map((tile) => (
+  let tilesArr = renderTiles();
+
+  function renderTiles(){ 
+    return tilesData.map((tile) => {
+      let actionIcon;
+      if (props.eventChoice !== undefined){
+        if (props.eventChoice.image_url === tile.img){
+          actionIcon = <IconButton><Star color="yellow"/></IconButton>
+        }
+        else{
+          actionIcon = <IconButton><StarBorder color="white"/></IconButton>
+        }
+      }
+      return (
         <GridTile
           key={tile.img}
           title={tile.title}
-          actionIcon={<IconButton><StarBorder color="white" /></IconButton>}
-          actionPosition="left"
+          actionIcon={actionIcon}
+          actionPosition="right"
           titlePosition="top"
           titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
           cols={tile.featured ? 2 : 1}
@@ -71,13 +56,40 @@ const EventsGrids = (props) => {
         >
           <img src={tile.img} />
         </GridTile>
-      ))}
-    </GridList>
-  </div>
-)};
+      )})
+  }
 
-function mapStateToProps(state){
-  return {events: state.events.events}
+  function handleClick(e){
+    for (let j = 0; j < eventsArr.length; j++){
+      if (tilesData[j].img === e.target.src){
+        props.setEventChoice(eventsArr[j])
+      }
+    tilesArr = renderTiles();
+    }
+  }
+
+  return (
+    <div 
+      style={styles.root}
+      onClick={handleClick}
+    >
+      <GridList
+        cols={2}
+        cellHeight={200}
+        padding={1}
+        style={styles.gridList}
+      >
+      {tilesArr}
+      </GridList>
+    </div>
+  )
 }
 
-export default connect(mapStateToProps)(EventsGrids)
+function mapStateToProps(state){
+  return {
+    events: state.events.events,
+    eventChoice: state.events.eventChoice
+  }
+}
+
+export default connect(mapStateToProps, {setEventChoice, getEvents})(EventsGrids)
