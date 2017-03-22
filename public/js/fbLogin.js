@@ -1,5 +1,3 @@
-/*
-
 // This is called with the results from from FB.getLoginStatus().
 function statusChangeCallback(response) {
   console.log('statusChangeCallback');
@@ -14,7 +12,7 @@ function statusChangeCallback(response) {
 
 
 
-    
+
     //This calls a function in the other file
     createUser();
     testAPI();
@@ -42,13 +40,13 @@ function checkLoginState() {
 window.fbAsyncInit = function() {
 FB.init({
   appId      : '1339417492768524',
-  cookie     : true,  // enable cookies to allow the server to access 
+  cookie     : true,  // enable cookies to allow the server to access
                       // the session
   xfbml      : true,  // parse social plugins on this page
   version    : 'v2.8' // use graph api version 2.8
 });
 
-// Now that we've initialized the JavaScript SDK, we call 
+// Now that we've initialized the JavaScript SDK, we call
 // FB.getLoginStatus().  This function gets the state of the
 // person visiting this page and can return one of three states to
 // the callback you provide.  They can be:
@@ -86,7 +84,7 @@ function testAPI() {
 //Dirtiest Solution Ever
   FB.api('/me', (res) => { postToMongo(res.id) });
 
-  
+
 }
 
 function postToMongo(id) {
@@ -108,7 +106,7 @@ function createUser() {
   FB.api('/me?fields=first_name,last_name,gender,email', (info) => {
     //Cannot get age
     console.log('yay', info);
-    let name = '', gender = '', email = ''; 
+    let name = '', gender = '', email = '';
     name = `${info.first_name} ${info.last_name}`;
     gender = info.gender;
     email = info.email;
@@ -122,5 +120,3 @@ function createUser() {
     }
   });
 }
-
- */
