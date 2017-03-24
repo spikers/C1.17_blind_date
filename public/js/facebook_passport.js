@@ -51,6 +51,8 @@ module.exports = function(passport) {
                                 user.facebook.token = token;
                                  user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                                  user.facebook.email = (profile.emails[0].value || '').toLowerCase();
+                                user.facebook.picture = (profile.photos[0].value);
+
 
                                 user.save(function (err) {
                                     if (err) {
@@ -70,6 +72,8 @@ module.exports = function(passport) {
                             newUser.facebook.token = token;
                              newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                              newUser.facebook.email = (profile.emails[0].value || '').toLowerCase();
+                            user.facebook.picture = (profile.photos[0].value);
+
 
                             newUser.save(function (err) {
                                 if (err) //{
@@ -89,6 +93,8 @@ module.exports = function(passport) {
                     user.facebook.token = token;
                      user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                      user.facebook.email = (profile.emails[0].value || '').toLowerCase();
+                    user.facebook.picture = (profile.photos[0].value);
+
 
                     user.save(function (err) {
                         if (err) //{

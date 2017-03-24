@@ -104,18 +104,20 @@ function postToMongo(id) {
 
 function createUser() {
     //This is called from the fbLogin.js file
-    FB.api('/me?fields=first_name,last_name,gender,email', (info) => {
+    FB.api('/me?fields=first_name,last_name,gender,email,picture', (info) => {
         //Cannot get age
         console.log('yay', info);
-        let name = '', gender = '', email = '';
+        let name = '', gender = '', email = '', picture = '';
         name = `${info.first_name} ${info.last_name}`;
         gender = info.gender;
         email = info.email;
+        picture = info.picture;
 
         try {
             document.getElementById('name').value = name;
             document.getElementById('gender').value = gender;
             document.getElementById('email').value = email;
+            document.getElementById('picture').value = picture;
         } catch (e) {
             return false;
         }
