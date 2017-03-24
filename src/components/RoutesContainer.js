@@ -11,7 +11,7 @@ import ResultsPage from './ResultsPage';
 import ResultsInfo from './ResultsInfo';
 import ProfilePage from './ProfilePage';
 import NotFound from './NotFound';
-import Nav from './Nav';
+import App from './App';
 
 injectTapEventPlugin();
 
@@ -33,11 +33,13 @@ class RoutesContainer extends Component {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
       <Router history={browserHistory}>
-        <Route path='/' component={LoginPage} />
+        <Route path='/' component={App}>
+          <IndexRoute component={LoginPage}/>
           <Route path='/events' component={EventsPage} />
           <Route path='/results' component={ResultsPage}/>
           <Route path='/profile' component={ProfilePage} />
           <Route path='*' components={NotFound} />
+        </Route>
       </Router>
       </MuiThemeProvider>
     )

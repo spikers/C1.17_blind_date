@@ -3,9 +3,6 @@ import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import {getProfile, updateProfile} from './actions/index';
 import {Link} from 'react-router';
-
-import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import DatePicker from 'material-ui/DatePicker';
@@ -104,15 +101,13 @@ const createInput = function(input, label, type){
 
 
 class ProfilePage extends Component{
-  
-
   onSubmit(formProp){
     console.log('these are formProps', formProp);
     this.props.updateProfile(formProp);
   }
 
   componentWillMount(){
-    const user = this.props.getProfile();
+    this.props.getProfile(136173360242729);
     console.log('state in componentWillMount', this.state);
   }
     render(){
@@ -120,10 +115,6 @@ class ProfilePage extends Component{
       console.log(this.props.user);
       return (
         <div> 
-          <AppBar 
-          title="User Profile"
-          iconElementRight={<FlatButton label = "Log Out"/>}
-          />
           <Paper style={containerStyle} zDepth={1}>
             <h3>What's up, {this.props.user !== null ? this.props.user.username: 'User'}?</h3>
               <Paper style={picStyle}circle={true} zDepth={2}>

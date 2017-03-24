@@ -3,8 +3,6 @@ import {Link} from 'react-router';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import SwipeableViews from 'react-swipeable-views';
 import Paper from 'material-ui/Paper';
-import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
 import EventsGrid from './EventsGrids';
 import {connect} from 'react-redux';
 import {getEvents, sendEventChoice} from './actions';
@@ -64,10 +62,6 @@ class EventsPage extends React.Component {
     }else{
       return (
         <div>
-          <AppBar 
-          title="Events"
-          iconElementRight={<FlatButton label = "Log Out"/>}
-          />
           <div style=
           {{
             width: "100vw",
@@ -89,11 +83,6 @@ class EventsPage extends React.Component {
     }
     return (
       <div>
-        <AppBar 
-          title="Events"
-          iconElementRight={<FlatButton label = "Log Out"/>}
-          />
-
         <Tabs
           onChange={this.handleChange}
           value={this.state.slideIndex}
@@ -120,7 +109,7 @@ class EventsPage extends React.Component {
 
         <div style={showing} className={css.container}>
           <Paper className={css.shadow} circle={true} zDepth={2}>
-            <Link to="/results"><img className={css.flip} src={require("./img/flip.png")} alt=""/></Link>
+            <Link to="/results" onClick={()=>(this.props.sendEventChoice(this.props.user.fbToken, this.props.eventChoice))}><img className={css.flip} src={require("./img/flip.png")} alt=""/></Link>
           </Paper>
         </div>
       </div>
@@ -130,7 +119,8 @@ class EventsPage extends React.Component {
 function mapStateToProps(state){
   return {
     events: state.events.events,
-    eventChoice: state.events.eventChoice
+    eventChoice: state.events.eventChoice,
+    user: state.user.user
     }
 }
 export default connect(mapStateToProps, {getEvents, sendEventChoice})(EventsPage);

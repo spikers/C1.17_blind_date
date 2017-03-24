@@ -10,11 +10,14 @@ const instance = axios.create({
 });
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const GET_PROFILE = 'GET_PROFILE';
+export const GET_SECOND_PROFILE = 'GET_SECOND_PROFILE'
 export const SAVE_PROFILE = 'SAVE_PROFILE';
 export const GET_EVENTS = 'GET_EVENTS';
 export const SEND_EVENT_CHOICE = 'SEND_EVENT_CHOICE';
 export const SEND_LOGIN = "SEND_LOGIN";
 export const SET_EVENT_CHOICE="SET_EVENT_CHOICE";
+export const GET_HANGOUT="GET_HANGOUT";
+export const GET_RESTAURANT="GET_RESTAURANT";
 
 const BASE_URL = 'http://54.202.15.233:8000/api/';
 
@@ -25,10 +28,17 @@ export function sendLogin(){
 
 //PROFILE PAGE ACTIONS
 export function getProfile(id){
-  id = 136173360242729;
   const request = instance.get(`${BASE_URL}user/${id}`);
   return ({
     type: GET_PROFILE,
+    payload: request
+  });
+}
+
+export function getSecondProfile(id){
+  const request = instance.get(`${BASE_URL}user/${id}`);
+  return ({
+    type: GET_SECOND_PROFILE,
     payload: request
   });
 }
@@ -51,15 +61,15 @@ export function saveProfile(user){
 
 //EVENTS PAGE ACTIONS
 export function getEvents(){
-  const request = instance.post(`${BASE_URL}hangout/activity`);
+  const request = instance.post(`${BASE_URL}hangout/activity`)
   return({
     type: GET_EVENTS,
     payload: request
   })
 }
 
-export function sendEventChoice(choice){
-  const request = instance.post(BASE_URL, choice);
+export function sendEventChoice(id, choice){
+  const request = instance.post(BASE_URL, id, choice);
   return({
     type:SEND_EVENT_CHOICE,
     payload: request
@@ -70,5 +80,14 @@ export function setEventChoice(choice){
   return({
     type:SET_EVENT_CHOICE,
     payload: choice
+  })
+}
+
+export function getRestaurant(){
+  const request = instance.post('http://54.202.15.233:8000/api/hangout/restaurant')
+  console.log('getRestaurant called')
+  return({
+    type: GET_RESTAURANT,
+    payload: request
   })
 }

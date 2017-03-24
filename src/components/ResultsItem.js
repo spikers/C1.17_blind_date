@@ -12,17 +12,15 @@ class ResultsItem extends Component {
   }; 
   
   showResultsInfo(){
-    console.log('image was clicked');
     let clicked = !this.state.clicked;
     this.setState({clicked:clicked});
-    console.log(this.state.clicked);
   }
 
   render(){
     return (
-      <div>
-        <ResultsImage showResultsInfo={()=>this.showResultsInfo()}/>
-        <ResultsInfo clicked={this.state.clicked}/>
+      <div style={{display:"flex", justifyContent:"center", flexDirection: "column", alignItems: "center"}}>
+        <ResultsImage content={this.props.content} clicked={this.state.clicked} showResultsInfo={()=>this.showResultsInfo()}/>
+        <ResultsInfo content={this.props.content} clicked={this.state.clicked}/>
       </div>
    )
   }
