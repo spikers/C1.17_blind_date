@@ -37,7 +37,7 @@ module.exports = function(passport) {
         console.log('givenName', profile.name.givenName);
         console.log('gender', profile.gender);
         console.log('emails', profile.emails[0].value);
-        console.log('profile', profile.photos[0].value);
+        console.log('picture', profile.photos[0].value);
 //console.log('done', done);
             // asynchronous
             process.nextTick(function () {
@@ -79,8 +79,8 @@ module.exports = function(passport) {
                             newUser.facebook.token = token;
                              newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                              newUser.facebook.email = (profile.emails[0].value || '').toLowerCase();
-                            user.facebook.picture = (profile.photos[0].value);
-                            user.facebook.gender = profile.gender;
+                            newUser.facebook.picture = (profile.photos[0].value);
+                            newUser.facebook.gender = profile.gender;
 
 
 
