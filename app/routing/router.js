@@ -38,6 +38,12 @@ router.get('/login', function (req, res) {
     });
 });
 
+router.get('/chat', function (req, res) {
+    fs.readFile('./public/chat.html', 'utf8', (err, data) => {
+        res.send(data);
+    });
+})
+
 router.get('/css/:css', function (req, res) {
     fs.readFile('./public/css/' + req.params.css, 'utf8', (err, data) => {
         res.send(data);

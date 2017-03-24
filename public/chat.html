@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Application</title>
+  <script src="./js/socket.io.js"></script>
+  <script>
+    window.addEventListener('load', function () {
+
+      var name = '';
+      var room = '';
+
+      var socket = io();
+
+      // Username Fix
+      // socket.emit('changeUserName', { userName: Math.floor(Math.random()*100) });
+      // Username Hack
+
+      var form = document.getElementById('form');
+      form.addEventListener('submit', function (e) {
+        submitMessage(e, socket);
+      });
+
+      socket.on('chat message', function (msg) {
+        ulElement = document.getElementById('messages');
+        var li = getElementFromText(msg, 'li');
+        ulElement.appendChild(li);
+        ulElement.scrollTop = ulElement.scrollHeight;
+      });
+
+      socket.on('keypress', function (nickname) {
+        var typing = document.getElementById('typing');
+        if (nickname) {
+          typing.textContent = nickname + ' is typing';
+        } else if (!nickname) {
+          typing.textContent = '';
+        }
+      });
+
+      // Change Room or Name
+      document.querySelectorAll('.change-room').forEach(function (item) {
+        item.addEventListener('click', function () {
+          room = this.innerText;
+          console.log(room);
+          socket.emit('changeRoom', { roomName: room });
+          console.log('room: ' + room);
+        });
+      });
+
+      document.getElementById('change-name').addEventListener('click', function () {
+        name = document.getElementById('name').value;
+        socket.emit('changeUserName', { userName: name });
+        console.log('name: ' + name);
+      });;
+
+      socket.on('join', function (room) {
+        console.log(room);
+        socket.room = room;
+        socket.join(room);
+      })
+
+      document.getElementById('input').addEventListener('input', function (e) {
+        if (document.getElementById('input').value) {
+          socket.emit('keypress', true);
+        } else if (document.getElementById('input').value === '') {
+          socket.emit('keypress', false);
+        }
+      })
+
+
+      
+
+
+    });
+
+    function submitMessage(e, socket) {
+      e.preventDefault();
+        if (document.getElementById('input').value === '') return;
+        var message = document.getElementById('input').value
+        socket.emit('chat message', message)
+        document.getElementById('input').value = '';
+        socket.emit('keypress', false);
+        return false;
+    }
+
+    function getElementFromText(text, type) {
+      var tn = document.createTextNode(text);
+      var element = document.createElement(type);
+      element.appendChild(tn);
+      return element;
+    }
+
+
+  </script>
+  <style>
+    body { font-size: 0; }
+    body > * { font-size: 1rem; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font: 13px Helvetica, Arial; }
+    form { padding: 3px; width: 100%; width: 100%; }
+    form input { height: 3em; width: 78%; }
+    form button { height: 3em; width: 20%; background: rgb(130, 224, 255); border: none; }
+    #messages { list-style-type: none; margin: 0; padding: 0; height: 300px; overflow-y: scroll; }
+    #messages li { padding: 5px 10px; }
+    #messages li:nth-child(odd) { background: #eee; }
+
+    #text-container { width: 100% }
+    #typing { height: 1em; }
+
+    .chat-window { max-width: 300px; max-height: 280px; }
+
+  </style>
+</head>
+<body>
+  <h1>Generic Chat Application</h1>
+  <button class="change-room">Room 1</button>
+  <button class="change-room">Room 2</button>
+  <button class="change-room">Room 3</button>
+  <button class="change-room">Galadriel</button> <br />
+  <input id="name" name="name" placeholder="name"><button id="change-name">Change Name</button>
+  <div class="chat-window">
+    <ul id="messages"></ul>
+
+    <div id="text-container">
+      <p id='typing'></p>
+      <form id="form" action="">
+        <input id="input"><button>Send</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
