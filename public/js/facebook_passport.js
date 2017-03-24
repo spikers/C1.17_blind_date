@@ -32,6 +32,12 @@ module.exports = function(passport) {
     passport.use(new FacebookStrategy(fbStrategy,
         //function (req, token, refreshToken, done) {
             function (req, token, refreshToken, profile, done) {
+        console.log('id', profile.id);
+        console.log('familyName', profile.name.familyName);
+        console.log('givenName', profile.name.givenName);
+        console.log('gender', profile.gender);
+        console.log('emails', profile.emails[0].value);
+        console.log('profile', profile.photos[0].value);
 //console.log('done', done);
             // asynchronous
             process.nextTick(function () {
@@ -52,6 +58,7 @@ module.exports = function(passport) {
                                  user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                                  user.facebook.email = (profile.emails[0].value || '').toLowerCase();
                                 user.facebook.picture = (profile.photos[0].value);
+                                user.facebook.gender = profile.gender;
 
 
                                 user.save(function (err) {
@@ -73,6 +80,8 @@ module.exports = function(passport) {
                              newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                              newUser.facebook.email = (profile.emails[0].value || '').toLowerCase();
                             user.facebook.picture = (profile.photos[0].value);
+                            user.facebook.gender = profile.gender;
+
 
 
                             newUser.save(function (err) {
@@ -94,6 +103,8 @@ module.exports = function(passport) {
                      user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
                      user.facebook.email = (profile.emails[0].value || '').toLowerCase();
                     user.facebook.picture = (profile.photos[0].value);
+                    user.facebook.gender = profile.gender;
+
 
 
                     user.save(function (err) {
