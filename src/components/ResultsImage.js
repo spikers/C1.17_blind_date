@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './styles/resultsimage.css';
+import styles from './styles/ResultsImage.css';
 
 const ResultsImage = (props)=> {
   return(
