@@ -1,24 +1,31 @@
 //import io from 'socket.io';
+import parseJSON from './parse_json';
+
 export default (io) => {
   io.on('connection', (socket) => {
     socket = leaveAllRooms(Object.keys(io.sockets.adapter.sids[socket.id]), socket);
 
     socket.join('Room 1');
-    // sendConnectionMessage(getRoom(socket, socket.id), socket);
     socket.nickname = Math.floor(Math.random()*100);
     
-    socket.on('chat message', (msg) => {
+    /**
+     * @param {object} messageObject
+     * Format: { 'room': roomID, 'message': <msg text here> }
+     * Handle timestamps on server
+     * Handle socket ID on server
+     */
+    socket.on('chat message', (messageObject) => {
       var nickname = socket.nickname;
-      console.log('socket id ' + socket.id);
-      console.log('socket username ' + nickname);
-      io.to(getRoom(socket, io)).emit('chat message', nickname + ': ' + msg);
+      console.log(messageObject);
+
+      io.to(getRoom(socket, io)).emit('chat message', nickname + ': ' + messageObject.message);
     });
 
-    socket.on('keypress', (msg) => {
-      if (msg) {
-        socket.to(getRoom(socket, io)).broadcast.emit('keypress', socket.nickname);
-      } else if (!msg) {
-        socket.to(getRoom(socket, io)).broadcast.emit('keypress', false);
+    socket.on('keypress', (messageObject) => {
+      if (messageObject.message) {
+        socket.to(messageObject.room).broadcast.emit('keypress', socket.nickname);
+      } else if (!messageObject.message) {
+        socket.to(messageObject.room).broadcast.emit('keypress', messageObject.message);
       }
     });
 
@@ -49,26 +56,43 @@ export default (io) => {
       socket.nickname = data.userName;
     });
   });
+}
 
-  function leaveAllRooms(roomArray, socket) {
-    for (var i = 0; i < roomArray.length; i++) {
-      socket.leave(roomArray[i]);
-      sendDisconnectionMessage(roomArray[i], socket);
-    }
-    return socket;
+function leaveAllRooms(roomArray, socket) {
+  for (var i = 0; i < roomArray.length; i++) {
+    socket.leave(roomArray[i]);
+    sendDisconnectionMessage(roomArray[i], socket);
   }
+  return socket;
+}
 
-  function sendDisconnectionMessage(roomItem, socket) {
-    socket.broadcast.to(roomItem).emit('chat message', socket.nickname + ' has disconnected!');
+function sendDisconnectionMessage(roomItem, socket) {
+  socket.broadcast.to(roomItem).emit('chat message', socket.nickname + ' has disconnected!');
+}
+
+function sendConnectionMessage(room, socket) {
+  socket.broadcast.to(room).emit('chat message', socket.nickname + ' has connected')
+}
+
+function getRoom(socket, io) {
+  return Object.keys(io.sockets.adapter.sids[socket.id])[0];
+}
+
+function getDate() {
+  var newDate = new Date();
+  var fullDate = newDate.getFullYear().toString();
+  
+  // This is 0-indexed. So September is 8, November is 9. November should not have a leading 0
+  if (newDate.getMonth() + 1 < 10) {
+    fullDate += 0;
   }
+  fullDate += (newDate.getMonth() + 1).toString();
 
-  function sendConnectionMessage(room, socket) {
-    socket.broadcast.to(room).emit('chat message', socket.nickname + ' has connected')
+  if (newDate.getDate() < 10) {
+    fullDate += 0;
   }
-
-  function getRoom(socket, io) {
-    return Object.keys(io.sockets.adapter.sids[socket.id])[0];
-  }
-
-  // export default io;
+  fullDate += (newDate.getDate() + 1).toString();
+  
+  console.log('fullDate: ' + fullDate);
+  return fullDate;
 }

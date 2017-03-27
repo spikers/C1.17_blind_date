@@ -10,7 +10,8 @@ function handlePut(err, user, req, res) {
     if (req.body.username) user.username = req.body.username;
     //user.password = req.body.password;
     if (req.body.email) user.email = req.body.email;
-    if (req.body.name) user.name = req.body.name;
+    if (req.body.givenName) user.given_name = req.body.givenName;
+    if (req.body.familyName) user.family_name = req.body.familyName;
     if (req.body.age) user.age = req.body.age;
     if (req.body.gender) user.gender = req.body.gender;
     if (req.body.biography) user.biography = req.body.biography;

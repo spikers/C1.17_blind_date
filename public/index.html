@@ -26,14 +26,15 @@
 
         let username = document.getElementById('username'),
         /*password = document.getElementById('password'),*/
-        name = document.getElementById('name'),
+        givenName = document.getElementById('given-name'),
+        familyName = document.getElementById('family-name'),
         email = document.getElementById('email'),
         age = document.getElementById('age'),
         gender = document.getElementById('gender'),
         biography = document.getElementById('biography');
 
         let encodedURI = encodeURI('username=' + username.value + 
-          '&name=' + name.value + '&email=' + email.value + '&age=' + 
+          '&givenName=' + givenName.value + '&familyName=' + familyName.value + '&email=' + email.value + '&age=' + 
           age.value + '&gender=' + gender.value + '&biography=' + biography.value + 
           '&fbToken=' + res.id);
 
@@ -70,7 +71,8 @@
     Username: <input id="username">
     <!--Password: <input id="password" type="password">Waiting until the end to do this-->
     <!-- Facebook ID (Testing Purposes Only): <input id="facebook"> -->
-    Name: <input id="name">
+    First Name: <input id="given-name">
+    Last Name: <input id="family-name">
     Email: <input id="email" type="email">
     Gender: <input id="gender">
     Age: <input id="age" type="number">
