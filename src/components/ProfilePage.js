@@ -13,13 +13,14 @@ import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 const buttonStyle = {
-  margin: 10,
-  marginLeft: 'initial'
+    margin: 10,
+    marginLeft: 'initial'
 }
 
 const containerStyle = {
-  margin: 10,
-  padding: 20,
+    margin: 10,
+    padding: 20,
+    position: 'relative',
 }
 
 const picStyle = {
@@ -31,19 +32,19 @@ const picStyle = {
 }
 
 const fabStyle={
-  margin: 'auto',
-  position: 'relative',
-  left: "60%",
-  bottom: 70,
-  zIndex: 3
+    margin: 'auto',
+    position: 'absolute',
+    left: "60%",
+    bottom: "3%",
 }
 
 const inputStyle={
-  marginTop: 10,
-  marginBottom: 10
+    marginTop: 10,
+    marginBottom: 10
 }
 
 const createInput = function(input, label, type){
+
   // console.log('this.props in createInput', this.props.user)
     switch (type){
       case 'textarea':
@@ -98,7 +99,6 @@ const createInput = function(input, label, type){
       <div>{createInput.bind(this)(input, label, type)}</div>
     )
   }
-
 
 class ProfilePage extends Component{
   onSubmit(formProp){
@@ -156,10 +156,10 @@ class ProfilePage extends Component{
         </div>
       )
     }
-  }
+}
 
 function validate(values){
-  console.log('hey, form values in validate', values);
+    console.log('hey, form values in validate', values);
 }
 
 function mapStateToProps(state){
@@ -172,7 +172,6 @@ function mapStateToProps(state){
 }
 
 export default connect(mapStateToProps, {getProfile, updateProfile})(reduxForm({
-  form: 'Profile',
-  validate
+    form: 'Profile',
+    validate
 })(ProfilePage));
-

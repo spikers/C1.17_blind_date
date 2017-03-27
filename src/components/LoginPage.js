@@ -41,6 +41,7 @@ class LoginPage extends Component {
             <div style={{width:"60vw", height: "auto"}} onClick={sendLogin.bind(this)}>
                 <img src={require('./img/fb_login.png')}/>
             </div>
+
             </div>
         </div>
         )
@@ -56,3 +57,4 @@ class LoginPage extends Component {
   }
 
 export default connect(mapStateToProps, {authenticate, getProfile})(LoginPage);
+

@@ -7,6 +7,17 @@ import axios from 'axios'
 import Logo from './Logo'
 import styles from './styles/ResultsPage.css'
 
+const mainTitleStyle = {
+    textAlign: 'center',
+    fontSize: '3.5vh',
+    fontWeight: 'bold',
+    color: 'rgb(194, 24, 91)'
+}
+const subtitleStyle = {
+    textAlign: 'center',
+    fontSize: '3vh',
+    fontWeight: 'bold'
+}
 class ResultsPage extends Component {
   componentWillMount(){
     this.props.getRestaurant()
