@@ -774,7 +774,11 @@ app.use('/api', apiRouter);
 app.use('/api/yelp', yelpRouter);
 app.use('/api/hangout', hangoutRouter);
 
+const server = app.listen(port);
 
-app.listen(port, () => {
-  console.log('Magic happens on port ' + port); 
-});
+console.log('Magic happens on port ' + port); 
+
+import socketio from 'socket.io';
+import io from './app/routing/socketio_client.js';
+
+io(socketio.listen(server));
