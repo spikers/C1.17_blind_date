@@ -44,6 +44,12 @@ router.get('/chat', function (req, res) {
     });
 })
 
+router.get('/:test', function (req, res) {
+  fs.readFile('./public/' + req.params.test, (err, data) => {
+    res.send(data);
+  });
+});
+
 router.get('/css/:css', function (req, res) {
     fs.readFile('./public/css/' + req.params.css, 'utf8', (err, data) => {
         res.send(data);
