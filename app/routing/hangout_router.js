@@ -93,6 +93,28 @@ hangoutRouter.route('/')
           let hangoutId = suitableHangout.id;
           let firstPerson = suitableHangout.first_person;
           let secondPerson = req.body.user;
+            let categories = ['restaurants'];
+
+
+            //look for restaurant here ++++++++++++++++++
+            //restaurant = getRestaurant() +++++++++++++++++++++
+            let restaurant_promise = get_restaurant(req,categories); //+++++++++++++++++++++
+            //console.log(restaurant);
+            Promise.all(restaurant_promise).then(values => {
+                let restaurantListObject = convertValueArrayAndCategoriesToObject(values, categories)
+                    .restaurants.businesses;
+                let restaurant = randomizeSelection(restaurantListObject);
+
+                // return randomizedRestaurant;
+                //res.status(200).json(randomizedRestaurant);
+            // }).catch(err => {console.log(err)});
+
+
+            suitableHangout.restaurant = restaurant; //+++++++++++++++++++++++++++++++++
+            console.log(restaurant);
+            console.log('type', typeof restaurant);
+            console.log('suitable hangout', suitableHangout);
+
 
           // Save this to the HANGOUT in the db (Working) #########################################
           let hangoutPromise = suitableHangout.save(function (err) {
@@ -113,7 +135,7 @@ hangoutRouter.route('/')
                 return;
               }
             });
-          })
+          });
 
           // Save the second_person to the first_person.activity[i].second_person in the db (Working)##################
           let firstPersonPromise;
@@ -126,6 +148,7 @@ hangoutRouter.route('/')
             }
 
             firstPersonObject.hangouts[i].second_person = secondPerson;
+            firstPersonObject.hangouts[i].restaurant = restaurant; //++++++++++++++++++++++++++
 
             firstPersonObject.save(function (err) {
               if (err) {
@@ -141,10 +164,14 @@ hangoutRouter.route('/')
 
           Promise.all([hangoutPromise]).then(function (values) {
             res.status(200).json({'Message': 'Matched'});
+            //return;
+          }).catch(function (err) {
+              console.log('err:' + err);
           });
 
+            }).catch(err => {console.log(err)}); //++++++++++++++++++++++++FIX THIS+++++++++++++++++
 
-        } 
+        }
 
         
         if (!suitableHangout.first_person) {
@@ -193,5 +220,24 @@ hangoutRouter.route('/user/:user_fb_token')
         res.json(hangoutObject);
     });
   })
+
+function get_restaurant (req, categories) {
+    req.body.latitude = 33.6506;
+    req.body.longitude = -117.7435; //irvine spectrum
+    req.body.price = '1,2';
+    req.body.limit = 20;
+    //let categories = ['restaurants'];
+
+    let promiseArray = getEvent(req.body, categories);
+    // Promise.all(promiseArray).then(values => {
+    //     let restaurantListObject = convertValueArrayAndCategoriesToObject(values, categories)
+    //         .restaurants.businesses;
+    //     let randomizedRestaurant = randomizeSelection(restaurantListObject);
+    //
+    //     return randomizedRestaurant;
+    //     //res.status(200).json(randomizedRestaurant);
+    // }).catch(err => {console.log(err)});
+    return promiseArray;
+}
 
 export default hangoutRouter;
