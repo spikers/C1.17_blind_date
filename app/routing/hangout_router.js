@@ -42,22 +42,8 @@ hangoutRouter.route('/')
         {'activity.id': activityObject.id}
 
       //Put preferences here
-      ]}, function matchingAlgorithm (gender, pet) {
-        let lookingFor = {
-          gender: true,
-            pet: true
-        };
-        let thisIsMe = {
-          gender: true,
-            pet: true
-        };
-        for (let key in lookingFor) {
-          if (lookingFor[key] !== thisIsMe[key]) {
-              return false;
-          }
-        }
-        return true;
-      }
+      ]}
+
     );
 
     //Value here is: The a suitable hangout to join
@@ -250,6 +236,15 @@ function get_restaurant (req, categories) {
     //     //res.status(200).json(randomizedRestaurant);
     // }).catch(err => {console.log(err)});
     return promiseArray;
+}
+
+function matchingAlgorithm (lookingFor, interests) {
+    for (let key in lookingFor) {
+        if (lookingFor[key] !== interests[key]) {
+            return false;
+        }
+    }
+    return true;
 }
 
 export default hangoutRouter;
