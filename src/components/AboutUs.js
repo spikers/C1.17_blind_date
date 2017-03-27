@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import LogoGray from './LogoGray';
-import AppBar from 'material-ui/AppBar';
-
+import Header from './Header';
+import styles from './styles/HeaderTitle.css';
 const textDiv = {
     width: "90%",
     textAlign: "center",
@@ -20,10 +20,9 @@ class AboutUs extends Component {
     render(){
         return(
             <div>
-                <AppBar
-                    title="About Us"
-                />
-                 <LogoGray/>
+                <Header/>
+                <h1 className={styles.title}>About Us</h1>
+                <LogoGray/>
                  <img style={{
                     width:'60%',
                     margin:'0 20%'}}

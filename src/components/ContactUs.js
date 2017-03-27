@@ -12,7 +12,7 @@ const style = {
     margin: 12,
 }
 const button = {
-    marginLeft: '20%'
+    marginLeft: '3%'
 }
 
 class ContactUs extends Component {
@@ -23,7 +23,7 @@ class ContactUs extends Component {
                     title="Contact Us"
                 />
                 <LogoGray/>
-                <div style={container}>
+                <form style={container}>
                     <TextField
                         floatingLabelText="Name"
                     />
@@ -35,11 +35,16 @@ class ContactUs extends Component {
                         multiLine={true}
                         rows={5}
                     /><br />
-                </div>
-                <div style={button}>
-                    <RaisedButton label="Reset" style={style} />
-                    <RaisedButton label="Submit" primary={true} style={style} />
-                </div>
+                    <div style={button}>
+                        <RaisedButton label="Reset"
+                                      style={style}
+                        />
+                        <RaisedButton label="Submit"
+                                      primary={true}
+                                      style={style}
+                        />
+                    </div>
+                </form>
             </div>
         )
     }
