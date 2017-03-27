@@ -6,167 +6,88 @@
   <script src="./js/socket.io.js"></script>
   <script>
     var userObject = {
-      "_id": {
-          "$oid": "58c089a1b83804084bc7ebff"
-      },
-      "fbToken": "10155863040702564",
-      "dates": [],
-      "__v": 15,
-      "biography": "this is after i changed back to the old branch",
-      "email": "jasonmarker@gmail.com",
-      "gender": "male",
-      "name": "Tim Marker",
-      "username": "newusername",
-      "age": 123,
-      "hangouts": [
-          {
-              "_id": {
-                  "$oid": "58c977d94535e703a8218e75"
-              },
-              "first_person": {
-                "fbToken": "10155863040702564",
-                "name": "Tim Marker"
-              },
-              "activity": {
-                  "review_count": 83,
-                  "distance": 12263.8064893,
-                  "is_closed": false,
-                  "phone": "+17142104585",
-                  "rating": 4.5,
-                  "name": "Lyon Air Museum",
-                  "display_phone": "(714) 210-4585",
-                  "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/IaXGgBY7H3gfX-lVhoUYjg/o.jpg",
-                  "id": "lyon-air-museum-santa-ana",
-                  "url": "https://www.yelp.com/biz/lyon-air-museum-santa-ana?adjust_creative=RacSYb9qeA-Ow3Om2netXA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=RacSYb9qeA-Ow3Om2netXA",
-                  "_id": {
-                      "$oid": "58c977d94535e703a8218e76"
-                  },
-                  "categories": [
-                      {
-                          "title": "Museums",
-                          "alias": "museums",
-                          "_id": {
-                              "$oid": "58c977d94535e703a8218e78"
-                          }
-                      },
-                      {
-                          "title": "Venues & Event Spaces",
-                          "alias": "venues",
-                          "_id": {
-                              "$oid": "58c977d94535e703a8218e77"
-                          }
-                      }
-                  ],
-                  "transactions": [],
-                  "coordinates": {
-                      "longitude": -117.873524129391,
-                      "latitude": 33.6735375970602
-                  },
-                  "location": {
-                      "city": "Santa Ana",
-                      "address1": "19300 Ike Jones Rd",
-                      "address3": "",
-                      "state": "CA",
-                      "zip_code": "92707",
-                      "address2": "",
-                      "country": "US",
-                      "display_address": [
-                          "19300 Ike Jones Rd",
-                          "Santa Ana, CA 92707"
-                      ]
-                  }
-              },
-              "__v": 0,
-              "second_person": {
-                "fbToken": "100162377184177",
-                "name": "Sharon"
-              },
-              'chat': [
-                {
-                  'user': '10155863040702564',
-                  'name': 'Tim',
-                  'message': 'Chat 1 this is chat 1 second message'
+        "_id": {
+            "$oid": "58d8edc7ef2dc61b57c0308a"
+        },
+        "fbToken": "111082239432346",
+        "hangouts": [
+            {
+                "__v": 0,
+                "first_person": "112913882581911",
+                "activity": {
+                    "review_count": 83,
+                    "distance": 12263.8064893,
+                    "is_closed": false,
+                    "phone": "+17142104585",
+                    "rating": 4.5,
+                    "name": "Lyon Air Museum",
+                    "display_phone": "(714) 210-4585",
+                    "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/IaXGgBY7H3gfX-lVhoUYjg/o.jpg",
+                    "id": "lyon-air-museum-santa-ana",
+                    "url": "https://www.yelp.com/biz/lyon-air-museum-santa-ana?adjust_creative=RacSYb9qeA-Ow3Om2netXA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=RacSYb9qeA-Ow3Om2netXA",
+                    "_id": {
+                        "$oid": "58d8f0506e9d1a1bf75b32c1"
+                    },
+                    "activity_status": "active",
+                    "categories": [
+                        {
+                            "title": "Museums",
+                            "alias": "museums",
+                            "_id": {
+                                "$oid": "58d8f0506e9d1a1bf75b32c3"
+                            }
+                        },
+                        {
+                            "title": "Venues & Event Spaces",
+                            "alias": "venues",
+                            "_id": {
+                                "$oid": "58d8f0506e9d1a1bf75b32c2"
+                            }
+                        }
+                    ],
+                    "transactions": [],
+                    "coordinates": {
+                        "longitude": -117.873524129391,
+                        "latitude": 33.6735375970602
+                    },
+                    "location": {
+                        "city": "Santa Ana",
+                        "address1": "19300 Ike Jones Rd",
+                        "address3": "",
+                        "state": "CA",
+                        "zip_code": "92707",
+                        "address2": "",
+                        "country": "US",
+                        "display_address": [
+                            "19300 Ike Jones Rd",
+                            "Santa Ana, CA 92707"
+                        ]
+                    }
                 },
-                {
-                  'user': '109890509549879',
-                  'name': 'Sharon',
-                  'message': 'Chat 1 first message'
-                }
-              ]
-          },
-          {
-              "_id": {
-                  "$oid": "58c8e7604c97a0051260ad1c"
-              },
-              "first_person": {
-                "fbToken": "10155863040702564",
-                "name": "Tim Marker"
-              },
-              "activity": {
-                  "name": "AMC Woodbridge 5",
-                  "review_count": 491,
-                  "distance": 5977.192401496,
-                  "url": "https://www.yelp.com/biz/amc-woodbridge-5-irvine?adjust_creative=RacSYb9qeA-Ow3Om2netXA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=RacSYb9qeA-Ow3Om2netXA",
-                  "id": "amc-woodbridge-5-irvine",
-                  "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/UIZLCy5aB1465ZKNTcKLyQ/o.jpg",
-                  "phone": "+19497333795",
-                  "is_closed": false,
-                  "rating": 4,
-                  "display_phone": "(949) 733-3795",
-                  "_id": {
-                      "$oid": "58c8e7604c97a0051260ad1d"
-                  },
-                  "categories": [
-                      {
-                          "title": "Cinema",
-                          "alias": "movietheaters",
-                          "_id": {
-                              "$oid": "58c8e7604c97a0051260ad1e"
-                          }
-                      }
-                  ],
-                  "transactions": [],
-                  "coordinates": {
-                      "longitude": -117.799719125032,
-                      "latitude": 33.6783072352409
-                  },
-                  "location": {
-                      "address3": "",
-                      "city": "IRVINE",
-                      "country": "US",
-                      "zip_code": "92604",
-                      "state": "CA",
-                      "address1": "4626 Barranca Pkwy",
-                      "address2": "",
-                      "display_address": [
-                          "4626 Barranca Pkwy",
-                          "IRVINE, CA 92604"
-                      ]
-                  }
-              },
-              "__v": 0,
-              "second_person": {
-                "fbToken": "1001623771841772",
-                "name": "Sharona"
-              },
-              'chat': [
-                {
-                  'user': '10155863040702564',
-                  'name': 'Tim',
-                  'message': 'I am doing fine, you?'
+                "_id": {
+                    "$oid": "58d8f0506e9d1a1bf75b32c0"
                 },
-                {
-                  'user': '1001623771841772',
-                  'name': 'Sharona',
-                  'message': 'Hi, how are you?'
+                "second_person": "111082239432346",
+                "chat": [],
+                "created": {
+                    "$date": "2017-03-27T10:58:20.819Z"
                 }
-              ]
-          }
-      ]
+            }
+        ],
+        "admin": false,
+        "status": "active",
+        "interests": [],
+        "looking_for": [],
+        "dietary_restrictions": [],
+        "__v": 1,
+        "age": 122151,
+        "biography": "I am a test account hurray!",
+        "email": "pleasedate@gmail.com",
+        "family_name": "Dateme",
+        "gender": "Female",
+        "given_name": "BettyHeyhey",
+        "username": "Betty"
     }
-
-    var activeChat = "10155863040702564+100162377184177";
-    var chat1 = userObject.hangouts[0].first_person.fbToken + "+" + userObject.hangouts[0].second_person.fbToken;
                 
     
 
@@ -175,7 +96,7 @@
       //fake data
 
       var name = '';
-      var room = chat1;
+      var room = userObject.hangouts[0]._id;
 
       var socket = io();
       socket.emit('changeRoom', { roomName: room });
@@ -224,9 +145,9 @@
 
       document.getElementById('input').addEventListener('input', function (e) {
         if (document.getElementById('input').value) {
-          socket.emit('keypress', { room: room, message: true });
+          socket.emit('keypress', { message: true });
         } else if (document.getElementById('input').value === '') {
-          socket.emit('keypress', { room: room, message: false });
+          socket.emit('keypress', { message: false });
         }
       })
 
@@ -247,10 +168,13 @@
       if (document.getElementById('input').value === '') return;
       var message = document.getElementById('input').value;
       console.log('socket: ', socket);
-      socket.emit('chat message', { room: room, message: message });
+      socket.emit('chat message', { 
+        given_name: userObject.given_name, 
+        fbToken: userObject.fbToken, 
+        message: message 
+      });
       document.getElementById('input').value = '';
-      console.log('room name', room);
-      socket.emit('keypress', { room: room, message: false });
+      socket.emit('keypress', { message: false });
       return false;
     }
 
@@ -265,17 +189,21 @@
       var roomContainer = document.getElementById('room-container');
       for (var i = 0; i < userObject.hangouts.length; i++) {
         (function () {
-          var chatroom = userObject.hangouts[i].first_person.fbToken + '+' + userObject.hangouts[i].second_person.fbToken;
+          if (!userObject.hangouts[i].second_person) return;
 
           var hangout = userObject.hangouts[i];
+
+          var chatId = hangout._id.$oid;
+          console.log('hangoutId: ', chatId);
+
           var otherPerson = (userObject.fbToken === userObject.hangouts[i].first_person.fbToken) ? userObject.hangouts[i].second_person : userObject.hangouts[i].first_person;
           console.log('Other Person: ', otherPerson);
           var btn = document.createElement('button');
-          var tn = document.createTextNode(otherPerson.name);
+          var tn = document.createTextNode(otherPerson);
           btn.appendChild(tn);
 
           btn.addEventListener('click', function (e) {
-            socket.emit('changeRoom', { roomName: chatroom })
+            socket.emit('changeRoom', { roomName: chatId })
           })
 
           roomContainer.appendChild(btn);

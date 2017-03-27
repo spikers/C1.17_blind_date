@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import {hangout} from './hangout';
+import { hangout } from './hangout';
 
 let Schema = mongoose.Schema;
 

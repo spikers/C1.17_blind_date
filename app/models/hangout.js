@@ -37,8 +37,8 @@ let yelp = new Schema(
     ],
     //Active, inactive, or disabled
     'activity_status': {
-      type: String,
-      default: 'active'
+      'type': String,
+      'default': 'active'
     }
   }
 );
@@ -49,34 +49,36 @@ let chat_message = new Schema({
   'given_name': String,
   'message': String,
   'timestamp': {
-    type: Date,
-    default: Date.now()
+    'type': Date,
+    'default': Date.now()
   }
 })
 
 
 let basic_user_information = new Schema({
-  username: String,
-  given_name: String,
-  gender: String,
-  biography: String,
-  age: Number,
-  dietary_restrictions: {
-    type: Array,
-    default: ['none']
+  'username': String,
+  'given_name': String,
+  'gender': String,
+  'biography': String,
+  'age': Number,
+  'dietary_restrictions': {
+    'type': Array,
+    'default': []
   }, //Vegan or not. Maybe beefless and porkless
-  looking_for: {
+  'looking_for': {
     //Gwen Change Here
-    pet: String
+    'pet': String
   }, //This for for matching you, Cat dog fish bird
-  interests: {
-    pet: String
+  'interests': {
+    'pet': String
   } //This is for yourself, cat dog fish birde
 })
 
 let hangout = new Schema({
-  'first_person': basic_user_information,
-  'second_person': basic_user_information,
+  'first_person': String,
+  'second_person': String,
+  'first_person_basic_information': basic_user_information,
+  'second_person_basic_information': basic_user_information,
   'restaurant': yelp,
   'activity': yelp,
   'created': {

@@ -1,5 +1,7 @@
 //import io from 'socket.io';
 import parseJSON from './parse_json';
+import Hangout from '../models/hangout';
+import User from '../models/user';
 
 export default (io) => {
   io.on('connection', (socket) => {
@@ -15,17 +17,75 @@ export default (io) => {
      * Handle socket ID on server
      */
     socket.on('chat message', (messageObject) => {
+      var room = getRoom(socket, io);
       var nickname = socket.nickname;
-      console.log(messageObject);
+      console.log('nickname', nickname);
+      console.log('msg object', messageObject);
 
-      io.to(getRoom(socket, io)).emit('chat message', nickname + ': ' + messageObject.message);
+      io.to(room).emit('chat message', messageObject.name + ': ' + messageObject.message);
+
+      // Hangout Object
+      Hangout.findById(room, function (err, foundHangout) {
+        if (err) return err;
+
+        //This should slip right in, assuming we have the properties: fbToken, given_name, message
+        foundHangout.chat.unshift(messageObject);
+        foundHangout.save(function (err) {
+          if (err) return err;
+        })
+
+
+
+
+
+      // Receiving User
+      var receivingUser = (foundHangout.first_person === messageObject.fbToken) ? foundHangout.second_person : foundHangout.first_person;
+
+        User.findOne({ 'fbToken': receivingUser }, function (err, foundUser) {
+          if (err) return err;
+          let i = 0;
+          while (foundUser.hangouts[i]._id != room) {
+            console.log(i);
+            i++;
+          }
+
+          foundUser.hangouts[i].chat.unshift(messageObject);
+          foundUser.save(function (err) {
+            if (err) return err;
+          })
+        });
+
+
+      })
+
+      // Sending User
+      User.findOne({ 'fbToken': messageObject.fbToken }, function (err, foundUser) {
+        if (err) return err;
+        console.log('hangout0', foundUser.hangouts[0]);
+        console.log(room);
+        console.log('hangout0 id', foundUser.hangouts[0]._id);
+        console.log('check if true', foundUser.hangouts[0]._id != room);
+        let i = 0;
+        while (foundUser.hangouts[i]._id != room) {
+          console.log(i);
+          i++;
+        }
+
+        foundUser.hangouts[i].chat.unshift(messageObject);
+        foundUser.save(function (err) {
+          if (err) return err;
+        })
+      });
+
+
     });
 
     socket.on('keypress', (messageObject) => {
+      console.log(messageObject);
       if (messageObject.message) {
-        socket.to(messageObject.room).broadcast.emit('keypress', socket.nickname);
+        socket.to(getRoom(socket, io)).broadcast.emit('keypress', socket.nickname);
       } else if (!messageObject.message) {
-        socket.to(messageObject.room).broadcast.emit('keypress', messageObject.message);
+        socket.to(getRoom(socket, io)).broadcast.emit('keypress', messageObject.message);
       }
     });
 
