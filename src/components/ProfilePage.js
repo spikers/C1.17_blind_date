@@ -107,8 +107,8 @@ class ProfilePage extends Component{
   }
 
   componentWillMount(){
-    this.props.getProfile(136173360242729);
-    console.log('state in componentWillMount', this.state);
+    // this.props.getProfile(136173360242729);
+    // console.log('state in componentWillMount', this.state);
   }
     render(){
       const {handleSubmit} = this.props;
@@ -166,7 +166,8 @@ function mapStateToProps(state){
   console.log('this is state in mapStateToProps', state);
   return {
     user: state.user.user,
-    initialValues: state.user.user
+    initialValues: state.user.user,
+    authenticated: state.authenticated
   }
 }
 

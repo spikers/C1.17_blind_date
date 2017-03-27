@@ -4,17 +4,18 @@ import ResultsItem from './ResultsItem';
 import {connect} from 'react-redux';
 import {getProfile, getSecondProfile, getRestaurant} from './actions'
 import axios from 'axios'
+import Logo from './Logo'
+import styles from './styles/ResultsPage.css'
 
 class ResultsPage extends Component {
   componentWillMount(){
     this.props.getRestaurant()
     if (this.props.user === null){
-      this.props.getProfile(136173360242729)
+      this.props.getProfile(100162377184177)
     }
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    console.log(this.props.restaurant)
     if (this.props.secondUser != undefined && this.props.restaurant != undefined){
       return false
     }
@@ -22,7 +23,6 @@ class ResultsPage extends Component {
   }
 
   createContentObj(type){
-    console.log('props in createContent', this.props)
     switch (type){
       case 'person':
         return {
@@ -32,7 +32,6 @@ class ResultsPage extends Component {
           image: 'https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/5/005/095/0d0/0796c17.jpg'
         }
       case 'restaurant':
-      console.log('props in restaurant switch', this.props)
         if (this.props.restaurant == null){
           return {}
         }
@@ -42,13 +41,6 @@ class ResultsPage extends Component {
             content: this.props.restaurant.display_phone,
             image: this.props.restaurant.image_url
         }
-      case 'prop':
-        return {
-          type,
-          title: 'Teddy Bear',
-          content: 'Bring a teddy bear to help your date find you!',
-          image: 'https://images-na.ssl-images-amazon.com/images/I/81wpQlT3T5L._AC_UL320_SR278,320_.jpg'
-        }
       default:
         return {}
     }
@@ -57,27 +49,33 @@ class ResultsPage extends Component {
   render(){
     let fullDate = '';
     let secondPerson = null;
-    if (this.props.user!== null && this.props.user.hangouts[0].second_person != null){
+    let resultsArr = [];
+    if (this.props.user!== null && this.props.user.hangouts[0].second_person != null && secondPerson===null){
       secondPerson = this.props.user.hangouts[0].first_person === this.props.userfbToken ? this.props.user.hangouts[0].second_person : this.props.user.hangouts[0].first_person
-      this.props.getSecondProfile(secondPerson)
+      this.props.getSecondProfile(secondPerson).then(()=>{console.log('we should have the second profile now', this.props)})
     }
-    return (
-      <div>
-          <ResultsItem style={{display:"block", margin: "auto"}} secondUser={secondPerson} content={this.props.secondUser != null ? this.createContentObj('person') : null}/>
-          <ResultsItem style={{display:"block", margin: "auto"}} secondUser={secondPerson} content={this.createContentObj('restaurant')}/>
-          <ResultsItem style={{display:"block", margin: "auto"}} secondUser={secondPerson} content={this.props.secondUser != null ? this.createContentObj('prop') : null}/>
+    if(this.props.user && this.props.secondUser && this.props.restaurant){
+      resultsArr = this.props.user.hangouts.map((hangout, index)=>{
+        return(
+          <ResultsItem expanded={index === 0 ? true:false} key={index} index={index} secondUser={secondPerson} hangout={hangout}/>
+        )
+      })
+    }
+    return (        
+      <div style={{width:"95vw", margin: "2.5vw auto"}}>
+          {resultsArr}
       </div>
     )
   }
 }
 
 function mapStateToProps(state){
-  console.log('state in results', state)
   return {
     user: state.user.user,
     secondUser: state.user.secondUser,
     events: state.events.events,
-    restaurant: state.user.restaurant
+    restaurant: state.user.restaurant,
+    authenticated: state.authenticated
   }
 }
 

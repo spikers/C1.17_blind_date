@@ -45,6 +45,7 @@ class EventsPage extends React.Component {
   }
 
   render() {
+    console.log('authenticated? ' + this.props.authenticated)
     console.log('props on eventsPage', this.props)
     const eventSlides=[];    
     const tabs=[];
@@ -109,7 +110,7 @@ class EventsPage extends React.Component {
 
         <div style={showing} className={css.container}>
           <Paper className={css.shadow} circle={true} zDepth={2}>
-            <Link to="/results" onClick={()=>(this.props.sendEventChoice(this.props.user.fbToken, this.props.eventChoice))}><img className={css.flip} src={require("./img/flip.png")} alt=""/></Link>
+            <Link to="/results"><img className={css.flip} src={require("./img/flip.png")} alt=""/></Link>
           </Paper>
         </div>
       </div>
@@ -120,7 +121,8 @@ function mapStateToProps(state){
   return {
     events: state.events.events,
     eventChoice: state.events.eventChoice,
-    user: state.user.user
+    user: state.user.user,
+    authenticated: state.authenticated
     }
 }
 export default connect(mapStateToProps, {getEvents, sendEventChoice})(EventsPage);

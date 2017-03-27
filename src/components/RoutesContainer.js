@@ -12,6 +12,7 @@ import ResultsInfo from './ResultsInfo';
 import ProfilePage from './ProfilePage';
 import NotFound from './NotFound';
 import App from './App';
+import requireAuth from './RequireAuth';
 
 injectTapEventPlugin();
 
@@ -35,9 +36,9 @@ class RoutesContainer extends Component {
       <Router history={browserHistory}>
         <Route path='/' component={App}>
           <IndexRoute component={LoginPage}/>
-          <Route path='/events' component={EventsPage} />
-          <Route path='/results' component={ResultsPage}/>
-          <Route path='/profile' component={ProfilePage} />
+          <Route path='/events' component={requireAuth(EventsPage)} />
+          <Route path='/results' component={requireAuth(ResultsPage)}/>
+          <Route path='/profile' component={requireAuth(ProfilePage)} />
           <Route path='*' components={NotFound} />
         </Route>
       </Router>

@@ -18,6 +18,7 @@ export const SEND_LOGIN = "SEND_LOGIN";
 export const SET_EVENT_CHOICE="SET_EVENT_CHOICE";
 export const GET_HANGOUT="GET_HANGOUT";
 export const GET_RESTAURANT="GET_RESTAURANT";
+export const CHANGE_AUTH ="CHANGE_AUTH";
 
 const BASE_URL = 'http://54.202.15.233:8000/api/';
 
@@ -85,9 +86,15 @@ export function setEventChoice(choice){
 
 export function getRestaurant(){
   const request = instance.post('http://54.202.15.233:8000/api/hangout/restaurant')
-  console.log('getRestaurant called')
   return({
     type: GET_RESTAURANT,
     payload: request
   })
+}
+
+export function authenticate(isLoggedIn){
+  return {
+    type: CHANGE_AUTH,
+    payload: isLoggedIn
+  }
 }

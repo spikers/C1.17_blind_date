@@ -1,0 +1,21 @@
+@keyframes background {
+  from {
+    background-image: url('/img/2.jpg');
+    background-position: center bottom
+    }
+  to {
+    background-image: ('https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/5/005/095/0d0/0796c17.jpg');
+    background-position: center bottom
+    }
+}
+
+.background{
+ animation-name: background;
+ animation-duration: .5s;
+ animation-iteration-count: infinite;
+}
+/*
+img style={{width:"100%", height:"auto", position:"fixed", bottom:"0", margin: "auto", zIndex:"-1"}} 
+        src = {require('./img/2.jpg')} alt=""/>*/
+
+        
