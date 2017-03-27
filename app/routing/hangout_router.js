@@ -42,8 +42,21 @@ hangoutRouter.route('/')
         {'activity.id': activityObject.id}
 
       //Put preferences here
-      ]}, function (value) {
-        
+      ]}, function matchingAlgorithm (gender, pet) {
+        let lookingFor = {
+          gender: true,
+            pet: true
+        };
+        let thisIsMe = {
+          gender: true,
+            pet: true
+        };
+        for (let key in lookingFor) {
+          if (lookingFor[key] !== thisIsMe[key]) {
+              return false;
+          }
+        }
+        return true;
       }
     );
 
