@@ -1,0 +1,35 @@
+.image{
+    width: 25%;
+    height: 30%;
+    display: block;
+    margin: 0 auto;
+    border: solid black 1vh;
+}
+.input_container{
+    width: 50%;
+    display: block;
+    margin: 5% auto;
+}
+.profile_input{
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    font-family: Raleway;
+    font-size: 2vh;
+}
+.label{
+    font-family: "Raleway ExtraBold";
+    font-size: 2vh;
+    margin: 1%;
+}
+.about_me{
+    font-family: "Raleway ExtraBold";
+    font-size: 2vh;
+    margin: 1%;
+}
+.submit{
+    width: 25%;
+    display: block;
+    margin: 0 auto;
+    border-radius: 1vh;
+}

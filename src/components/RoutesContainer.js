@@ -10,8 +10,12 @@ import EventsPage from './EventsPage';
 import ResultsPage from './ResultsPage';
 import ResultsInfo from './ResultsInfo';
 import ProfilePage from './ProfilePage';
+import AboutUs from './AboutUs';
+import Faq from './Faq';
+import ContactUs from './ContactUs';
 import NotFound from './NotFound';
-import Nav from './Nav';
+import App from './App';
+import requireAuth from './RequireAuth';
 
 injectTapEventPlugin();
 
@@ -33,11 +37,16 @@ class RoutesContainer extends Component {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
       <Router history={browserHistory}>
-        <Route path='/' component={LoginPage} />
-          <Route path='/events' component={EventsPage} />
-          <Route path='/results' component={ResultsPage}/>
-          <Route path='/profile' component={ProfilePage} />
+        <Route path='/' component={App}>
+          <IndexRoute component={LoginPage}/>
+          <Route path='/events' component={requireAuth(EventsPage)} />
+          <Route path='/results' component={requireAuth(ResultsPage)}/>
+          <Route path='/profile' component={requireAuth(ProfilePage)} />
+          <Route path='/aboutus' component={AboutUs} />
+          <Route path='/faq' component={Faq} />
+          <Route path='/contactus' component={ContactUs} />
           <Route path='*' components={NotFound} />
+        </Route>
       </Router>
       </MuiThemeProvider>
     )

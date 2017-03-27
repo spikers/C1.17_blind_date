@@ -1,11 +1,22 @@
-.carouselcontainer{
-  width: 90%;
-  margin: auto;
+.flip{
+  width: 100%;
 }
 
-.carouselcontainer img {
-  margin: auto;
+.shadow{
+  border-radius: 50%;
+  width:40vw;
+  margin: 5vh auto;
 }
 .container{
+  width:100%;
+  display:flex;
+  justify-content: center;
+}
+
+.eventChoice{
   text-align: center;
+  width: 95%;
+  margin: 2.5%;
+  height: 20%;
+  padding: 5%
 }

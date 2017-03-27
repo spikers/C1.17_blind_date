@@ -12,6 +12,32 @@ import Hangout from './app/models/hangout';
 
 import { hangout as hangoutSchema } from './app/models/hangout.js';
 
+//Facebook*************************
+var passport = require('passport');
+var flash    = require('connect-flash');
+var cookieParser = require('cookie-parser');
+var session      = require('express-session');
+var configDB = require('./config');
+//mongoose.connect(configDB.url); // connect to our database
+
+require('./public/js/facebook_passport')(passport); // pass passport for configuration
+
+app.use(cookieParser()); // read cookies (needed for auth)
+
+// required for passport
+app.use(session({
+    secret: config.secret, // session secret
+    resave: true,
+    saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
+
+// routes ======================================================================
+require('./public/js/fb_routes')(app, passport); // load our routes and pass in our app and fully configured passport
+
 //Yelp
 var request = require('request');
 var qs = require('querystring');

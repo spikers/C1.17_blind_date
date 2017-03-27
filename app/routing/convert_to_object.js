@@ -7,7 +7,7 @@ import User from '../models/user';
 // const app = express();
 // const convertAndRandomize = express.Router();
 
-function convertValueArrayAndCategoriesToObject(valueArray, categories) {
+export default function convertValueArrayAndCategoriesToObject(valueArray, categories) {
     let valueObject = {};
     for (let i = 0; i < categories.length; i++) {
         valueObject[categories[i]] = valueArray[i];
@@ -15,4 +15,4 @@ function convertValueArrayAndCategoriesToObject(valueArray, categories) {
     return valueObject;
 }
 
-export default convertValueArrayAndCategoriesToObject;
+//export default convertValueArrayAndCategoriesToObject;
