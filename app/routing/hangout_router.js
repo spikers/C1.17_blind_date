@@ -40,10 +40,10 @@ hangoutRouter.route('/')
         {
           $or: [{ 'first_person': null }, { 'second_person': null }]
         },
-        {'activity.id': activityObject.id},
-          {gender: req.body.looking_for.gender,
-              pet:req.body.looking_for.pet
-          }
+        {'activity.id': activityObject.id}//,
+          // {gender: req.body.looking_for.gender,
+          //     pet:req.body.looking_for.pet
+          // }
       //Put preferences here
       ]}
 
