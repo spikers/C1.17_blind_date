@@ -20,7 +20,7 @@ var session      = require('express-session');
 var configDB = require('./config');
 //mongoose.connect(configDB.url); // connect to our database
 
-require('./public/js/facebook_passport')(passport); // pass passport for configuration
+require('./app/authentication/facebook_passport')(passport); // pass passport for configuration
 
 app.use(cookieParser()); // read cookies (needed for auth)
 
@@ -36,7 +36,7 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
-require('./public/js/fb_routes')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./app/authentication/fb_routes')(app, passport); // load our routes and pass in our app and fully configured passport
 
 //Yelp
 var request = require('request');
