@@ -16,8 +16,14 @@ let user = new Schema({
     type: Array,
     default: ['none']
   }, //Vegan or not. Maybe beefless and porkless
-  looking_for: [String], //This for for matching you, Cat dog fish bird
-  interests: [String], //This is for yourself, cat dog fish birde
+  looking_for: {
+    gender: String,
+    pet: String
+  }, //This for for matching you, Cat dog fish bird
+  interests: {
+      pet: String
+  }, //This is for yourself, cat dog fish bird
+  profile_picture: String,
 
 
   family_name: String,
