@@ -33,6 +33,7 @@ module.exports = function(passport) {
         //function (req, token, refreshToken, done) {
             function (req, token, refreshToken, profile, done) {
         console.log('id', profile.id);
+        console.log('token', token);
         console.log('familyName', profile.name.familyName);
         console.log('givenName', profile.name.givenName);
         console.log('gender', profile.gender);
