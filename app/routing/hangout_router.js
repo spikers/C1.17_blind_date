@@ -40,8 +40,10 @@ hangoutRouter.route('/')
         {
           $or: [{ 'first_person': null }, { 'second_person': null }]
         },
-        {'activity.id': activityObject.id}
-
+        {'activity.id': activityObject.id},
+          {gender: req.body.looking_for.gender,
+              pet:req.body.looking_for.pet
+          }
       //Put preferences here
       ]}
 
@@ -239,13 +241,13 @@ function get_restaurant (req, categories) {
     return promiseArray;
 }
 
-function matchingAlgorithm (lookingFor, interests) {
-    for (let key in lookingFor) {
-        if (lookingFor[key] !== interests[key]) {
-            return false;
-        }
-    }
-    return true;
-}
+// function matchingAlgorithm (lookingFor, interests) {
+//     for (let key in lookingFor) {
+//         if (lookingFor[key] !== interests[key]) {
+//             return false;
+//         }
+//     }
+//     return true;
+// }
 
 export default hangoutRouter;
