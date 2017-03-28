@@ -106,10 +106,6 @@ class ProfilePage extends Component{
     this.props.updateProfile(formProp);
   }
 
-  componentWillMount(){
-    // this.props.getProfile(136173360242729);
-    // console.log('state in componentWillMount', this.state);
-  }
     render(){
       const {handleSubmit} = this.props;
       console.log(this.props.user);
@@ -146,11 +142,10 @@ class ProfilePage extends Component{
               <Field name='gender' component={renderInput.bind(this)} type='radio' label="Gender"/>
               <Field name='lookingFor' component={renderInput.bind(this)} type="radio" label="Looking For"/>
               <Field name='biography' component={renderInput.bind(this)} type="textarea" label="About Me"/>
+              <Link to='/events'><RaisedButton>Cancel</RaisedButton></Link>
               <RaisedButton 
                style={buttonStyle} label="Update Profile" primary={true}
                type="submit"/>
-              <RaisedButton style={buttonStyle} label="Save" secondary={true}/>
-              <Link to='/events'><RaisedButton>Cancel</RaisedButton></Link>
           </form>
         </Paper>
         </div>

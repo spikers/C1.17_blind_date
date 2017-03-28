@@ -13,7 +13,7 @@ const ResultsImage = (props)=> {
           Wynk
         </div>
         <div className={`${styles.face} ${styles.tails}`}>
-          <img style={{width: "100%", height: "auto"}}src={props.content ? props.content.image : 'https://images-na.ssl-images-amazon.com/images/I/81wpQlT3T5L._AC_UL320_SR278,320_.jpg'} alt="tim"/>
+          <img style={{width: "100%", height: "auto"}}src={props. content ? props.content.image : 'https://images-na.ssl-images-amazon.com/images/I/81wpQlT3T5L._AC_UL320_SR278,320_.jpg'} alt="tim"/>
         </div>
       </div>
     </div>

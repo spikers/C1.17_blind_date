@@ -70,10 +70,21 @@ export function getEvents(){
 }
 
 export function sendEventChoice(id, choice){
-  const request = instance.post(BASE_URL, id, choice);
+var data = "user=" + id + "&activity=" + choice;
+var xhr = new XMLHttpRequest();
+xhr.addEventListener("readystatechange", function () {
+  if (this.readyState === 4) {
+    console.log('responseText', this.responseText);
+  }
+});
+
+xhr.open("POST", "http://54.202.15.233:8000/api/hangout/");
+xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+
+xhr.send(data);
   return({
     type:SEND_EVENT_CHOICE,
-    payload: request
+    payload: true
   })
 }
 

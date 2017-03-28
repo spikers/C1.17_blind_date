@@ -13,7 +13,7 @@ const inputStyle = {
 };
 
 const sendLogin = function(){
-  this.props.getProfile(136173360242729).then(
+  this.props.getProfile(111082239432346).then(
     (res)=>{
         console.log('success function called', res)
         this.props.authenticate(true)
@@ -37,9 +37,9 @@ class LoginPage extends Component {
         <div>
             <div className={styles.container}>
             <Logo classNameName="LogoStyles.logo"/>
-            <a href="/auth/facebook">Test Auth</a>
+            {/*<a href="/auth/facebook">Test Auth</a>*/}
             <div style={{width:"60vw", height: "auto"}} onClick={sendLogin.bind(this)}>
-                <img src={require('./img/fb_login.png')}/>
+                <img style={{width:"100%", height: "auto"}} src={require('./img/fb_login.png')}/>
             </div>
 
             </div>

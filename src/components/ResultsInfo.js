@@ -26,8 +26,7 @@ const ResultsInfo = (props) => {
           />
           <CardText expandable={true}>
             <p>{props.content ? props.content.content : null}</p>
-        </CardText>
-        
+        </CardText>   
       </Card>
       <Card>
           <CardHeader
@@ -38,11 +37,8 @@ const ResultsInfo = (props) => {
           <CardText expandable={true}>
             <p>{props.content ? props.content.content : null}</p>
         </CardText>
-        
       </Card>
-     
         </CardText>
-        
       </Card>
       </div>
     )
