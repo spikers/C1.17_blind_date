@@ -1,18 +1,25 @@
+//import user from './facebook_passport';
+
 module.exports = function(app, passport) {
 // LOGOUT ==============================
     app.get('/logout', function (req, res) {
         req.logout();
-        res.redirect('/');
+        res.redirect('/?fbtoken='+req.user.facebook.id);
     });
+//console.log('passport', passport);
+//console.log('app', app);
 
 // AUTHENTICATE (FIRST LOGIN) ==================================================
     // send to facebook to do the authentication
     app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
     // handle the callback after facebook has authenticated the user
     app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-            successRedirect: '/',
+            //successRedirect: '/?fbtoken='+req.user.facebook.id,
             failureRedirect: '/'
-        })
+        }), function (req, res) {
+        console.log('++++++++++++req+++++++++', req.user.facebook.id);
+        res.redirect('/?fbtoken='+req.user.facebook.id);
+        }
     );
 
 // AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============
@@ -22,9 +29,12 @@ module.exports = function(app, passport) {
     // handle the callback after facebook has authorized the user
     app.get('/connect/facebook/callback',
         passport.authorize('facebook', {
-            successRedirect: '/',
+            //successRedirect: '/?fbtoken='+req.user.facebook.id,
             failureRedirect: '/'
-        }));
+        }), function (req, res) {
+            res.redirect('/?fbtoken='+req.user.facebook.id)
+        }
+    );
 
 // UNLINK ACCOUNTS =============================================================
 // =============================================================================
@@ -35,7 +45,7 @@ module.exports = function(app, passport) {
         var user            = req.user;
         user.facebook.token = undefined;
         user.save(function(err) {
-            res.redirect('/profile');
+            res.redirect('/?fbtoken='+req.user.facebook.id);
         });
     });
 
@@ -53,5 +63,5 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
     // if they aren't redirect them to the home page
-    res.redirect('/');
+    res.redirect('/?fbtoken='+req.user.facebook.id);
 }};
