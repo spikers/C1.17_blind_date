@@ -17,13 +17,8 @@ module.exports = function(app, passport) {
             //successRedirect: '/?fbtoken='+req.user.fbToken,
             failureRedirect: '/'
         }), function (req, res) {
-<<<<<<< HEAD
         console.log('++++++++++++req+++++++++', req.user.facebook.id);
         res.redirect('http://localhost:3000/?fbtoken='+req.user.facebook.id);
-=======
-        console.log('++++++++++++req+++++++++', req.user.fbToken);
-        res.redirect('/?fbtoken='+req.user.fbToken);
->>>>>>> ae413f02b6071d3dac072bb5631e40d9f86aaefb
         }
     );
 
@@ -37,11 +32,7 @@ module.exports = function(app, passport) {
             //successRedirect: '/?fbtoken='+req.user.fbToken,
             failureRedirect: '/'
         }), function (req, res) {
-<<<<<<< HEAD
             res.redirect('http://localhost:3000/?fbtoken='+req.user.facebook.id)
-=======
-            res.redirect('/?fbtoken='+req.user.fbToken)
->>>>>>> ae413f02b6071d3dac072bb5631e40d9f86aaefb
         }
     );
 
@@ -54,11 +45,7 @@ module.exports = function(app, passport) {
         var user            = req.user;
         user.facebook.token = undefined;
         user.save(function(err) {
-<<<<<<< HEAD
             res.redirect('http://localhost:3000/?fbtoken='+req.user.facebook.id);
-=======
-            res.redirect('/?fbtoken='+req.user.fbToken);
->>>>>>> ae413f02b6071d3dac072bb5631e40d9f86aaefb
         });
     });
 
@@ -76,9 +63,6 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
     // if they aren't redirect them to the home page
-<<<<<<< HEAD
     res.redirect('http://localhost:3000/?fbtoken='+req.user.facebook.id);
-=======
     res.redirect('/?fbtoken='+req.user.fbToken);
->>>>>>> ae413f02b6071d3dac072bb5631e40d9f86aaefb
 }};
