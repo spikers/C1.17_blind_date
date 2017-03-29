@@ -36,27 +36,40 @@ hangoutRouter.route('/')
     // console.log(activityObject);
     // console.log('URL', activityObject.id); #########################################
 
-    let checkOpenDates = Hangout.findOne({
+    let checkOpenDates = new Promise (function (resolve, reject) {
+
+      User.findOne({'fbToken': req.body.user}, function (err, userObj) {
+console.log('++++++++++++++userObj++++++++++++', typeof userObj);
+console.log('zzzzzzzzzzzzzzzuserObj.looking_forzzzzzzzzzzzzzzzzz', parseJSON(userObj.looking_for).gender);
+
+          Hangout.findOne({
       $and: [
         {
           $or: [{ 'first_person': null }, { 'second_person': null }]
         },
-        {'activity.id': activityObject.id}//,
-          // {gender: req.body.looking_for.gender,
-          //     pet:req.body.looking_for.pet
-          // }
+        {'activity.id': activityObject.id},
+        {
+          "first_person.gender": parseJSON(userObj.looking_for).gender,
+          "first_person.interests.pet": parseJSON(userObj.looking_for).pet//,
+          //"first_person.looking_for.gender": userObj.gender,
+          // "first_person.looking_for.pet": parseJSON(userObj.interests).pet
+          }
       //Put preferences here
-      ]}
+      ]}, function (err, matchingUserObj) {
+            console.log('zzzzzzzzzzzzerrorzzzzzzzzzz', err);
+              resolve (matchingUserObj)
+          }
 
     );
-
+          })
+    })
     //Value here is: The a suitable hangout to join
     checkOpenDates.then(function (suitableHangout) {
-
+      console.log('zzzzzzzzzzzzzsuitablehangoutzzzzzzzzz', suitableHangout);
       //If there's no suitable hangout to join, create one
       if (suitableHangout === null) {
-
         hangout.first_person = req.body.user;
+        hangout.first_person_basic_information = req.body.user;
         hangout.activity = activityObject;
         console.log(hangout);
 
@@ -142,6 +155,7 @@ hangoutRouter.route('/')
           // Save the second_person to the first_person.activity[i].second_person in the db (Working)##################
           let firstPersonPromise;
           User.findOne({'fbToken': firstPerson}, function (err, firstPersonObject) {
+            //if (err) return; =================================
             // console.log(err);
             // console.log(firstPersonObject.hangouts);
             let i = 0;
@@ -154,6 +168,7 @@ hangoutRouter.route('/')
 
             firstPersonObject.save(function (err) {
               if (err) {
+                console.log('++++++++++error+++++++++++++', err);
                 res.status(404).json(err);
                 return;
               }
