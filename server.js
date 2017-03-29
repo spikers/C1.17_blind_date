@@ -785,16 +785,16 @@ io(socketio.listen(server));
 
 
 
-User.find({"fbToken": "136173360242729"})/*.populate('userToHangout')*/.exec((err, users) => {
-  console.log(users);
-});
-
-// User.findOne({"fbToken": "136173360242729"})
-// .populate("hangouts_id")
-// .exec(function (err, hangout) {
-//   if (err) return;
-//   console.log('this is the hangout: ', hangout);
+// User.find({"fbToken": "136173360242729"}).populate('userToHangout').exec((err, users) => {
+//   console.log(users);
 // });
+
+User.findOne({"fbToken": "10155863040702564"})
+.populate("hangouts_id")
+.exec(function (err, hangout) {
+  if (err) return;
+  console.log('this is the hangout: ', hangout);
+});
 
 
 
