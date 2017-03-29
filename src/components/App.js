@@ -1,15 +1,43 @@
 import React from 'react';
-import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
-import Map from './GmapsTest';
+import Header from './Header';
 
 export default (props)=>{
-  return(
-  <div>
-    <AppBar 
-      title="Wynk ;)"
-      iconElementRight={<FlatButton label = "Log Out"/>}
-    />
-    {props.children}
-  </div>
-)}
+    let titleName = {};
+    switch(props.router.location.pathname){
+        case '/':
+            titleName = 'Login';
+            break;
+        case '/profile':
+            titleName = 'Profile';
+            break;
+        case '/events':
+            titleName = 'Events';
+            break;
+        case '/results':
+            titleName = 'Results';
+            break;
+        case '/aboutus':
+            titleName = 'About Us';
+            break;
+        case '/faq':
+            titleName = 'FAQ';
+            break;
+        case '/contactus':
+            titleName = 'Contact Us';
+            break;
+    }
+    // let hide = {};
+    // if (props.router.location.pathname === '/'){
+    //     hide = {display:"none"}
+    // }else{
+    //     hide = {}
+    // }
+    return(
+        <div>
+            <Header
+                title={titleName}
+            />
+            {props.children}
+        </div>
+    )}
+>>>>>>> ae413f02b6071d3dac072bb5631e40d9f86aaefb
