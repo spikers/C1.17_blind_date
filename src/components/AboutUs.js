@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import LogoGray from './LogoGray';
-import Header from './Header';
-import styles from './styles/HeaderTitle.css';
 const textDiv = {
     width: "90%",
     textAlign: "center",
@@ -20,10 +18,8 @@ class AboutUs extends Component {
     render(){
         return(
             <div>
-                <Header/>
-                <h1 className={styles.title}>About Us</h1>
                 <LogoGray/>
-                 <img style={{
+                <img style={{
                     width:'60%',
                     margin:'0 20%'}}
                      src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/5/005/095/0d0/0796c17.jpg"/>

@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import AppBar from 'material-ui/AppBar';
-
 const div = {
     width: "90%",
     margin: "5% auto"
@@ -19,9 +17,6 @@ class Faq extends Component {
     render(){
         return(
             <div>
-                <AppBar
-                    title="FAQ"
-                />
                 <div style={div}>
                     <p style={question}>Q: How does WYNK work and how is it different from the others? </p>
                     <p style={answer}>We plan the dating for you by providing the activity and a place to eat</p>
