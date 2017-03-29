@@ -6,7 +6,12 @@ import User from '../models/user';
 //Always wrap your JSON.parse in a try-catch block. This simply replaces JSON.parse with the safer version
 function parseJSON(item, times = 0) {
     try {
-        return JSON.parse(item);
+        //if (typeof item === 'string') {
+            return JSON.parse(item);
+       // }
+       //  else if (typeof item === 'object') {
+       //      return item;
+       //  }
     } catch (e) {
         if (times < 3) {
             return parseJSON(item, ++times);
