@@ -56,9 +56,10 @@ export function getSecondProfile(id){
 export function updateProfile(id, forms){
   console.log('forms in updateProfile', forms)
   forms.dietary_restrictions[0]=forms.diet
+  console.log('forms.age', forms.age)
 let encodedURI = encodeURI('username=' + forms.username + 
-          '&givenName=' + forms.givenName + '&familyName=' + forms.family_name + '&email=' + forms.email + '&age=' + 
-          forms.age + '&gender=' + forms.gender + '&biography=' + forms.biography);
+          '&givenName=' + (forms.given_name || '') + '&familyName=' + (forms.family_name||'') + '&email=' + (forms.email || '') + '&age=' + (forms.age || '') + '&gender=' + (forms.gender || '') + '&biography=' + (forms.biography || ''));
+        console.log('encodedURI', encodedURI)
         let xhr = new XMLHttpRequest();
         xhr.addEventListener('load', function(data) {
           console.log('Update Worked', data);

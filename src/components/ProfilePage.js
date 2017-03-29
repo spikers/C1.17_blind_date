@@ -58,7 +58,7 @@ const createInput = function(input, label, type){
         )
       case 'number':
         return(
-          <TextField type="number" style={inputStyle} hintText={label} floatingLabelText={label} value={this.props.user? this.props.user.age : ''}/>
+          <TextField type="number" style={inputStyle} hintText={label} floatingLabelText={label}/>
         )
       case 'radio':
         let genderDefault = null;
@@ -227,7 +227,6 @@ class ProfilePage extends Component{
             <form>
               <Paper style={containerStyle} zDepth={1}>
                 <h2>Tell us about yourself!</h2>
-                <Field name='username' component={renderInput.bind(this)} type="text" label="Username"/>
                 <Field name='given_name' component={renderInput.bind(this)} type="text" label="First Name"/>
                 <Field name='family_name' component={renderInput.bind(this)} type="text" label="Last Name"/>
                 <Field name='email' component={renderInput.bind(this)} type="text" label="E-mail"/>
@@ -239,6 +238,7 @@ class ProfilePage extends Component{
               </Paper>
               <Paper style={containerStyle} zDepth={1}>
                 <h2>Who are you looking for?</h2>
+                <Field name='username' component={renderInput.bind(this)} type="text" label="Username"/>
                 <Field name='lookforgender' component={renderInput.bind(this)} type="radio" label="I want a..."/>
                 <Field name='lookforpet' component={renderInput.bind(this)} type="radio" label="Who's also a..."/>
               </Paper>
