@@ -94,6 +94,11 @@
     window.addEventListener('load', function () {
 
       //fake data
+      initialize();
+
+    });
+
+    function initialize() {
 
       var name = '';
       var room = userObject.hangouts[0]._id;
@@ -160,8 +165,7 @@
           typing.textContent = '';
         }
       });
-
-    });
+    }
 
     function submitMessage(e, socket, room) {
       e.preventDefault();
@@ -211,6 +215,13 @@
       }
     }
 
+    function getFbToken() {
+      var url = window.location.href;
+      if (url.indexOf('=') === -1) return '111082239432346';
+      var qs = url.slice(url.lastIndexOf('=') + 1);
+      console.log(qs);
+      return qs;
+    }
 
   </script>
   <style>

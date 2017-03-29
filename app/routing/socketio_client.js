@@ -22,7 +22,7 @@ export default (io) => {
       console.log('nickname', nickname);
       console.log('msg object', messageObject);
 
-      io.to(room).emit('chat message', messageObject.name + ': ' + messageObject.message);
+      io.to(room).emit('chat message', messageObject.given_name + ': ' + messageObject.message);
 
       // Hangout Object
       Hangout.findById(room, function (err, foundHangout) {
@@ -42,8 +42,10 @@ export default (io) => {
       var receivingUser = (foundHangout.first_person === messageObject.fbToken) ? foundHangout.second_person : foundHangout.first_person;
 
         User.findOne({ 'fbToken': receivingUser }, function (err, foundUser) {
+          console.log('foundUser: ', foundUser);
           if (err) return err;
           let i = 0;
+          console.log('Found User: ', foundUser);
           while (foundUser.hangouts[i]._id != room) {
             console.log(i);
             i++;
@@ -61,13 +63,13 @@ export default (io) => {
       // Sending User
       User.findOne({ 'fbToken': messageObject.fbToken }, function (err, foundUser) {
         if (err) return err;
-        console.log('hangout0', foundUser.hangouts[0]);
-        console.log(room);
-        console.log('hangout0 id', foundUser.hangouts[0]._id);
-        console.log('check if true', foundUser.hangouts[0]._id != room);
+        // console.log('hangout0', foundUser.hangouts[0]);
+        // console.log(room);
+        // console.log('hangout0 id', foundUser.hangouts[0]._id);
+        // console.log('check if true', foundUser.hangouts[0]._id != room);
         let i = 0;
         while (foundUser.hangouts[i]._id != room) {
-          console.log(i);
+          // console.log(i);
           i++;
         }
 
@@ -81,7 +83,7 @@ export default (io) => {
     });
 
     socket.on('keypress', (messageObject) => {
-      console.log(messageObject);
+      // console.log(messageObject);
       if (messageObject.message) {
         socket.to(getRoom(socket, io)).broadcast.emit('keypress', socket.nickname);
       } else if (!messageObject.message) {
@@ -90,14 +92,14 @@ export default (io) => {
     });
 
     socket.on('disconnect', (data) => {
-      console.log('roomname');
+      // console.log('roomname');
       //sendDisconnectionMessage(data.roomName, socket);
     });
 
     socket.on('changeRoom', (data) => {
-      console.log('changeroom called', data.roomName);
-      console.log('data' + data.roomName);
-      console.log('sid' + Object.keys(io.sockets.adapter.sids[socket.id])[0]);
+      // console.log('changeroom called', data.roomName);
+      // console.log('data' + data.roomName);
+      // console.log('sid' + Object.keys(io.sockets.adapter.sids[socket.id])[0]);
 
       if (data.roomName === getRoom(socket, io)) return;
 
