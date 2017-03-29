@@ -50,7 +50,7 @@ hangoutRouter.route('/activity')
         req.body.latitude = 33.6506;
         req.body.longitude = -117.7435;
         req.body.limit = 3;
-        let categories = ['movietheaters', 'bowling', 'museums', 'artclasses'];
+        let categories = ['arts', 'nightlife', 'active'];
         let promiseArray = getEvent(req.body, categories);
         Promise.all(promiseArray).then(values => {
             let activityListObject = convertValueArrayAndCategoriesToObject(values, categories);
