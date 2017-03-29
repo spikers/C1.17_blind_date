@@ -10,13 +10,11 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Person from 'material-ui/svg-icons/action/accessibility';
 
 const buttonStyle = {
-    margin: 10,
-    marginLeft: 'initial'
+    margin: "2%"
 }
 
 const containerStyle = {
@@ -151,16 +149,26 @@ const createInput = function(input, label, type){
                       />
                 </RadioButtonGroup>      
               </div>)
-        }
-      case "dropdown":
-        return (
-            <DropDownMenu value={this.state.value} iconButton={<Person/>}>
-              <MenuItem value={1} primaryText='Dog' />
-              <MenuItem value={2} primaryText="Cat" />
-              <MenuItem value={3} primaryText="Fish" />
-              <MenuItem value={4} primaryText="Bird" />
-            </DropDownMenu>
-        );
+          case "I can't eat...": 
+            return(
+              <div>
+                <p>{label}</p>
+                  <RadioButtonGroup {...input} defaultSelected={this.props.user &&this.props.user.dietary_restrictions[0]}>
+                      <RadioButton
+                        value="vegetarian"
+                        label="Meat"
+                      />
+                      <RadioButton
+                        value="vegan"
+                        label="Any Animal Products"
+                      />
+                      <RadioButton
+                        value="none"
+                        label="...actually I can eat anything!"
+                      />   
+                </RadioButtonGroup>      
+              </div>
+              )}
       default:
         return(
           <TextField
@@ -178,12 +186,12 @@ const createInput = function(input, label, type){
   }
 
 class ProfilePage extends Component{
-  constructor(props) {
-    super(props);
-    this.state = {value: 1};
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {value: 1};
+  // }
 
-  handleChange = (event, index, value) => this.setState({value});
+  // handleChange = (event, index, value) => this.setState({value});
 
   onSubmit(formProp){
     this.props.updateProfile(this.props.user.fbToken, formProp);
@@ -216,7 +224,7 @@ class ProfilePage extends Component{
                 </FloatingActionButton>
               </Paper>
             </Paper>
-            <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+            <form>
               <Paper style={containerStyle} zDepth={1}>
                 <h2>Tell us about yourself!</h2>
                 <Field name='username' component={renderInput.bind(this)} type="text" label="Username"/>
@@ -227,16 +235,21 @@ class ProfilePage extends Component{
                 <Field name='biography' component={renderInput.bind(this)} type="textarea" label="About Me"/>
                 <Field name='gender' component={renderInput.bind(this)} type='radio' label="I'm a..."/>
                 <Field name='pet' component={renderInput.bind(this)} type="radio" label="I'm definitely a..."/>
+                <Field name='diet' component={renderInput.bind(this)} type="radio" label="I can't eat..."/>
               </Paper>
               <Paper style={containerStyle} zDepth={1}>
                 <h2>Who are you looking for?</h2>
                 <Field name='lookforgender' component={renderInput.bind(this)} type="radio" label="I want a..."/>
                 <Field name='lookforpet' component={renderInput.bind(this)} type="radio" label="Who's also a..."/>
               </Paper>
-              <Link to='/events'><RaisedButton>Cancel</RaisedButton></Link>
-              <RaisedButton 
-               style={buttonStyle} label="Update Profile" primary={true}
-               type="submit"/>
+              <div style={{textAlign: "right"}}>
+                <Link style={buttonStyle} to='/events'><RaisedButton >Cancel</RaisedButton></Link>
+                <RaisedButton 
+                style={buttonStyle} label="Update Profile" primary={true}
+                type="submit"
+                onClick={handleSubmit(this.onSubmit.bind(this))}
+                />
+               </div>
           </form>
         </div>
       )
@@ -259,4 +272,4 @@ function mapStateToProps(state){
 export default connect(mapStateToProps, {getProfile, updateProfile})(reduxForm({
     form: 'Profile',
     validate
-})(ProfilePage));
+})(ProfilePage))

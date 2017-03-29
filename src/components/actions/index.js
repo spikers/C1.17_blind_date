@@ -55,21 +55,21 @@ export function getSecondProfile(id){
 
 export function updateProfile(id, forms){
   console.log('forms in updateProfile', forms)
-  var data = "user=" + id + "&activity=" + choice;
-  var xhr = new XMLHttpRequest();
-  xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === 4) {
-    console.log('responseText', this.responseText);
-  }
-});
-
-xhr.open("PUT", `${BASE_URL}user/${id}`);
-xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
-
-xhr.send(data);
+  forms.dietary_restrictions[0]=forms.diet
+let encodedURI = encodeURI('username=' + forms.username + 
+          '&givenName=' + forms.givenName + '&familyName=' + forms.family_name + '&email=' + forms.email + '&age=' + 
+          forms.age + '&gender=' + forms.gender + '&biography=' + forms.biography);
+        let xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', function(data) {
+          console.log('Update Worked', data);
+          console.log(data.target.response);
+        });
+        xhr.open('PUT', `${BASE_URL}user/${id}`);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(encodedURI);
   return ({
     type:UPDATE_PROFILE,
-    payload: request
+    payload: true
   });
 }
 
