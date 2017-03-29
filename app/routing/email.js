@@ -1,5 +1,7 @@
-var sg = require('sendgrid')('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');
-var request = sg.emptyRequest({
+var config = require('../../config');
+
+var sg = require('sendgrid')(config.apiEmailKey);
+var emptyReq = sg.emptyRequest({
     method: 'POST',
     path: '/v3/mail/send',
     body: {
@@ -29,7 +31,7 @@ var request = sg.emptyRequest({
     },
 });
 
-sg.API(request, function(error, response) {
+sg.API(emptyReq, function(error, response) {
     if (error) {
         console.log('Error response received');
     }
@@ -37,3 +39,5 @@ sg.API(request, function(error, response) {
     console.log(response.body);
     console.log(response.headers);
 });
+
+export { sg, emptyReq };
