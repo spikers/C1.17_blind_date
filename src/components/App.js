@@ -40,4 +40,3 @@ export default (props)=>{
             {props.children}
         </div>
     )}
->>>>>>> ae413f02b6071d3dac072bb5631e40d9f86aaefb

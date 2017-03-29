@@ -3,6 +3,8 @@ import yelp from '../../test_data/yelp_obj';
 import user from '../../test_data/user_obj';
 import events from '../../test_data/events_obj';
 
+import objToQuery from '../../objToQueryString';
+
 const instance = axios.create({
   headers:{
     'Content-Type' : 'application/x-www-form-urlencoded'
@@ -19,7 +21,7 @@ export const SET_EVENT_CHOICE="SET_EVENT_CHOICE";
 export const GET_HANGOUT="GET_HANGOUT";
 export const GET_RESTAURANT="GET_RESTAURANT";
 export const CHANGE_AUTH ="CHANGE_AUTH";
-export const SET_FB_TOKEN="SET_FB_TOKEN"
+export const SET_FB_TOKEN="SET_FB_TOKEN";
 
 const BASE_URL = 'http://54.202.15.233:8000/api/';
 
@@ -92,7 +94,17 @@ export function getEvents(){
 }
 
 export function sendEventChoice(id, choice){
-var data = "user=" + id + "&activity=" + choice;
+var data = objToQuery(choice);
+console.log('query string', data)
+// var data ='';
+// var key;
+// for (key in choice){
+//   console.log('key in sendEventChoice', key)
+//   data += encodeURIComponent(key)+"="+encodeURIComponent(choice[key])+"&"
+// }
+console.log('test data in sendEventChoice', data)
+// var data = "user=" + id + "&activity=" + choice;
+// console.log('data in sendEventChoice', data)
 var xhr = new XMLHttpRequest();
 xhr.addEventListener("readystatechange", function () {
   if (this.readyState === 4) {
@@ -100,7 +112,7 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("POST", "http://54.202.15.233:8000/api/hangout/");
+xhr.open("POST", "http://54.202.15.233:8000/api/hangout");
 xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
 
 xhr.send(data);

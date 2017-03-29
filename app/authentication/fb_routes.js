@@ -18,7 +18,7 @@ module.exports = function(app, passport) {
             failureRedirect: '/'
         }), function (req, res) {
         console.log('++++++++++++req+++++++++', req.user.facebook.id);
-        res.redirect('http://localhost:3000/?fbtoken='+req.user.facebook.id);
+        res.redirect('http://localhost:3000/?fbtoken='+ req.user.facebook.id);
         }
     );
 
