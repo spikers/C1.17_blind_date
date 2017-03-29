@@ -1,4 +1,6 @@
-var sg = require('sendgrid')('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');
+var config = require('../../config');
+
+var sg = require('sendgrid')(config.apiEmailKey);
 var emptyReq = sg.emptyRequest({
     method: 'POST',
     path: '/v3/mail/send',
