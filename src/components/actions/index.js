@@ -19,10 +19,19 @@ export const SET_EVENT_CHOICE="SET_EVENT_CHOICE";
 export const GET_HANGOUT="GET_HANGOUT";
 export const GET_RESTAURANT="GET_RESTAURANT";
 export const CHANGE_AUTH ="CHANGE_AUTH";
+export const SET_FB_TOKEN="SET_FB_TOKEN"
 
 const BASE_URL = 'http://54.202.15.233:8000/api/';
 
 //LOGIN PAGE ACTIONS
+export function setFBToken(token){
+  localStorage.setItem('token', token)
+  return ({
+    type: SET_FB_TOKEN,
+    payload: token
+  })
+}
+
 export function sendLogin(){
   const request = instance.post(`${BASE_URL}user/18421221512`)
 }
@@ -44,8 +53,20 @@ export function getSecondProfile(id){
   });
 }
 
-export function updateProfile(user){
-  const request = instance.post(BASE_URL,user);
+export function updateProfile(id, forms){
+  console.log('forms in updateProfile', forms)
+  var data = "user=" + id + "&activity=" + choice;
+  var xhr = new XMLHttpRequest();
+  xhr.addEventListener("readystatechange", function () {
+  if (this.readyState === 4) {
+    console.log('responseText', this.responseText);
+  }
+});
+
+xhr.open("PUT", `${BASE_URL}user/${id}`);
+xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+
+xhr.send(data);
   return ({
     type:UPDATE_PROFILE,
     payload: request

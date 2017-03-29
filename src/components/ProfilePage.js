@@ -5,12 +5,14 @@ import {getProfile, updateProfile} from './actions/index';
 import {Link} from 'react-router';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
-import DatePicker from 'material-ui/DatePicker';
 import Divider from 'material-ui/Divider';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
+import Person from 'material-ui/svg-icons/action/accessibility';
 
 const buttonStyle = {
     margin: 10,
@@ -56,34 +58,109 @@ const createInput = function(input, label, type){
           fullWidth={true}
           />
         )
-      case 'date':
+      case 'number':
         return(
-          <DatePicker style={inputStyle} hintText="Date of Birth" />
+          <TextField type="number" style={inputStyle} hintText={label} floatingLabelText={label} value={this.props.user? this.props.user.age : ''}/>
         )
       case 'radio':
-      let genderDefault=null;
-        if (label === 'Gender'){
-          genderDefault = this.props.user ? this.props.user.gender : null
+        let genderDefault = null;
+        switch (label){
+          case "I'm a...":
+            genderDefault= this.props.user ? this.props.user.gender : null;
+            return (
+              <div>
+              <p>{label}</p>
+              <RadioButtonGroup 
+              {...input} defaultSelected={genderDefault}
+              >
+                    <RadioButton
+                      value="male"
+                      label="Guy"
+                    />
+                    <RadioButton
+                      value="female"
+                      label="Girl"
+                    />
+              </RadioButtonGroup>      
+            </div>)
+          case "I want a...":
+            genderDefault= (this.props.user && this.props.user.looking_for.gender) || null;
+            return (
+                <div>
+                <p>{label}</p>
+                <RadioButtonGroup 
+                {...input} defaultSelected={genderDefault}
+                >
+                      <RadioButton
+                        value="male"
+                        label="Guy"
+                      />
+                      <RadioButton
+                        value="female"
+                        label="Girl"
+                      />
+                </RadioButtonGroup>      
+              </div>)
+          case "I'm definitely a...":
+            return (
+                <div>
+                <p>{label}</p>
+                <RadioButtonGroup 
+                {...input} defaultSelected={this.props.user && this.props.user.looking_for.pet}
+                >
+                      <RadioButton
+                        value="dog"
+                        label="Dog Person"
+                      />
+                      <RadioButton
+                        value="cat"
+                        label="Cat Person"
+                      />
+                      <RadioButton
+                        value="fish"
+                        label="Fish Person"
+                      />
+                      <RadioButton
+                        value="bird"
+                        label="Bird Person"
+                      />
+                </RadioButtonGroup>      
+              </div>)
+          case "Who's also a...":
+            return (
+                <div>
+                <p>{label}</p>
+                <RadioButtonGroup 
+                {...input} defaultSelected={this.props.user &&this.props.user.looking_for.pet}
+                >
+                      <RadioButton
+                        value="dog"
+                        label="Dog Person"
+                      />
+                      <RadioButton
+                        value="cat"
+                        label="Cat Person"
+                      />
+                      <RadioButton
+                        value="fish"
+                        label="Fish Person"
+                      />
+                      <RadioButton
+                        value="bird"
+                        label="Bird Person"
+                      />
+                </RadioButtonGroup>      
+              </div>)
         }
-        else if (this.props.user){
-          genderDefault = this.props.user.gender === "male" ? "female":"male"
-        }
-        return(
-          <div>
-            <p>{label}</p>
-            <RadioButtonGroup 
-            {...input} defaultSelected={genderDefault}
-            >
-                  <RadioButton
-                    value="male"
-                    label="Male"
-                  />
-                  <RadioButton
-                    value="female"
-                    label="Female"
-                  />
-            </RadioButtonGroup>      
-      </div>)
+      case "dropdown":
+        return (
+            <DropDownMenu value={this.state.value} iconButton={<Person/>}>
+              <MenuItem value={1} primaryText='Dog' />
+              <MenuItem value={2} primaryText="Cat" />
+              <MenuItem value={3} primaryText="Fish" />
+              <MenuItem value={4} primaryText="Bird" />
+            </DropDownMenu>
+        );
       default:
         return(
           <TextField
@@ -101,14 +178,20 @@ const createInput = function(input, label, type){
   }
 
 class ProfilePage extends Component{
+  constructor(props) {
+    super(props);
+    this.state = {value: 1};
+  }
+
+  handleChange = (event, index, value) => this.setState({value});
+
   onSubmit(formProp){
-    console.log('these are formProps', formProp);
-    this.props.updateProfile(formProp);
+    this.props.updateProfile(this.props.user.fbToken, formProp);
   }
 
     render(){
+      console.log('props in profile page', this.props);
       const {handleSubmit} = this.props;
-      console.log(this.props.user);
       return (
         <div> 
           <Paper style={containerStyle} zDepth={1}>
@@ -122,7 +205,7 @@ class ProfilePage extends Component{
                 <img style={{
                   width:'100%', 
                   height:'auto'}}
-                  src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/5/005/095/0d0/0796c17.jpg" alt="profile"/>
+                  src={(this.props.user && this.props.user.profile_picture) || require('./img/flip_person.png')}/>
                 </div>
                 <FloatingActionButton style={{
                   position:"absolute",
@@ -133,21 +216,28 @@ class ProfilePage extends Component{
                 </FloatingActionButton>
               </Paper>
             </Paper>
-          <Paper style={containerStyle} zDepth={1}>
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-              <Field name='username' component={renderInput.bind(this)} type="text" label="Username"/>
-              <Field name='name' component={renderInput.bind(this)} type="text" label="Name"/>
-              <Field name='email' component={renderInput.bind(this)} type="text" label="E-mail"/>
-              <Field name='age' component={renderInput.bind(this)} type="date" label="Birthday"/>
-              <Field name='gender' component={renderInput.bind(this)} type='radio' label="Gender"/>
-              <Field name='lookingFor' component={renderInput.bind(this)} type="radio" label="Looking For"/>
-              <Field name='biography' component={renderInput.bind(this)} type="textarea" label="About Me"/>
+              <Paper style={containerStyle} zDepth={1}>
+                <h2>Tell us about yourself!</h2>
+                <Field name='username' component={renderInput.bind(this)} type="text" label="Username"/>
+                <Field name='given_name' component={renderInput.bind(this)} type="text" label="First Name"/>
+                <Field name='family_name' component={renderInput.bind(this)} type="text" label="Last Name"/>
+                <Field name='email' component={renderInput.bind(this)} type="text" label="E-mail"/>
+                <Field name='age' component={renderInput.bind(this)} type="number" label="Age"/>
+                <Field name='biography' component={renderInput.bind(this)} type="textarea" label="About Me"/>
+                <Field name='gender' component={renderInput.bind(this)} type='radio' label="I'm a..."/>
+                <Field name='pet' component={renderInput.bind(this)} type="radio" label="I'm definitely a..."/>
+              </Paper>
+              <Paper style={containerStyle} zDepth={1}>
+                <h2>Who are you looking for?</h2>
+                <Field name='lookforgender' component={renderInput.bind(this)} type="radio" label="I want a..."/>
+                <Field name='lookforpet' component={renderInput.bind(this)} type="radio" label="Who's also a..."/>
+              </Paper>
               <Link to='/events'><RaisedButton>Cancel</RaisedButton></Link>
               <RaisedButton 
                style={buttonStyle} label="Update Profile" primary={true}
                type="submit"/>
           </form>
-        </Paper>
         </div>
       )
     }
@@ -158,11 +248,11 @@ function validate(values){
 }
 
 function mapStateToProps(state){
-  console.log('this is state in mapStateToProps', state);
   return {
     user: state.user.user,
     initialValues: state.user.user,
-    authenticated: state.authenticated
+    authenticated: state.authenticated,
+    token: state.user.token
   }
 }
 

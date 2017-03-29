@@ -96,7 +96,6 @@ class EventsPage extends React.Component {
           <Tab label={tabs[0]} value={0} />
           <Tab label={tabs[1]} value={1} />
           <Tab label={tabs[2]} value={2} />
-          <Tab label={tabs[3]} value={3} />
         </Tabs>
 
         <Paper style={paperStyle}> 
