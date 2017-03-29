@@ -49,8 +49,8 @@ console.log('zzzzzzzzzzzzzzzuserObj.looking_forzzzzzzzzzzzzzzzzz', parseJSON(use
         {'activity.id': activityObject.id},
         {
           "first_person.gender": parseJSON(userObj.looking_for).gender,
-          "first_person.interests.pet": parseJSON(userObj.looking_for).pet,
-          "first_person.looking_for.gender": userObj.gender,
+          "first_person.interests.pet": parseJSON(userObj.looking_for).pet//,
+          //"first_person.looking_for.gender": userObj.gender,
           // "first_person.looking_for.pet": parseJSON(userObj.interests).pet
           }
       //Put preferences here
