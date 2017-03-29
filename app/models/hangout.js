@@ -77,8 +77,8 @@ let basic_user_information = new Schema({
 let hangout = new Schema({
   'first_person': String,
   'second_person': String,
-  'first_person_basic_information': basic_user_information,
-  'second_person_basic_information': basic_user_information,
+  'first_person_id': String,
+  'second_person_id': String,
   'restaurant': yelp,
   'activity': yelp,
   'created': {

@@ -43,6 +43,11 @@ let user = new Schema({
   hangouts: [ hangout ]
 });
 
+user.virtual('user_to_hangout', {
+  ref: 'hangout',
+  localField: 'hangouts_id',
+  foreignField: ''
+})
 
 //Mongoose automatically finds collection 'users'
 export default mongoose.model('user', user);
