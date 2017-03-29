@@ -16,18 +16,20 @@ export default class Sidebar extends React.Component {
     handleClose = () => this.setState({open: false});
 
     render() {
+
         return (
                 <div>
                     <AppBar
                         onLeftIconButtonTouchTap={this.handleToggle}
+                        title={this.props.title}
+                        style={this.props.style}
                     />
                     <Drawer
-                        containerStyle={{height: '50%', top: '8.5%'}}
+                        containerStyle={{height: '100%', top: '8.5%'}}
                         docked={true}
                         width={200}
                         open={this.state.open}
-                        onRequestChange={(open) => this.setState({open})
-                        }
+                        onRequestChange={(open) => this.setState({open})}
                     >
                         <Link to='/'><MenuItem onTouchTap={this.handleClose}>Login</MenuItem></Link>
                         <Link to='/profile'><MenuItem onTouchTap={this.handleClose}>Profile</MenuItem></Link>
