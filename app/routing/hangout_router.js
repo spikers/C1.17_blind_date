@@ -214,9 +214,9 @@ console.log('zzzzzzzzzzzzzzzuserObj.looking_forzzzzzzzzzzzzzzzzz', parseJSON(use
                               type: 'text/html',
                               value:'<img src="logo.png"></br>' +
                               '<img src="match.jpg"></br>' +
-                              '<h1>Hi, friend</h1></br>' +
+                              '<h1>Hello friend,</h1></br>' +
                               '<h2>We found a match for you!</h2></br>' +
-                              '<h2>Click <a href="/">here</a> to see who your match is!</h2>',
+                              '<h2>Click <a href="wynk.world/results">here</a> to see who your match is! Then celebrate!</h2>',
                           },
                       ],
                   },
