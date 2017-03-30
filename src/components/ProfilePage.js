@@ -43,9 +43,9 @@ const inputStyle={
     marginBottom: 10
 }
 
-const createInput = function(input, label, type){
+const createInput = function(input, label, type, props){
 
-  // console.log('this.props in createInput', this.props.user)
+  console.log('this.props in createInput', props)
     switch (type){
       case 'textarea':
         return(
@@ -60,7 +60,7 @@ const createInput = function(input, label, type){
         let genderDefault = null;
         switch (label){
           case "I'm a...":
-            genderDefault= this.props.user ? this.props.user.gender : null;
+            genderDefault= props.user ? props.user.gender : null;
             return (
               <div>
               <p>{label}</p>
@@ -78,7 +78,7 @@ const createInput = function(input, label, type){
               </RadioButtonGroup>      
             </div>)
           case "I want a...":
-            genderDefault= (this.props.user && this.props.user.looking_for && this.props.user.looking_for.gender) || null;
+            genderDefault= (props.user && props.user.looking_for && props.user.looking_for.gender) || null;
             return (
                 <div>
                 <p>{label}</p>
@@ -100,7 +100,7 @@ const createInput = function(input, label, type){
                 <div>
                 <p>{label}</p>
                 <RadioButtonGroup 
-                {...input} defaultSelected={this.props.user && this.props.user.looking_for && this.props.user.looking_for.pet || null}
+                {...input} defaultSelected={props.user && props.user.looking_for && props.user.looking_for.pet || null}
                 >
                       <RadioButton
                         value="dog"
@@ -125,7 +125,7 @@ const createInput = function(input, label, type){
                 <div>
                 <p>{label}</p>
                 <RadioButtonGroup 
-                {...input} defaultSelected={(this.props.user && this.props.user.looking_for && this.props.user.looking_for.pet) || null}
+                {...input} defaultSelected={(props.user && props.user.looking_for && props.user.looking_for.pet) || null}
                 >
                       <RadioButton
                         value="dog"
@@ -151,11 +151,11 @@ const createInput = function(input, label, type){
           //   let arr = JSON.parse(this.props.user.dietary_restrictions[0])
           //   defaultDiet = arr[0]
           // }
-          console.log('diet restrictions', this.props.user && this.props.user.dietary_restrictions[0])
+          console.log('diet restrictions', props.user && props.user.dietary_restrictions[0])
             return(
               <div>
                 <p>{label}</p>
-                  <RadioButtonGroup {...input} defaultSelected={this.props.user && this.props.user.dietary_restrictions[0]}>
+                  <RadioButtonGroup {...input} defaultSelected={props.user && props.user.dietary_restrictions[0]}>
                       <RadioButton
                         value="vegetarian"
                         label="Meat"
@@ -181,9 +181,9 @@ const createInput = function(input, label, type){
     }
   }
 
- const renderInput = function({input, label, type}){
+ const renderInput = function({input, label, type, propData}){
     return(
-      <div>{createInput.bind(this)(input, label, type)}</div>
+      <div>{createInput(input, label, type, propData)}</div>
     )
   }
 
@@ -191,13 +191,9 @@ class ProfilePage extends Component{
   static contextTypes =  {
         router: PropTypes.object
       }
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {value: 1};
-  // }
 
-  // handleChange = (event, index, value) => this.setState({value});
-
+  
+  
   onSubmit(formProp){
     console.log('these are formProp', formProp)
     let forms = formProp
@@ -206,18 +202,13 @@ class ProfilePage extends Component{
     gender: forms.lookforgender,
     pet: forms.lookforpet
   }
-  delete forms.pet
-  delete forms.lookforgender
-  delete forms.lookforpet
-  delete forms.diet
-  console.log('this is forms after changes', forms)
     this.props.updateProfile(this.props.user.fbToken, forms);
     this.context.router.push('/events');
   }
-
     render(){
       console.log('props in profile page', this.props);
       const {handleSubmit} = this.props;
+      let props = this.props;
       return (
         <div> 
           <Paper style={containerStyle} zDepth={1}>
@@ -245,20 +236,20 @@ class ProfilePage extends Component{
             <form>
               <Paper style={containerStyle} zDepth={1}>
                 <h2>Tell us about yourself!</h2>
-                <Field name='username' component={renderInput.bind(this)} type="text" label="Username"/>
-                <Field name='given_name' component={renderInput.bind(this)} type="text" label="First Name"/>
-                <Field name='family_name' component={renderInput.bind(this)} type="text" label="Last Name"/>
-                <Field name='email' component={renderInput.bind(this)} type="text" label="E-mail"/>
-                <Field name='age' component={renderInput.bind(this)} type="text" label="Age"/>
-                <Field name='biography' component={renderInput.bind(this)} type="textarea" label="About Me"/>
-                <Field name='gender' component={renderInput.bind(this)} type='radio' label="I'm a..."/>
-                <Field name='pet' component={renderInput.bind(this)} type="radio" label="I'm definitely a..."/>
-                <Field name='diet' component={renderInput.bind(this)} type="radio" label="I can't eat..."/>
+                <Field name='username' component={renderInput} type="text" label="Username" propData={this.props} />
+                <Field name='given_name' component={renderInput} type="text" label="First Name" propData={this.props}/>
+                <Field name='family_name' component={renderInput} type="text" label="Last Name" propData={this.props}/>
+                <Field name='email' component={renderInput} type="text" label="E-mail" propData={this.props}/>
+                <Field name='age' component={renderInput} type="text" label="Age" propData={this.props}/>
+                <Field name='biography' component={renderInput} type="textarea" label="About Me" propData={this.props}/>
+                <Field name='gender' component={renderInput} type='radio' label="I'm a..." propData={this.props}/>
+                <Field name='pet' component={renderInput} type="radio" label="I'm definitely a..." propData={this.props}/>
+                <Field name='diet' component={renderInput} type="radio" label="I can't eat..." propData={this.props}/>
               </Paper>
               <Paper style={containerStyle} zDepth={1}>
                 <h2>Who are you looking for?</h2>
-                <Field name='lookforgender' component={renderInput.bind(this)} type="radio" label="I want a..."/>
-                <Field name='lookforpet' component={renderInput.bind(this)} type="radio" label="Who's also a..."/>
+                <Field name='lookforgender' component={renderInput} type="radio" label="I want a..." propData={this.props}/>
+                <Field name='lookforpet' component={renderInput} type="radio" label="Who's also a..." propData = {this.props}/>
               </Paper>
               <div style={{textAlign: "right"}}>
                 <Link style={buttonStyle} to='/events'><RaisedButton >Cancel</RaisedButton></Link>

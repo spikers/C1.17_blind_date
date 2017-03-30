@@ -81,16 +81,8 @@ export function updateProfile(id, forms){
     xhr.send(encodedURI);
   return ({
     type:UPDATE_PROFILE,
-    payload: true
+    payload: forms
   });
-}
-
-export function saveProfile(user){
-  const request = instance.post(BASE_URL, user);
-  return({
-    type:SAVE_PROFILE,
-    payload: request
-  })
 }
 
 //EVENTS PAGE ACTIONS
