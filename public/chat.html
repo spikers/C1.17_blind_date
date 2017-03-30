@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Chat Application</title>
+  <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
   <script src="./js/socket.io.js"></script>
   <script>
+    //111082239432346
     var userObject = {
         "_id": {
             "$oid": "58d8edc7ef2dc61b57c0308a"
@@ -93,10 +95,55 @@
 
     window.addEventListener('load', function () {
 
-      //fake data
-      initialize();
-
+        //fake data
+        $.ajax({
+            url: "http://localhost:8000/api/user/" + getFbToken(),
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                initialize();
+                createButton(data);
+            }
+        });
     });
+    function chatHistory(chat) {
+            for(var j=chat.length-1; j>=0; j--){
+                var msg = chat[j].message;
+                $('#messages').append($('<li>').append(msg));
+            }
+    }
+    function getName(fbToken,chatData){
+            $.ajax({
+                url: "http://localhost:8000/api/user/" + fbToken,
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    var name = data.given_name;
+                    var button = $('<button>');
+                    $('#room-container').append(button.append(name));
+                    button.click(function () {
+                        $('#messages').empty();
+                        chatHistory(chatData);
+                    })
+                }
+            });
+    }
+    function createButton(data){
+        for(var i = 0; i<data.hangouts.length; i++){
+            (function () {
+                if(data.fbToken === data.hangouts[i].first_person){
+                    var match = data.hangouts[i].second_person;
+                    var chatData = data.hangouts[i].chat;
+                    getName(match, chatData);
+                }else{
+                    var match = data.hangouts[i].first_person;
+                    var chatData = data.hangouts[i].chat;
+                    getName(match, chatData);
+                }
+            })();
+        }
+    }
 
     function initialize() {
 
@@ -125,13 +172,7 @@
         ulElement.scrollTop = ulElement.scrollHeight;
       });
 
-      // Change Room or Name
-
-      document.getElementById('change-name').addEventListener('click', function () {
-        name = document.getElementById('name').value;
-        socket.emit('changeUserName', { userName: name });
-        console.log('name: ' + name);
-      });
+      // Change Room
 
       document.querySelectorAll('.change-room').forEach(function (item) {
         item.addEventListener('click', function () {
@@ -247,7 +288,6 @@
   <h1>Generic Chat Application</h1>
   <div id="room-container"></div>
   <br />
-  <input id="name" name="name" placeholder="name"><button id="change-name">Change Name</button>
   <div class="chat-window">
     <ul id="messages"></ul>
 
