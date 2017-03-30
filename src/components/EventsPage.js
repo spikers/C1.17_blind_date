@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Link} from 'react-router';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import SwipeableViews from 'react-swipeable-views';
 import Paper from 'material-ui/Paper';
 import EventsGrid from './EventsGrids';
 import {connect} from 'react-redux';
-import {getEvents, sendEventChoice} from './actions';
+import {getEvents, sendEventChoice, setEventChoice} from './actions';
 import Logo from './Logo';
 import Spinner from './Spinner'
 import css from './styles/EventsPage.css'
@@ -27,6 +27,9 @@ const paperStyle = {
 }
 
 class EventsPage extends React.Component {
+  static contextTypes =  {
+        router: PropTypes.object
+      }
   constructor(props) {
     super(props);
     this.state = {
@@ -39,6 +42,11 @@ class EventsPage extends React.Component {
       slideIndex: value,
     });
   };
+
+  handleEventChoice(id, choice){
+    this.props.sendEventChoice(id, choice)
+    console.log('this is id, choice in handleEventChoice', id, choice)
+  }
 
   componentWillMount(){
     this.props.getEvents();
@@ -91,7 +99,6 @@ class EventsPage extends React.Component {
           <Tab label={tabs[0]} value={0} />
           <Tab label={tabs[1]} value={1} />
           <Tab label={tabs[2]} value={2} />
-          <Tab label={tabs[3]} value={3} />
         </Tabs>
 
         <Paper style={paperStyle}> 
@@ -109,8 +116,8 @@ class EventsPage extends React.Component {
         </Paper>
 
         <div style={showing} className={css.container}>
-          <Paper className={css.shadow} circle={true} zDepth={2}>
-            <Link to="/results"><img className={css.flip} src={require("./img/flip.png")} alt=""/></Link>
+          <Paper className={css.shadow} circle={true} zDepth={2} onClick={this.handleEventChoice.bind(this, this.props.user.fbToken, this.props.eventChoice)}>
+            <Link to='/results'><img className={css.flip} src={require("./img/wynk.png")} alt="wynk"/></Link>
           </Paper>
         </div>
       </div>
@@ -125,4 +132,4 @@ function mapStateToProps(state){
     authenticated: state.authenticated
     }
 }
-export default connect(mapStateToProps, {getEvents, sendEventChoice})(EventsPage);
+export default connect(mapStateToProps, {getEvents, setEventChoice, sendEventChoice})(EventsPage);

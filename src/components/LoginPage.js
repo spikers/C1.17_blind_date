@@ -12,36 +12,27 @@ const inputStyle = {
     color: white
 };
 
-const sendLogin = function(){
-  this.props.getProfile(136173360242729).then(
-    (res)=>{
-        console.log('success function called', res)
-        this.props.authenticate(true)
-        console.log('props after callback', this.props)
-        this.context.router.push('/profile')
-    }
-  )
-}
-
 class LoginPage extends Component {
     static contextTypes =  {
         router: PropTypes.object
       }
-    componentWillMount(nextProps){
-        console.log('nextProps.location', nextProps)
+    componentWillMount(){
+        console.log(this.props)
+        if(this.props.authenticated){
+            this.props.getProfile(this.props.token).then(()=>{
+                this.context.router.push('/profile')
+            })
+        }
     }
     render(){
-        let path = '/profile';
-        //create some function to detect session to swap path between profile and events on Submit
+        console.log('this.props in render', this.props)
         return(
         <div>
             <div className={styles.container}>
-            <Logo classNameName="LogoStyles.logo"/>
-            <a href="/auth/facebook">Test Auth</a>
-            <div style={{width:"60vw", height: "auto"}} onClick={sendLogin.bind(this)}>
-                <img src={require('./img/fb_login.png')}/>
-            </div>
-
+                <Logo classNameName="LogoStyles.logo"/>
+                <div style={{width:"60vw", height: "auto"}}>
+                    <a href="http://localhost:8000/auth/facebook"><img style={{width:"100%", height: "auto"}} src={require('./img/fb_login.png')}/></a>
+                </div>
             </div>
         </div>
         )
@@ -52,7 +43,8 @@ class LoginPage extends Component {
       console.log('state in login page', state)
       return({
       authenticated: state.authenticated,
-      user: state.user.user
+      user: state.user.user,
+      token: state.user.token
       })
   }
 
