@@ -6,6 +6,10 @@ import getEvent from './yelp_data';
 import convertValueArrayAndCategoriesToObject from './convert_to_object';
 import randomizeSelection from './randomize';
 import parseJSON from './parse_json';
+import { sg, emptyReq } from './email' ;
+var config = require('../../config');
+
+
 //import restaurantActivity from './restaurant_activity';
 
 const app = express();
@@ -181,6 +185,46 @@ console.log('zzzzzzzzzzzzzzzuserObj.looking_forzzzzzzzzzzzzzzzzz', parseJSON(use
 
           Promise.all([hangoutPromise]).then(function (values) {
             res.status(200).json({'Message': 'Matched'});
+            //emptyReq();
+              var sg = require('sendgrid')(config.apiEmailKey);
+              var emptyReq = sg.emptyRequest({
+                  method: 'POST',
+                  path: '/v3/mail/send',
+                  body: {
+                      personalizations: [
+                          {
+                              to: [
+                                  {
+                                      email: 'yaerilim@gmail.com',
+                                  },
+                              ],
+                              subject: '[WYNK] We found a match for you!',
+                          },
+                      ],
+                      from: {
+                          email: 'test@example.com',
+                      },
+                      content: [
+                          {
+                              type: 'text/html',
+                              value:'<img src="logo.png"></br>' +
+                              '<img src="match.jpg"></br>' +
+                              '<h1>Hi, friend</h1></br>' +
+                              '<h2>We found a match for you!</h2></br>' +
+                              '<h2>Click <a href="/">here</a> to see who your match is!</h2>',
+                          },
+                      ],
+                  },
+              });
+
+              sg.API(emptyReq, function(error, response) {
+                  if (error) {
+                      console.log('Error response received');
+                  }
+                  console.log('statusCode',response.statusCode);
+                  console.log('body',response.body);
+                  console.log('headers',response.headers);
+              });
             //return;
           }).catch(function (err) {
               console.log('err:' + err);
