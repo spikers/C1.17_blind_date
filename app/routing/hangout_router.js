@@ -40,6 +40,7 @@ hangoutRouter.route('/')
 
 
     userData.then(function (user) {
+      console.log(user);
       var checkOpenDates = Hangout.find({
         $and: [
           {
@@ -52,12 +53,48 @@ hangoutRouter.route('/')
 
       checkOpenDates.then(function (open) {
         
+        console.log('open stuff', open);
+
+        if (open.length === 0) {
+            //If it's here, it'll be a solo mission
+
+            hangout.first_person = req.body.user;
+            hangout.activity = activityObject;
+            console.log(hangout);
+
+            //// Saves to the USER and HANGOUT document
+            // Saves to Hangout 
+            let hangoutPromise = hangout.save(function (err) {
+              if (err) {
+                res.status(401).json('Error', err);
+                return;
+              }
+            });
+
+            // Saves to USER
+            User.findOne({'fbToken': req.body.user}, function (err, userObj) {
+              userObj.hangouts.unshift(hangout);
+              userObj.save(function (err) {
+                if (err) {
+                  res.status(401).json('Error', err);
+                  return;
+                }
+              });
+            });
+
+
+            Promise.all([hangoutPromise]).then(function (values) {
+              res.status(200).json({ 'message': 'hangout saved'});
+            });
+
+          }
         
         var promiseArray = [];
 
         for (let i = 0; i < open.length; i++) {
           let prom = new Promise(function(res, rej) {
             User.findOne({ 'fbToken': open[i].first_person }, function (err, data) {
+              console.log(i);
               if (err) return err;
               res(data);
             });
@@ -167,39 +204,7 @@ hangoutRouter.route('/')
 
             }
             //DEAD ZONE
-            else {
-              //If it's here, it'll be a solo mission
-
-              hangout.first_person = req.body.user;
-              hangout.activity = activityObject;
-              console.log(hangout);
-
-              //// Saves to the USER and HANGOUT document
-              // Saves to Hangout 
-              let hangoutPromise = hangout.save(function (err) {
-                if (err) {
-                  res.status(401).json('Error', err);
-                  return;
-                }
-              });
-
-              // Saves to USER
-              User.findOne({'fbToken': req.body.user}, function (err, userObj) {
-                userObj.hangouts.unshift(hangout);
-                userObj.save(function (err) {
-                  if (err) {
-                    res.status(401).json('Error', err);
-                    return;
-                  }
-                });
-              });
-
-
-              Promise.all([hangoutPromise]).then(function (values) {
-                res.status(200).json({ 'message': 'hangout saved'});
-              });
-
-            }
+            
 ///////THIS IS GOOD
 
           }
