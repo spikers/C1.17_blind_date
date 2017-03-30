@@ -7,90 +7,7 @@
   <script src="./js/socket.io.js"></script>
   <script>
     //111082239432346
-    var userObject = {
-        "_id": {
-            "$oid": "58d8edc7ef2dc61b57c0308a"
-        },
-        "fbToken": "111082239432346",
-        "hangouts": [
-            {
-                "__v": 0,
-                "first_person": "112913882581911",
-                "activity": {
-                    "review_count": 83,
-                    "distance": 12263.8064893,
-                    "is_closed": false,
-                    "phone": "+17142104585",
-                    "rating": 4.5,
-                    "name": "Lyon Air Museum",
-                    "display_phone": "(714) 210-4585",
-                    "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/IaXGgBY7H3gfX-lVhoUYjg/o.jpg",
-                    "id": "lyon-air-museum-santa-ana",
-                    "url": "https://www.yelp.com/biz/lyon-air-museum-santa-ana?adjust_creative=RacSYb9qeA-Ow3Om2netXA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=RacSYb9qeA-Ow3Om2netXA",
-                    "_id": {
-                        "$oid": "58d8f0506e9d1a1bf75b32c1"
-                    },
-                    "activity_status": "active",
-                    "categories": [
-                        {
-                            "title": "Museums",
-                            "alias": "museums",
-                            "_id": {
-                                "$oid": "58d8f0506e9d1a1bf75b32c3"
-                            }
-                        },
-                        {
-                            "title": "Venues & Event Spaces",
-                            "alias": "venues",
-                            "_id": {
-                                "$oid": "58d8f0506e9d1a1bf75b32c2"
-                            }
-                        }
-                    ],
-                    "transactions": [],
-                    "coordinates": {
-                        "longitude": -117.873524129391,
-                        "latitude": 33.6735375970602
-                    },
-                    "location": {
-                        "city": "Santa Ana",
-                        "address1": "19300 Ike Jones Rd",
-                        "address3": "",
-                        "state": "CA",
-                        "zip_code": "92707",
-                        "address2": "",
-                        "country": "US",
-                        "display_address": [
-                            "19300 Ike Jones Rd",
-                            "Santa Ana, CA 92707"
-                        ]
-                    }
-                },
-                "_id": {
-                    "$oid": "58d8f0506e9d1a1bf75b32c0"
-                },
-                "second_person": "111082239432346",
-                "chat": [],
-                "created": {
-                    "$date": "2017-03-27T10:58:20.819Z"
-                }
-            }
-        ],
-        "admin": false,
-        "status": "active",
-        "interests": [],
-        "looking_for": [],
-        "dietary_restrictions": [],
-        "__v": 1,
-        "age": 122151,
-        "biography": "I am a test account hurray!",
-        "email": "pleasedate@gmail.com",
-        "family_name": "Dateme",
-        "gender": "Female",
-        "given_name": "BettyHeyhey",
-        "username": "Betty"
-    }
-                
+    //var userObject;
     
 
     window.addEventListener('load', function () {
@@ -100,10 +17,10 @@
             url: "http://localhost:8000/api/user/" + getFbToken(),
             type: "GET",
             dataType: "json",
-            success: function (data) {
-                console.log(data);
-                initialize();
-                createButton(data);
+            success: function (userObject) {
+                console.log(userObject);
+                createButton(userObject);
+                initialize(userObject);
             }
         });
     });
@@ -114,38 +31,41 @@
             }
     }
     function getName(fbToken,chatData){
-            $.ajax({
-                url: "http://localhost:8000/api/user/" + fbToken,
-                type: "GET",
-                dataType: "json",
-                success: function (data) {
-                    var name = data.given_name;
-                    var button = $('<button>');
-                    $('#room-container').append(button.append(name));
-                    button.click(function () {
-                        $('#messages').empty();
-                        chatHistory(chatData);
-                    })
-                }
+      if (!fbToken) return;
+
+      $.ajax({
+          url: "http://localhost:8000/api/user/" + fbToken,
+          type: "GET",
+          dataType: "json",
+          success: function (data) {
+            var name = data.given_name;
+
+            var button = $('<button>');
+            $('#room-container').append(button.append(name));
+            button.click(function () {
+              $('#messages').empty();
+              chatHistory(chatData);
             });
+          }
+      });
     }
     function createButton(data){
         for(var i = 0; i<data.hangouts.length; i++){
             (function () {
+                var chatData = data.hangouts[i].chat;
+
                 if(data.fbToken === data.hangouts[i].first_person){
                     var match = data.hangouts[i].second_person;
-                    var chatData = data.hangouts[i].chat;
                     getName(match, chatData);
                 }else{
                     var match = data.hangouts[i].first_person;
-                    var chatData = data.hangouts[i].chat;
                     getName(match, chatData);
                 }
             })();
         }
     }
 
-    function initialize() {
+    function initialize(userObject) {
 
       var name = '';
       var room = userObject.hangouts[0]._id;
@@ -162,7 +82,7 @@
       var form = document.getElementById('form');
 
       form.addEventListener('submit', function (e) {
-        submitMessage(e, socket, room);
+        submitMessage(e, socket, room, userObject);
       });
 
       socket.on('chat message', function (msg) {
@@ -208,7 +128,7 @@
       });
     }
 
-    function submitMessage(e, socket, room) {
+    function submitMessage(e, socket, room, userObject) {
       e.preventDefault();
       if (document.getElementById('input').value === '') return;
       var message = document.getElementById('input').value;
@@ -239,19 +159,19 @@
           var hangout = userObject.hangouts[i];
 
           var chatId = hangout._id.$oid;
-          console.log('hangoutId: ', chatId);
+          // console.log('hangoutId: ', chatId);
 
-          var otherPerson = (userObject.fbToken === userObject.hangouts[i].first_person.fbToken) ? userObject.hangouts[i].second_person : userObject.hangouts[i].first_person;
-          console.log('Other Person: ', otherPerson);
-          var btn = document.createElement('button');
-          var tn = document.createTextNode(otherPerson);
-          btn.appendChild(tn);
+          // var otherPerson = (userObject.fbToken === userObject.hangouts[i].first_person.fbToken) ? userObject.hangouts[i].second_person : userObject.hangouts[i].first_person;
+          // console.log('Other Person: ', otherPerson);
+          // var btn = document.createElement('button');
+          // var tn = document.createTextNode(otherPerson);
+          // btn.appendChild(tn);
 
-          btn.addEventListener('click', function (e) {
-            socket.emit('changeRoom', { roomName: chatId })
-          })
+          // btn.addEventListener('click', function (e) {
+          //   socket.emit('changeRoom', { roomName: chatId })
+          // })
 
-          roomContainer.appendChild(btn);
+          // roomContainer.appendChild(btn);
         }())
       }
     }
@@ -280,7 +200,7 @@
     #text-container { width: 100% }
     #typing { height: 1em; }
 
-    .chat-window { max-width: 300px; max-height: 280px; }
+    .chat-window { /*max-width: 300px; max-height: 280px; */height: 100%;}
 
   </style>
 </head>
