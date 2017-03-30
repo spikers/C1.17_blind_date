@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var jwt = require('jsonwebtoken');
 var config = require('./config');
+var path = require('path');
 
 var User = require('./app/models/user');
 //var Hangout = require('./app/models/hangout');
@@ -773,6 +774,9 @@ app.use('/', router);
 app.use('/api', apiRouter);
 app.use('/api/yelp', yelpRouter);
 app.use('/api/hangout', hangoutRouter);
+app.use('*', function (req, res) {
+  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+});
 
 const server = app.listen(port);
 
