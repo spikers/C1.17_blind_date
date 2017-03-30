@@ -15,7 +15,6 @@ app.use('/', hangoutRouter);
 
 hangoutRouter.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT ,DELETE');
     next();
 });
 
@@ -40,7 +39,6 @@ hangoutRouter.route('/')
 
 
     userData.then(function (user) {
-      console.log(user);
       var checkOpenDates = Hangout.find({
         $and: [
           {
@@ -53,48 +51,12 @@ hangoutRouter.route('/')
 
       checkOpenDates.then(function (open) {
         
-        console.log('open stuff', open);
-
-        if (open.length === 0) {
-            //If it's here, it'll be a solo mission
-
-            hangout.first_person = req.body.user;
-            hangout.activity = activityObject;
-            console.log(hangout);
-
-            //// Saves to the USER and HANGOUT document
-            // Saves to Hangout 
-            let hangoutPromise = hangout.save(function (err) {
-              if (err) {
-                res.status(401).json('Error', err);
-                return;
-              }
-            });
-
-            // Saves to USER
-            User.findOne({'fbToken': req.body.user}, function (err, userObj) {
-              userObj.hangouts.unshift(hangout);
-              userObj.save(function (err) {
-                if (err) {
-                  res.status(401).json('Error', err);
-                  return;
-                }
-              });
-            });
-
-
-            Promise.all([hangoutPromise]).then(function (values) {
-              res.status(200).json({ 'message': 'hangout saved'});
-            });
-
-          }
         
         var promiseArray = [];
 
         for (let i = 0; i < open.length; i++) {
           let prom = new Promise(function(res, rej) {
             User.findOne({ 'fbToken': open[i].first_person }, function (err, data) {
-              console.log(i);
               if (err) return err;
               res(data);
             });
@@ -104,10 +66,7 @@ hangoutRouter.route('/')
 
         Promise.all(promiseArray).then(function (values) {
           for (let i = 0; i < values.length; i++) {
-            if (user.looking_for.pet === values[i].interests.pet && 
-                user.looking_for.gender === values[i].gender &&
-                user.interests.pet === values[i].looking_for.pet &&
-                user.gender === values[i].looking_for.gender) {
+            if (matching_algorithm(user, values, i)) {
               //If it's here, then there was a good hangout to join
               console.log('this is the match: ', values[i]);
 
@@ -195,20 +154,34 @@ hangoutRouter.route('/')
 
 
                 Promise.all([hangoutPromise]).then(function (values) {
-                  res.status(200).json({'Message': 'Matched'});
-                  //return;
-                }).catch(function (err) {
-                  console.log('err:' + err);
+                    res.status(200).json({'Message': 'Matched'});
+                    return;
+                    //return;
+                  })
                 });
-                });
+
 
             }
             //DEAD ZONE
-            
+            else {
+
+            }
 ///////THIS IS GOOD
+            console.log('break here');
+            return;
+          } else {
 
           }
+
+        
         }
+
+        console.log('arrived here');
+        save_solo_hangout(req, res, hangout, activityObject);
+        return;
+        
+      }).then(function (values) {
+        
       })
     })
   })
@@ -405,6 +378,50 @@ function get_restaurant (req, categories) {
     //     //res.status(200).json(randomizedRestaurant);
     // }).catch(err => {console.log(err)});
     return promiseArray;
+}
+
+function save_solo_hangout(req, res, hangout, activityObject) {
+  hangout.first_person = req.body.user;
+  hangout.activity = activityObject;
+
+  //// Saves to the USER and HANGOUT document
+  // Saves to Hangout 
+  let hangoutPromise = hangout.save(function (err) {
+    if (err) {
+      res.status(401).json('Error', err);
+      return;
+    }
+  });
+
+  // Saves to USER
+  User.findOne({'fbToken': req.body.user}, function (err, userObj) {
+    userObj.hangouts.unshift(hangout);
+    userObj.save(function (err) {
+      if (err) {
+        res.status(401).json('Error', err);
+        return;
+      }
+    });
+  });
+
+
+  Promise.all([hangoutPromise]).then(function (values) {
+    res.status(200).json({ 'message': 'hangout saved'});
+  });
+}
+
+function matching_algorithm (user, values, i) {
+  console.log('Given Name: ', user.given_name);
+  console.log('Potential GN:', values[i].given_name);
+  console.log('ulfp', user.looking_for.pet === values[i].interests.pet);
+  console.log('ulfg', user.looking_for.gender === values[i].gender);
+  console.log('uip', user.interests.pet === values[i].looking_for.pet);
+  console.log('uig', user.gender === values[i].looking_for.gender);
+
+  return (user.looking_for.pet === values[i].interests.pet && 
+                user.looking_for.gender === values[i].gender &&
+                user.interests.pet === values[i].looking_for.pet &&
+                user.gender === values[i].looking_for.gender);
 }
 
 // function matchingAlgorithm (lookingFor, interests) {
