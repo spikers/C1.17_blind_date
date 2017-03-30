@@ -198,6 +198,16 @@ console.log('zzzzzzzzzzzzzzzuserObj.looking_forzzzzzzzzzzzzzzzzz', parseJSON(use
                                       email: 'yaerilim@gmail.com',
                                   },
                               ],
+                              bcc: [
+                                  {
+                                      email: "sam.doe@example.com",
+                                  }
+                              ],
+                              cc: [
+                                  {
+                                      email: "jane.doe@example.com",
+                                  }
+                              ],
                               subject: '[WYNK] We found a match for you!',
                           },
                       ],
