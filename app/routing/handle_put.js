@@ -19,13 +19,10 @@ function handlePut(err, user, req, res) {
 
     if (req.body.dietaryRestrictions) user.dietary_restrictions = req.body.dietaryRestrictions;
 
-    //console.log('typeof', typeof req.body.lookingFor);
-    console.log(req.body.lookingFor);
-    console.log('obj', parseJSON(req.body.lookingFor));
-    if (parseJSON(req.body.lookingFor).gender) user.looking_for.gender = parseJSON(req.body.lookingFor).gender;
-    if (parseJSON(req.body.lookingFor).pet) user.looking_for.pet = parseJSON(req.body.lookingFor).pet;
+    if (req.body.lookingFor) user.looking_for.gender = parseJSON(req.body.lookingFor).gender || null;
+    if (req.body.lookingFor) user.looking_for.pet = parseJSON(req.body.lookingFor).pet || null;
 
-    if (parseJSON(req.body.interests).pet) user.interests.pet = parseJSON(req.body.interests).pet;
+    if (req.body.interests) user.interests.pet = parseJSON(req.body.interests).pet || null;
     if (req.body.profilePicture) user.profile_picture = req.body.profilePicture;
 
     user.save(function (err) {

@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var jwt = require('jsonwebtoken');
 var config = require('./config');
+var path = require('path');
 
 import User from './app/models/user';
 //var Hangout = require('./app/models/hangout');
@@ -98,6 +99,7 @@ import yelpRouter from './app/routing/yelp_router';
 import hangoutRouter from './app/routing/hangout_router';
 import restaurantActivity from './app/routing/restaurant_activity';
 import parseJSON from './app/routing/parse_json';
+import { sg, emptyReq } from './app/routing/email' ;
 //import convertAndRandomize from './app/routing/convert_and_randomize';
 
 /*
@@ -773,6 +775,9 @@ app.use('/', router);
 app.use('/api', apiRouter);
 app.use('/api/yelp', yelpRouter);
 app.use('/api/hangout', hangoutRouter);
+app.use('*', function (req, res) {
+  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+});
 
 const server = app.listen(port);
 
