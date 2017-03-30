@@ -84,16 +84,21 @@ hangoutRouter.route('/')
               if (!suitableHangout.second_person) {
                 suitableHangout.second_person = req.body.user;
 
-                console.log('Suitable Hangout Found');
+                console.log('Suitable Hangout Found', suitableHangout);
                 let hangoutId = suitableHangout.id;
                 let firstPerson = suitableHangout.first_person;
                 let secondPerson = req.body.user;
                 let categories = ['restaurants'];
 
+                req.body.latitude = suitableHangout.activity.coordinates.latitude;
+                req.body.longitude = suitableHangout.activity.coordinates.longitude;
+                console.log('suitable.activity.coords', suitableHangout.activity.coordinates);
+                console.log('suitable .activity.longi', suitableHangout.activity.coordinates.latitude);
+                console.log('reqbodylat', req.body.latitude);
 
                 //look for restaurant here ++++++++++++++++++
                 //restaurant = getRestaurant() +++++++++++++++++++++
-                let restaurant_promise = get_restaurant(req,categories); //+++++++++++++++++++++
+                let restaurant_promise = get_restaurant(req, categories); //+++++++++++++++++++++
                 //console.log(restaurant);
                 Promise.all(restaurant_promise).then(values => {
                     let restaurantListObject = convertValueArrayAndCategoriesToObject(values, categories)
@@ -106,7 +111,7 @@ hangoutRouter.route('/')
 
 
                 suitableHangout.restaurant = restaurant; //+++++++++++++++++++++++++++++++++
-                console.log(restaurant);
+                console.log('this is the restaurant', restaurant);
                 console.log('type', typeof restaurant);
                 console.log('suitable hangout', suitableHangout);
 
@@ -410,8 +415,8 @@ hangoutRouter.route('/user/:user_fb_token')
   })
 
 function get_restaurant (req, categories) {
-    req.body.latitude = 33.6506;
-    req.body.longitude = -117.7435; //irvine spectrum
+    req.body.latitude = req.body.latitude || 33.6506;
+    req.body.longitude = req.body.longitude || -117.7435; //irvine spectrum
     req.body.price = '1,2';
     req.body.limit = 20;
     //let categories = ['restaurants'];
