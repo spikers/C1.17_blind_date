@@ -7,7 +7,7 @@ var jwt = require('jsonwebtoken');
 var config = require('./config');
 var path = require('path');
 
-var User = require('./app/models/user');
+import User from './app/models/user';
 //var Hangout = require('./app/models/hangout');
 import Hangout from './app/models/hangout';
 
@@ -787,3 +787,23 @@ import socketio from 'socket.io';
 import io from './app/routing/socketio_client.js';
 
 io(socketio.listen(server));
+
+
+
+// User.find({"fbToken": "136173360242729"}).populate('userToHangout').exec((err, users) => {
+//   console.log(users);
+// });
+
+User.findOne({"fbToken": "10155863040702564"})
+.populate("hangouts_id")
+.exec(function (err, hangout) {
+  if (err) return;
+  console.log('this is the hangout: ', hangout);
+});
+
+
+
+
+
+
+
