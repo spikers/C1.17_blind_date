@@ -37,7 +37,7 @@ class ResultsPage extends Component {
     let secondPerson = null;
     let resultsArr = [];
     console.log('hitting the results page', this.props)
-    if (this.props.user && this.props.user.hangouts && this.props.user.hangouts[0].second_person != null && secondPerson===null){
+    if (this.props.user && this.props.user.hangouts && this.props.user.hangouts[0] && this.props.user.hangouts[0].second_person != null && secondPerson===null){
       secondPerson = this.props.user.hangouts[0].first_person === this.props.userfbToken ? this.props.user.hangouts[0].second_person : this.props.user.hangouts[0].first_person
       this.props.getSecondProfile(secondPerson)
     }

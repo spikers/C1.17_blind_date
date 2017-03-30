@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
-import ResultsImage from './ResultsImage';
-import ResultsInfo from './ResultsInfo';
 import styles from './styles/ResultsItem.css';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
 class ResultsItem extends Component {
   render(){
-    console.log('secondUser in resultsitem', this.props.secondUser)
+    console.log('secondUser in resultsitem', this.props)
     let {activity, restaurant} = this.props.hangout || {}
     let matchNotification = this.props.secondUser !== null ? "Match Found!": "Match Pending..."
     return (
@@ -37,7 +35,7 @@ class ResultsItem extends Component {
           <p>Address: {(activity.location && activity.location.address1) || 'Address Unavailable'}, {activity.location.city} {activity.location.zip_code} </p>
           <div><a href={activity.url}><div style={{height: "2em", verticalAlign: "middle"}}><img style={{height: "100%", width:"auto", verticalAlign:"middle"}} src={require("./img/yelp_burst.png")} alt="yelp" target="_blank"/>Check it out on Yelp!</div></a></div>
             <Card
-              initiallyExpanded={true}
+              initiallyExpanded={false}
               zDepth={2}
             >
               <CardHeader
@@ -46,19 +44,25 @@ class ResultsItem extends Component {
                 showExpandableButton={true}
               />
               <CardText expandable={true}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                <div><img src={this.props.secondUser && this.props.secondUser.profile_picture} alt="profile pic"/></div>
+                <p>Age: {this.props.secondUser && this.props.secondUser.age}</p>
+                <p>Interests: {this.props.secondUser && this.props.secondUser.interests}</p>
+                <p>{this.props.secondUser && this.props.secondUser.biography}</p>
               </CardText>
             </Card>
             <Card
               zDepth={2}
             >
               <CardHeader
-                title="Restaurant Info"
+                title={restaurant && restaurant.name || 'Sorry, Restaurant Unavailable'}
                 actAsExpander={true}
                 showExpandableButton={true}
               />
               <CardText expandable={true}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                <div><img style={{width:"50%", heigh:"auto"}}src={restaurant.image_url || ''} alt="restaurant"/></div>
+                <p>Phone: {restaurant.display_phone}</p>
+                <p>Address: {(restaurant.location && activity.location.address1) || 'Address Unavailable'}, {restaurant.location.city} {restaurant.location.zip_code} </p>
+                <div><a href={restaurant.url}><div style={{height: "2em", verticalAlign: "middle"}}><img style={{height: "100%", width:"auto", verticalAlign:"middle"}} src={require("./img/yelp_burst.png")} alt="yelp" target="_blank"/>Check it out on Yelp!</div></a></div>
               </CardText>
             </Card>
         </CardText>
