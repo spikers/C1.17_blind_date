@@ -26,17 +26,10 @@ export default (props)=>{
             titleName = 'Contact Us';
             break;
     }
-    let hide = {};
-    if (props.router.location.pathname === '/'){
-        hide = {display:"none"}
-    }else{
-        hide = {}
-    }
     return(
         <div>
             <Header
                 title={titleName}
-                style={hide}
             />
             {props.children}
         </div>
