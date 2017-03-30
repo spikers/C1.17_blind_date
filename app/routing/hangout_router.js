@@ -84,16 +84,18 @@ hangoutRouter.route('/')
               if (!suitableHangout.second_person) {
                 suitableHangout.second_person = req.body.user;
 
-                console.log('Suitable Hangout Found');
+                console.log('Suitable Hangout Found', suitableHangout);
                 let hangoutId = suitableHangout.id;
                 let firstPerson = suitableHangout.first_person;
                 let secondPerson = req.body.user;
                 let categories = ['restaurants'];
 
+                req.body.latitude = suitableHangout.location.latitude;
+                req.body.longitude = suitableHangout.location.longitude;
 
                 //look for restaurant here ++++++++++++++++++
                 //restaurant = getRestaurant() +++++++++++++++++++++
-                let restaurant_promise = get_restaurant(req,categories); //+++++++++++++++++++++
+                let restaurant_promise = get_restaurant(req, categories); //+++++++++++++++++++++
                 //console.log(restaurant);
                 Promise.all(restaurant_promise).then(values => {
                     let restaurantListObject = convertValueArrayAndCategoriesToObject(values, categories)
@@ -106,7 +108,7 @@ hangoutRouter.route('/')
 
 
                 suitableHangout.restaurant = restaurant; //+++++++++++++++++++++++++++++++++
-                console.log(restaurant);
+                console.log('this is the restaurant', restaurant);
                 console.log('type', typeof restaurant);
                 console.log('suitable hangout', suitableHangout);
 
