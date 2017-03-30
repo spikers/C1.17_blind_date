@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router';
 import ResultsItem from './ResultsItem';
 import {connect} from 'react-redux';
-import {getProfile, getSecondProfile, getRestaurant} from './actions'
+import {getProfile, getSecondProfile} from './actions'
 import axios from 'axios'
 import Logo from './Logo'
 import styles from './styles/ResultsPage.css'
@@ -20,14 +20,13 @@ const subtitleStyle = {
 }
 class ResultsPage extends Component {
   componentWillMount(){
-    this.props.getRestaurant()
     if (this.props.user === null){
       this.props.getProfile(100162377184177)
     }
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    if (this.props.secondUser != undefined && this.props.restaurant != undefined){
+    if (this.props.secondUser != undefined){
       return false
     }
     return true
@@ -37,17 +36,20 @@ class ResultsPage extends Component {
     let fullDate = '';
     let secondPerson = null;
     let resultsArr = [];
-    if (this.props.user!== null && this.props.user.hangouts[0].second_person != null && secondPerson===null){
+    console.log('hitting the results page', this.props)
+    if (this.props.user && this.props.user.hangouts && this.props.user.hangouts[0].second_person != null && secondPerson===null){
       secondPerson = this.props.user.hangouts[0].first_person === this.props.userfbToken ? this.props.user.hangouts[0].second_person : this.props.user.hangouts[0].first_person
       this.props.getSecondProfile(secondPerson)
     }
-    if(this.props.user && this.props.secondUser && this.props.restaurant){
+    if(this.props.user && this.props.user.hangouts){
       resultsArr = this.props.user.hangouts.map((hangout, index)=>{
+        console.log('something is in resultsArr hopefully', hangout)
         return(
-          <ResultsItem expanded={index === 0 ? true:false} key={index} index={index} secondUser={secondPerson} hangout={hangout}/>
+          <ResultsItem key={index} index={index} secondUser={this.props.secondUser || null} hangout={hangout}/>
         )
       })
     }
+
     return (        
       <div style={{width:"95vw", margin: "2.5vw auto"}}>
           {resultsArr}
@@ -60,10 +62,8 @@ function mapStateToProps(state){
   return {
     user: state.user.user,
     secondUser: state.user.secondUser,
-    events: state.events.events,
-    restaurant: state.user.restaurant,
     authenticated: state.authenticated
   }
 }
 
-export default connect(mapStateToProps, {getProfile, getSecondProfile, getRestaurant})(ResultsPage);
+export default connect(mapStateToProps, {getProfile, getSecondProfile})(ResultsPage);

@@ -2,8 +2,7 @@ import axios from 'axios';
 import yelp from '../../test_data/yelp_obj';
 import user from '../../test_data/user_obj';
 import events from '../../test_data/events_obj';
-
-import objToQuery from '../../objToQueryString';
+import {browserHistory} from 'react-router'
 
 const instance = axios.create({
   headers:{
@@ -57,10 +56,19 @@ export function getSecondProfile(id){
 
 export function updateProfile(id, forms){
   console.log('forms in updateProfile', forms)
-  forms.dietary_restrictions[0]=forms.diet
-  console.log('forms.age', forms.age)
-let encodedURI = encodeURI('username=' + forms.username + 
-          '&givenName=' + (forms.given_name || '') + '&familyName=' + (forms.family_name||'') + '&email=' + (forms.email || '') + '&age=' + (forms.age || '') + '&gender=' + (forms.gender || '') + '&biography=' + (forms.biography || ''));
+  // let encodedURI = encodeURIComponent(JSON.stringify(forms))
+  // console.log('this is encodedURI', encodedURI)
+  let encodedURI = encodeURI(
+    'username=' + (forms.username || '') + 
+    '&givenName=' + (forms.given_name || '') + 
+    '&familyName=' + (forms.family_name||'') + 
+    '&email=' + (forms.email || '') + 
+    '&age=' + (forms.age || '') + 
+    '&gender=' + (forms.gender || '') + 
+    '&biography=' + (forms.biography || '') + 
+    '&dietaryRestrictions=' + (forms.dietary_restrictions || '') + 
+    '&lookingFor=' + (JSON.stringify(forms.looking_for) || '') + 
+    '&interests=' + (JSON.stringify(forms.interests) || ''))
         console.log('encodedURI', encodedURI)
         let xhr = new XMLHttpRequest();
         xhr.addEventListener('load', function(data) {
@@ -94,23 +102,12 @@ export function getEvents(){
 }
 
 export function sendEventChoice(id, choice){
-var data = objToQuery(choice);
-console.log('query string', data)
-// var data ='';
-// var key;
-// for (key in choice){
-//   console.log('key in sendEventChoice', key)
-//   data += encodeURIComponent(key)+"="+encodeURIComponent(choice[key])+"&"
-// }
-console.log('test data in sendEventChoice', data)
-// var data = "user=" + id + "&activity=" + choice;
-// console.log('data in sendEventChoice', data)
+var id = id
+var data = "user=" + id + "&activity=" + encodeURIComponent(JSON.stringify(choice));
 var xhr = new XMLHttpRequest();
 xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === 4) {
-    console.log('responseText', this.responseText);
-  }
-});
+    // getProfile(id)
+  });
 
 xhr.open("POST", "http://54.202.15.233:8000/api/hangout");
 xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");

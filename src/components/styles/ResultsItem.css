@@ -6,3 +6,7 @@
   height: 100%;
   margin-bottom:3vw;
 }
+
+.wordwrap{
+  word-wrap: normal;
+}

@@ -21,9 +21,6 @@ export default function(ComposedComponent){
       }
     }
     componentWillUpdate(nextProps){
-      if(!nextProps.authenticated){
-        this.context.router.push('/')
-      }
       if(!this.props.authenticated && !localStorage.getItem('token')){
         this.context.router.push('/');
         }

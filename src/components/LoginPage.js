@@ -29,11 +29,10 @@ class LoginPage extends Component {
         return(
         <div>
             <div className={styles.container}>
-            <Logo classNameName="LogoStyles.logo"/>
-            <div style={{width:"60vw", height: "auto"}}>
-                <img style={{width:"100%", height: "auto"}} src={require('./img/fb_login.png')}/>
-            </div>
-            <a href="http://localhost:8000/auth/facebook">Test Auth</a>
+                <Logo classNameName="LogoStyles.logo"/>
+                <div style={{width:"60vw", height: "auto"}}>
+                    <a href="http://localhost:8000/auth/facebook"><img style={{width:"100%", height: "auto"}} src={require('./img/fb_login.png')}/></a>
+                </div>
             </div>
         </div>
         )

@@ -2,10 +2,13 @@ body{
   font-family: 'Roboto', 'sans-serif';
   width: 100vw;
   min-height: 100vh;
-  max-height: 150vh;
-  margin: 0;
+  margin: auto;
   background-color: #F5F5F5;
   overflow-x:hidden;
+}
+
+a{
+  text-decoration: none;
 }
 
 .GMap {

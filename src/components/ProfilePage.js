@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import {getProfile, updateProfile} from './actions/index';
@@ -56,10 +56,6 @@ const createInput = function(input, label, type){
           fullWidth={true}
           />
         )
-      case 'number':
-        return(
-          <TextField type="number" style={inputStyle} hintText={label} floatingLabelText={label}/>
-        )
       case 'radio':
         let genderDefault = null;
         switch (label){
@@ -82,7 +78,7 @@ const createInput = function(input, label, type){
               </RadioButtonGroup>      
             </div>)
           case "I want a...":
-            genderDefault= (this.props.user && this.props.user.looking_for.gender) || null;
+            genderDefault= (this.props.user && this.props.user.looking_for && this.props.user.looking_for.gender) || null;
             return (
                 <div>
                 <p>{label}</p>
@@ -104,7 +100,7 @@ const createInput = function(input, label, type){
                 <div>
                 <p>{label}</p>
                 <RadioButtonGroup 
-                {...input} defaultSelected={this.props.user && this.props.user.looking_for.pet}
+                {...input} defaultSelected={this.props.user && this.props.user.looking_for && this.props.user.looking_for.pet || null}
                 >
                       <RadioButton
                         value="dog"
@@ -129,7 +125,7 @@ const createInput = function(input, label, type){
                 <div>
                 <p>{label}</p>
                 <RadioButtonGroup 
-                {...input} defaultSelected={this.props.user &&this.props.user.looking_for.pet}
+                {...input} defaultSelected={(this.props.user && this.props.user.looking_for && this.props.user.looking_for.pet) || null}
                 >
                       <RadioButton
                         value="dog"
@@ -150,10 +146,16 @@ const createInput = function(input, label, type){
                 </RadioButtonGroup>      
               </div>)
           case "I can't eat...": 
+          // let defaultDiet = "none"
+          // if (this.props.user && this.props.user.dietary_restrictions){
+          //   let arr = JSON.parse(this.props.user.dietary_restrictions[0])
+          //   defaultDiet = arr[0]
+          // }
+          console.log('diet restrictions', this.props.user && this.props.user.dietary_restrictions[0])
             return(
               <div>
                 <p>{label}</p>
-                  <RadioButtonGroup {...input} defaultSelected={this.props.user &&this.props.user.dietary_restrictions[0]}>
+                  <RadioButtonGroup {...input} defaultSelected={this.props.user && this.props.user.dietary_restrictions[0]}>
                       <RadioButton
                         value="vegetarian"
                         label="Meat"
@@ -186,6 +188,9 @@ const createInput = function(input, label, type){
   }
 
 class ProfilePage extends Component{
+  static contextTypes =  {
+        router: PropTypes.object
+      }
   // constructor(props) {
   //   super(props);
   //   this.state = {value: 1};
@@ -194,7 +199,20 @@ class ProfilePage extends Component{
   // handleChange = (event, index, value) => this.setState({value});
 
   onSubmit(formProp){
-    this.props.updateProfile(this.props.user.fbToken, formProp);
+    console.log('these are formProp', formProp)
+    let forms = formProp
+    forms.dietary_restrictions[0]= forms.diet || forms.dietary_restrictions[0]
+  forms.looking_for = {
+    gender: forms.lookforgender,
+    pet: forms.lookforpet
+  }
+  delete forms.pet
+  delete forms.lookforgender
+  delete forms.lookforpet
+  delete forms.diet
+  console.log('this is forms after changes', forms)
+    this.props.updateProfile(this.props.user.fbToken, forms);
+    this.context.router.push('/events');
   }
 
     render(){
@@ -215,22 +233,23 @@ class ProfilePage extends Component{
                   height:'auto'}}
                   src={(this.props.user && this.props.user.profile_picture) || require('./img/flip_person.png')}/>
                 </div>
-                <FloatingActionButton style={{
+              </Paper>
+              <FloatingActionButton style={{
                   position:"absolute",
-                  bottom:"45%",
-                  right:"25%"
+                  bottom:"2%",
+                  right:"2%"
                 }}>
                     <ContentAdd />
                 </FloatingActionButton>
-              </Paper>
             </Paper>
             <form>
               <Paper style={containerStyle} zDepth={1}>
                 <h2>Tell us about yourself!</h2>
+                <Field name='username' component={renderInput.bind(this)} type="text" label="Username"/>
                 <Field name='given_name' component={renderInput.bind(this)} type="text" label="First Name"/>
                 <Field name='family_name' component={renderInput.bind(this)} type="text" label="Last Name"/>
                 <Field name='email' component={renderInput.bind(this)} type="text" label="E-mail"/>
-                <Field name='age' component={renderInput.bind(this)} type="number" label="Age"/>
+                <Field name='age' component={renderInput.bind(this)} type="text" label="Age"/>
                 <Field name='biography' component={renderInput.bind(this)} type="textarea" label="About Me"/>
                 <Field name='gender' component={renderInput.bind(this)} type='radio' label="I'm a..."/>
                 <Field name='pet' component={renderInput.bind(this)} type="radio" label="I'm definitely a..."/>
@@ -238,7 +257,6 @@ class ProfilePage extends Component{
               </Paper>
               <Paper style={containerStyle} zDepth={1}>
                 <h2>Who are you looking for?</h2>
-                <Field name='username' component={renderInput.bind(this)} type="text" label="Username"/>
                 <Field name='lookforgender' component={renderInput.bind(this)} type="radio" label="I want a..."/>
                 <Field name='lookforpet' component={renderInput.bind(this)} type="radio" label="Who's also a..."/>
               </Paper>
@@ -257,10 +275,10 @@ class ProfilePage extends Component{
 }
 
 function validate(values){
-    console.log('hey, form values in validate', values);
 }
 
 function mapStateToProps(state){
+  console.log('state in profile', state)
   return {
     user: state.user.user,
     initialValues: state.user.user,

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Link} from 'react-router';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import SwipeableViews from 'react-swipeable-views';
@@ -27,6 +27,9 @@ const paperStyle = {
 }
 
 class EventsPage extends React.Component {
+  static contextTypes =  {
+        router: PropTypes.object
+      }
   constructor(props) {
     super(props);
     this.state = {
@@ -113,8 +116,8 @@ class EventsPage extends React.Component {
         </Paper>
 
         <div style={showing} className={css.container}>
-          <Paper className={css.shadow} circle={true} zDepth={2} onClick={()=> this.handleEventChoice(this.props.user.fbToken, this.props.eventChoice)}>
-            <Link to="/results"><img className={css.flip} src={require("./img/wynk.png")} alt="wynk"/></Link>
+          <Paper className={css.shadow} circle={true} zDepth={2} onClick={this.handleEventChoice.bind(this, this.props.user.fbToken, this.props.eventChoice)}>
+            <Link to='/results'><img className={css.flip} src={require("./img/wynk.png")} alt="wynk"/></Link>
           </Paper>
         </div>
       </div>

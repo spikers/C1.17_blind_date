@@ -8,7 +8,6 @@ import Container from './Container';
 import LoginPage from './LoginPage';
 import EventsPage from './EventsPage';
 import ResultsPage from './ResultsPage';
-import ResultsInfo from './ResultsInfo';
 import ProfilePage from './ProfilePage';
 import AboutUs from './AboutUs';
 import Faq from './Faq';
