@@ -90,8 +90,11 @@ hangoutRouter.route('/')
                 let secondPerson = req.body.user;
                 let categories = ['restaurants'];
 
-                req.body.latitude = suitableHangout.location.latitude;
-                req.body.longitude = suitableHangout.location.longitude;
+                req.body.latitude = suitableHangout.activity.coordinates.latitude;
+                req.body.longitude = suitableHangout.activity.coordinates.longitude;
+                console.log('suitable.activity.coords', suitableHangout.activity.coordinates);
+                console.log('suitable .activity.longi', suitableHangout.activity.coordinates.latitude);
+                console.log('reqbodylat', req.body.latitude);
 
                 //look for restaurant here ++++++++++++++++++
                 //restaurant = getRestaurant() +++++++++++++++++++++
@@ -412,8 +415,8 @@ hangoutRouter.route('/user/:user_fb_token')
   })
 
 function get_restaurant (req, categories) {
-    req.body.latitude = 33.6506;
-    req.body.longitude = -117.7435; //irvine spectrum
+    req.body.latitude = req.body.latitude || 33.6506;
+    req.body.longitude = req.body.longitude || -117.7435; //irvine spectrum
     req.body.price = '1,2';
     req.body.limit = 20;
     //let categories = ['restaurants'];
