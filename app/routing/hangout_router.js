@@ -195,17 +195,12 @@ console.log('zzzzzzzzzzzzzzzuserObj.looking_forzzzzzzzzzzzzzzzzz', parseJSON(use
                           {
                               to: [
                                   {
-                                      email: 'yaerilim@gmail.com',
+                                      email: config.user1Email,
                                   },
                               ],
                               bcc: [
                                   {
-                                      email: "sam.doe@example.com",
-                                  }
-                              ],
-                              cc: [
-                                  {
-                                      email: "jane.doe@example.com",
+                                      email: config.user2Email,
                                   }
                               ],
                               subject: '[WYNK] We found a match for you!',
