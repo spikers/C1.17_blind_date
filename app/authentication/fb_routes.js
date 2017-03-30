@@ -4,7 +4,7 @@ module.exports = function(app, passport) {
 // LOGOUT ==============================
     app.get('/logout', function (req, res) {
         req.logout();
-        res.redirect('/?fbtoken='+req.user.facebook.id);
+        res.redirect('http://localhost:3000/?fbtoken='+req.user.fbToken);
     });
 //console.log('passport', passport);
 //console.log('app', app);
@@ -14,11 +14,11 @@ module.exports = function(app, passport) {
     app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
     // handle the callback after facebook has authenticated the user
     app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-            //successRedirect: '/?fbtoken='+req.user.facebook.id,
+            //successRedirect: '/?fbtoken='+req.user.fbToken,
             failureRedirect: '/'
         }), function (req, res) {
-        console.log('++++++++++++req+++++++++', req.user.facebook.id);
-        res.redirect('/?fbtoken='+req.user.facebook.id);
+        console.log('++++++++++++req+++++++++', req.user.fbToken);
+        res.redirect('http://localhost:3000/?fbtoken='+ req.user.fbToken);
         }
     );
 
@@ -29,10 +29,10 @@ module.exports = function(app, passport) {
     // handle the callback after facebook has authorized the user
     app.get('/connect/facebook/callback',
         passport.authorize('facebook', {
-            //successRedirect: '/?fbtoken='+req.user.facebook.id,
+            //successRedirect: '/?fbtoken='+req.user.fbToken,
             failureRedirect: '/'
         }), function (req, res) {
-            res.redirect('/?fbtoken='+req.user.facebook.id)
+            res.redirect('http://localhost:3000/?fbtoken='+req.user.fbToken)
         }
     );
 
@@ -45,7 +45,7 @@ module.exports = function(app, passport) {
         var user            = req.user;
         user.facebook.token = undefined;
         user.save(function(err) {
-            res.redirect('/?fbtoken='+req.user.facebook.id);
+            res.redirect('http://localhost:3000/?fbtoken='+req.user.fbToken);
         });
     });
 
@@ -63,5 +63,6 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
     // if they aren't redirect them to the home page
-    res.redirect('/?fbtoken='+req.user.facebook.id);
+    res.redirect('http://localhost:3000/?fbtoken='+req.user.fbToken);
+    res.redirect('/?fbtoken='+req.user.fbToken);
 }};
