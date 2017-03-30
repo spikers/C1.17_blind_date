@@ -6,6 +6,8 @@ import {getProfile, getSecondProfile} from './actions'
 import axios from 'axios'
 import Logo from './Logo'
 import styles from './styles/ResultsPage.css'
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import Chat from 'material-ui/svg-icons/communication/chat';
 
 const mainTitleStyle = {
     textAlign: 'center',
@@ -53,6 +55,9 @@ class ResultsPage extends Component {
     return (        
       <div style={{width:"95vw", margin: "2.5vw auto"}}>
           {resultsArr}
+          <FloatingActionButton style = {{position:"fixed", bottom: "4%", right: "4%"}}>
+            <Chat/>
+          </FloatingActionButton>  
       </div>
     )
   }

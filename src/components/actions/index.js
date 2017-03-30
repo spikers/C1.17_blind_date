@@ -69,15 +69,16 @@ export function updateProfile(id, forms){
     '&dietaryRestrictions=' + (forms.dietary_restrictions || '') + 
     '&lookingFor=' + (JSON.stringify(forms.looking_for) || '') + 
     '&interests=' + (JSON.stringify(forms.interests) || ''))
-        console.log('encodedURI', encodedURI)
-        let xhr = new XMLHttpRequest();
-        xhr.addEventListener('load', function(data) {
-          console.log('Update Worked', data);
-          console.log(data.target.response);
-        });
-        xhr.open('PUT', `${BASE_URL}user/${id}`);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.send(encodedURI);
+
+    let xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', function(data) {
+      console.log('Update Worked', data, id);
+      console.log(data.target.response);
+      getProfile(id);
+    }.bind(this));
+    xhr.open('PUT', `${BASE_URL}user/${id}`);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send(encodedURI);
   return ({
     type:UPDATE_PROFILE,
     payload: true

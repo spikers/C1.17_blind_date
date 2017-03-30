@@ -2,12 +2,22 @@ import React, {Component} from 'react';
 import styles from './styles/ResultsItem.css';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import Directions from 'material-ui/svg-icons/maps/directions';
+import Chat from 'material-ui/svg-icons/communication/chat';
 
 class ResultsItem extends Component {
   render(){
     console.log('secondUser in resultsitem', this.props)
     let {activity, restaurant} = this.props.hangout || {}
-    let matchNotification = this.props.secondUser !== null ? "Match Found!": "Match Pending..."
+    let matchNotification;
+    let matchNotificationColor;
+    if (this.props.secondUser !== null){
+      matchNotification = "Match Found!"
+      matchNotificationColor = {color: "green"}
+   }else{ "Match Pending..."
+    matchNotification = "Match Pending..."
+    matchNotificationColor = {color: "red"}
+   }
     return (
       <Card
         initiallyExpanded = {false}
@@ -18,17 +28,26 @@ class ResultsItem extends Component {
           showExpandableButton={false}
         >
         <div className = {styles.cardHeader}>
-          <div style={{display:"inline-block", width: "50%", display:"flex",alignItems:"center"}}><img style={{height: "auto", width: "90%", height: "auto", boxShadow: "2%"}} src={activity.image_url} alt="activity"/></div>
+          <div style={{display:"inline-block", width: "50%", display:"flex",alignItems:"center"}}><img style={{height: "auto", width: "90%", height: "auto", boxShadow: "2%"}} src={activity.image_url || ''} alt="activity"/></div>
           <div style={{display:"inline-block", width: "50%"}}>
             <p style={{
               whiteSpace: "nowrap",
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               width: '100%'}}>{activity.name}</p>
-            <p><strong>{matchNotification}</strong></p>
+            <p style = {matchNotificationColor}><strong>{matchNotification}</strong></p>
           </div>
         </div>
         </CardHeader>
+        <CardActions>
+          <div style = {{width:"100%", textAlign:"right"}}>   
+            <FlatButton 
+              icon={<Directions/>}/>
+            <FlatButton
+              icon={<Chat/>}/>
+          </div>
+        </CardActions>
+        
         <CardText expandable={true}>
           <p>Name: {activity.name}</p>
           <p>Phone: {activity.display_phone}</p>
@@ -59,10 +78,10 @@ class ResultsItem extends Component {
                 showExpandableButton={true}
               />
               <CardText expandable={true}>
-                <div><img style={{width:"50%", heigh:"auto"}}src={restaurant.image_url || ''} alt="restaurant"/></div>
-                <p>Phone: {restaurant.display_phone}</p>
-                <p>Address: {(restaurant.location && activity.location.address1) || 'Address Unavailable'}, {restaurant.location.city} {restaurant.location.zip_code} </p>
-                <div><a href={restaurant.url}><div style={{height: "2em", verticalAlign: "middle"}}><img style={{height: "100%", width:"auto", verticalAlign:"middle"}} src={require("./img/yelp_burst.png")} alt="yelp" target="_blank"/>Check it out on Yelp!</div></a></div>
+                <div><img style={{width:"50%", heigh:"auto"}}src={restaurant && restaurant.image_url || ''} alt="restaurant"/></div>
+                <p>Phone: {restaurant && restaurant.display_phone || ''}</p>
+                <p>Address: {(restaurant && restaurant.location && restaurant.location.address1) || 'Address Unavailable'}, {restaurant && restaurant.location.city} {restaurant && restaurant.location.zip_code} </p>
+                <div><a href={restaurant && restaurant.url}><div style={{height: "2em", verticalAlign: "middle"}}><img style={{height: "100%", width:"auto", verticalAlign:"middle"}} src={require("./img/yelp_burst.png")} alt="yelp" target="_blank"/>Check it out on Yelp!</div></a></div>
               </CardText>
             </Card>
         </CardText>
