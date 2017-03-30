@@ -99,7 +99,7 @@ import yelpRouter from './app/routing/yelp_router';
 import hangoutRouter from './app/routing/hangout_router';
 import restaurantActivity from './app/routing/restaurant_activity';
 import parseJSON from './app/routing/parse_json';
-import { sg, emptyReq } from './app/routing/email' ;
+// import { sg, emptyReq } from './app/routing/email' ;
 //import convertAndRandomize from './app/routing/convert_and_randomize';
 
 /*
@@ -793,17 +793,3 @@ io(socketio.listen(server));
 // User.find({"fbToken": "136173360242729"}).populate('userToHangout').exec((err, users) => {
 //   console.log(users);
 // });
-
-User.findOne({"fbToken": "10155863040702564"})
-.populate("hangouts_id")
-.exec(function (err, hangout) {
-  if (err) return;
-  console.log('this is the hangout: ', hangout);
-});
-
-
-
-
-
-
-
