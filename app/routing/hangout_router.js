@@ -121,8 +121,10 @@ hangoutRouter.route('/')
 
                 //Save the hangout object to second_person (Working) ################################
                 let secondPersonPromise;
-                User.findOne({'fbToken': secondPerson}, function (err, secondPersonObject) {
+                let secondPersonObject2;
+                secondPersonPromise = User.findOne({'fbToken': secondPerson}, function (err, secondPersonObject) {
                   console.log(secondPersonObject);
+                  secondPersonObject2 = secondPersonObject;
                   secondPersonObject.hangouts.unshift(suitableHangout);
                   secondPersonObject.save(function (err) {
                     if (err) {
@@ -134,9 +136,11 @@ hangoutRouter.route('/')
 
                 // Save the second_person to the first_person.activity[i].second_person in the db (Working)##################
                 let firstPersonPromise;
-                User.findOne({'fbToken': firstPerson}, function (err, firstPersonObject) {
+                let firstPersonObject2;
+                firstPersonPromise = User.findOne({'fbToken': firstPerson}, function (err, firstPersonObject) {
                   // console.log(err);
                   // console.log(firstPersonObject.hangouts);
+                    firstPersonObject2 = firstPersonObject;
                   let i = 0;
                   while (i < firstPersonObject.hangouts.length && firstPersonObject.hangouts[i].id !== hangoutId) {
                     i++;
@@ -157,9 +161,55 @@ hangoutRouter.route('/')
                 });
 
 
-                Promise.all([hangoutPromise]).then(function (values) {
+                Promise.all([hangoutPromise, firstPersonPromise, secondPersonPromise]).then(function (values) {
                     res.status(200).json({'Message': 'Matched'});
-                    return;
+                    console.log('++++++++++++++email1+++++', firstPersonObject2.email);
+                    console.log('++++++++++++++email2+++++', secondPersonObject2.email);
+                    var sg = require('sendgrid')(config.apiEmailKey);
+                    var emptyReq = sg.emptyRequest({
+                        method: 'POST',
+                        path: '/v3/mail/send',
+                        body: {
+                            personalizations: [
+                                {
+                                    to: [
+                                        {
+                                            email: firstPersonObject2.email,
+                                        },
+                                    ],
+                                    bcc: [
+                                        {
+                                            email: secondPersonObject2.email,
+                                        }
+                                    ],
+                                    subject: '[WYNK] We found a match for you!',
+                                },
+                            ],
+                            from: {
+                                email: 'test@example.com',
+                            },
+                            content: [
+                                {
+                                    type: 'text/html',
+                                    value:'<img src="logo.png"></br>' +
+                                    '<img src="match.jpg"></br>' +
+                                    '<h1>Hello friend,</h1></br>' +
+                                    '<h2>We found a match for you!</h2></br>' +
+                                    '<h2>Click <a href="wynk.world/results">here</a> to see who your match is! Then celebrate!</h2>',
+                                },
+                            ],
+                        },
+                    });
+
+                    sg.API(emptyReq, function(error, response) {
+                        if (error) {
+                            console.log('Error response received');
+                        }
+                        console.log('statusCode',response.statusCode);
+                        console.log('body',response.body);
+                        console.log('headers',response.headers);
+                    });
+                    //return;
                     //return;
                   })
                 });
