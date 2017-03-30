@@ -38,16 +38,14 @@ class ResultsPage extends Component {
     let fullDate = '';
     let secondPerson = null;
     let resultsArr = [];
-    console.log('hitting the results page', this.props)
     if (this.props.user && this.props.user.hangouts && this.props.user.hangouts[0] && this.props.user.hangouts[0].second_person != null && secondPerson===null){
       secondPerson = this.props.user.hangouts[0].first_person === this.props.userfbToken ? this.props.user.hangouts[0].second_person : this.props.user.hangouts[0].first_person
       this.props.getSecondProfile(secondPerson)
     }
     if(this.props.user && this.props.user.hangouts){
       resultsArr = this.props.user.hangouts.map((hangout, index)=>{
-        console.log('something is in resultsArr hopefully', hangout)
         return(
-          <ResultsItem key={index} index={index} secondUser={this.props.secondUser || null} hangout={hangout}/>
+          <ResultsItem key={index} index={index} secondUser={this.props.secondUser || null} hangout={hangout} geolocation={this.props.geolocation || ''}/>
         )
       })
     }
@@ -55,7 +53,7 @@ class ResultsPage extends Component {
     return (        
       <div style={{width:"95vw", margin: "2.5vw auto"}}>
           {resultsArr}
-          <FloatingActionButton style = {{position:"fixed", bottom: "4%", right: "4%"}}>
+          <FloatingActionButton style = {{position:"fixed", bottom: "4%", left: "4%", zIndex:"2"}}>
             <Chat/>
           </FloatingActionButton>  
       </div>
@@ -67,7 +65,8 @@ function mapStateToProps(state){
   return {
     user: state.user.user,
     secondUser: state.user.secondUser,
-    authenticated: state.authenticated
+    authenticated: state.authenticated,
+    geolocation: state.user.geolocation
   }
 }
 

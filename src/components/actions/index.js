@@ -21,6 +21,7 @@ export const GET_HANGOUT="GET_HANGOUT";
 export const GET_RESTAURANT="GET_RESTAURANT";
 export const CHANGE_AUTH ="CHANGE_AUTH";
 export const SET_FB_TOKEN="SET_FB_TOKEN";
+export const SET_GEOLOCATION="SET_GEOLOCATION";
 
 const BASE_URL = 'http://54.202.15.233:8000/api/';
 
@@ -55,9 +56,6 @@ export function getSecondProfile(id){
 }
 
 export function updateProfile(id, forms){
-  console.log('forms in updateProfile', forms)
-  // let encodedURI = encodeURIComponent(JSON.stringify(forms))
-  // console.log('this is encodedURI', encodedURI)
   let encodedURI = encodeURI(
     'username=' + (forms.username || '') + 
     '&givenName=' + (forms.given_name || '') + 
@@ -72,8 +70,6 @@ export function updateProfile(id, forms){
 
     let xhr = new XMLHttpRequest();
     xhr.addEventListener('load', function(data) {
-      console.log('Update Worked', data, id);
-      console.log(data.target.response);
       getProfile(id);
     }.bind(this));
     xhr.open('PUT', `${BASE_URL}user/${id}`);
@@ -131,5 +127,13 @@ export function authenticate(isLoggedIn){
   return {
     type: CHANGE_AUTH,
     payload: isLoggedIn
+  }
+}
+
+export function setGeolocation(loc){
+  console.log('geolocation', loc)
+  return{
+    type: SET_GEOLOCATION,
+    payload: loc
   }
 }

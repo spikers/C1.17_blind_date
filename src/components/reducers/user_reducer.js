@@ -1,4 +1,4 @@
-import {GET_PROFILE, GET_SECOND_PROFILE, SEND_LOGIN, GET_RESTAURANT, SET_FB_TOKEN, UPDATE_PROFILE} from '../actions/index';
+import {GET_PROFILE, GET_SECOND_PROFILE, SEND_LOGIN, GET_RESTAURANT, SET_FB_TOKEN, UPDATE_PROFILE, SET_GEOLOCATION} from '../actions/index';
 
 const INITIAL_STATE = {
   user: null
@@ -16,6 +16,8 @@ export default function (state = INITIAL_STATE, action){
       return{...state, token: action.payload}
     case UPDATE_PROFILE:
       return{...state, user: action.payload}
+    case SET_GEOLOCATION:
+      return{...state, geolocation: action.payload}
     default:
       return state;
   }

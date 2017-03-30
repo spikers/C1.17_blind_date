@@ -45,7 +45,6 @@ class EventsPage extends React.Component {
 
   handleEventChoice(id, choice){
     this.props.sendEventChoice(id, choice)
-    console.log('this is id, choice in handleEventChoice', id, choice)
   }
 
   componentWillMount(){
@@ -53,8 +52,6 @@ class EventsPage extends React.Component {
   }
 
   render() {
-    console.log('authenticated? ' + this.props.authenticated)
-    console.log('props on eventsPage', this.props)
     const eventSlides=[];    
     const tabs=[];
     let x;

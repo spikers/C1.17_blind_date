@@ -44,8 +44,6 @@ const inputStyle={
 }
 
 const createInput = function(input, label, type, props){
-
-  console.log('this.props in createInput', props)
     switch (type){
       case 'textarea':
         return(
@@ -146,12 +144,6 @@ const createInput = function(input, label, type, props){
                 </RadioButtonGroup>      
               </div>)
           case "I can't eat...": 
-          // let defaultDiet = "none"
-          // if (this.props.user && this.props.user.dietary_restrictions){
-          //   let arr = JSON.parse(this.props.user.dietary_restrictions[0])
-          //   defaultDiet = arr[0]
-          // }
-          console.log('diet restrictions', props.user && props.user.dietary_restrictions[0])
             return(
               <div>
                 <p>{label}</p>
@@ -195,7 +187,6 @@ class ProfilePage extends Component{
   
   
   onSubmit(formProp){
-    console.log('these are formProp', formProp)
     let forms = formProp
     forms.dietary_restrictions[0]= forms.diet || forms.dietary_restrictions[0]
   forms.looking_for = {
@@ -206,7 +197,6 @@ class ProfilePage extends Component{
     this.context.router.push('/events');
   }
     render(){
-      console.log('props in profile page', this.props);
       const {handleSubmit} = this.props;
       let props = this.props;
       return (
@@ -269,7 +259,6 @@ function validate(values){
 }
 
 function mapStateToProps(state){
-  console.log('state in profile', state)
   return {
     user: state.user.user,
     initialValues: state.user.user,

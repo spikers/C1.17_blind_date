@@ -1,9 +1,33 @@
-import React from 'react';
+import React, {Component} from 'react';
 import Header from './Header';
+import {connect} from 'react-redux';
+import {setGeolocation} from './actions'
 
-export default (props)=>{
-    let titleName = {};
-    switch(props.router.location.pathname){
+class App extends Component { 
+    componentDidMount(){
+        if (navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(function(position){
+                console.log('position in callback', position)
+                this.setPosition.call(this, position)
+            }.bind(this))
+        }else{
+            this.props.setGeolocation({latitude: 33.683947, longitude: -117.794694})
+        }
+    }
+
+    setPosition(position){
+        console.log('geolocation was called', position)
+        let latLong={
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        }
+        this.props.setGeolocation(latLong)
+    }
+
+    render(){
+        console.log('props in app', this.props)
+        let titleName = {};
+        switch(this.props.router.location.pathname){
         case '/':
             titleName = 'Login';
             break;
@@ -26,17 +50,19 @@ export default (props)=>{
             titleName = 'Contact Us';
             break;
     }
-    // let hide = {};
-    // if (props.router.location.pathname === '/'){
-    //     hide = {display:"none"}
-    // }else{
-    //     hide = {}
-    // }
-    return(
+        return(
         <div>
             <Header
                 title={titleName}
             />
-            {props.children}
+            {this.props.children}
         </div>
-    )}
+    )
+    }
+}
+    
+function mapStateToProps(state){
+    return {geolocation: state.user.geolocation}
+}
+
+export default connect(mapStateToProps,{setGeolocation})(App) ;

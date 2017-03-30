@@ -17,7 +17,6 @@ class LoginPage extends Component {
         router: PropTypes.object
       }
     componentWillMount(){
-        console.log(this.props)
         if(this.props.authenticated){
             this.props.getProfile(this.props.token).then(()=>{
                 this.context.router.push('/profile')
@@ -25,7 +24,6 @@ class LoginPage extends Component {
         }
     }
     render(){
-        console.log('this.props in render', this.props)
         return(
         <div>
             <div className={styles.container}>
@@ -40,7 +38,6 @@ class LoginPage extends Component {
   }
 
   function mapStateToProps(state){
-      console.log('state in login page', state)
       return({
       authenticated: state.authenticated,
       user: state.user.user,

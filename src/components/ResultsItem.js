@@ -4,19 +4,22 @@ import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import Directions from 'material-ui/svg-icons/maps/directions';
 import Chat from 'material-ui/svg-icons/communication/chat';
+import MapContainer from './MapContainer';
 
 class ResultsItem extends Component {
   render(){
-    console.log('secondUser in resultsitem', this.props)
     let {activity, restaurant} = this.props.hangout || {}
     let matchNotification;
     let matchNotificationColor;
+    let cardActionsVisibility;
     if (this.props.secondUser !== null){
       matchNotification = "Match Found!"
       matchNotificationColor = {color: "green"}
+      cardActionsVisibility = {display:"initial"}
    }else{ "Match Pending..."
     matchNotification = "Match Pending..."
     matchNotificationColor = {color: "red"}
+    cardActionsVisibility = {display:"none"}
    }
     return (
       <Card
@@ -39,11 +42,11 @@ class ResultsItem extends Component {
           </div>
         </div>
         </CardHeader>
-        <CardActions>
-          <div style = {{width:"100%", textAlign:"right"}}>   
-            <FlatButton 
-              icon={<Directions/>}/>
+        <CardActions style={cardActionsVisibility}>
+          <div style = {{width:"100%", display: "flex", justifyContent: "flex-end"}}>   
+            <MapContainer style={{display:"inline-block"}} geolocation={this.props.geolocation} activity={activity} restaurant={restaurant}/>
             <FlatButton
+              style={{display:"inline-block"}}
               icon={<Chat/>}/>
           </div>
         </CardActions>
