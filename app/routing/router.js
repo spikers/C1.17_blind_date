@@ -6,7 +6,7 @@ import fs from 'fs';
 const app = express();
 const router = express.Router();
 
-// Need to initialize this here
+//Need to initialize this here
 router.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT ,DELETE');

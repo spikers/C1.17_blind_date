@@ -1,4 +1,3 @@
-//import io from 'socket.io';
 import parseJSON from './parse_json';
 import Hangout from '../models/hangout';
 import User from '../models/user';
