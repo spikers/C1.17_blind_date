@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 import {Link} from 'react-router';
 import ResultsItem from './ResultsItem';
 import {connect} from 'react-redux';
-import {getProfile, getSecondProfile} from './actions'
+import {getProfile, getSecondProfile, checkInNotification} from './actions'
 import Logo from './Logo'
 import styles from './styles/ResultsPage.css'
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Chat from 'material-ui/svg-icons/communication/chat';
 import Snackbar from 'material-ui/Snackbar';
 import RaisedButton from 'material-ui/RaisedButton';
+import axios from 'axios';
 
 
 const mainTitleStyle = {
@@ -31,12 +32,26 @@ class ResultsPage extends Component {
     return true
   }
 
-  handleCheckIn = () => {
-    let loc1 = new google.maps.LatLng(this.props.geolocation.lat, this.props.geolocation.lng)
-    let loc2 = new google.maps.LatLng(this.props.user.hangouts.activity.coordinates.latitude, this.props.user.hangouts.activity.coordinates.longitude)
+  handleRequestClose(){
+    this.props.checkInNotification(false)
+  }
+
+  handleCheckIn = (email, activity) => {
+    // let loc1 = new google.maps.LatLng(this.props.geolocation.lat, this.props.geolocation.lng)
+    let loc1 = new google.maps.LatLng(activity.latitude, activity.longitude)
+    let loc2 = new google.maps.LatLng(activity.latitude, activity.longitude)
     let distance = google.maps.geometry.spherical.computeDistanceBetween(loc1, loc2)
     if (distance < 1000){
-      //need to hit the endpoint somehow
+      this.props.checkInNotification(true)
+      const instance = axios.create({
+      headers:{
+        'Content-Type' : 'application/x-www-form-urlencoded'
+      }
+    });
+    instance.post('http://54.202.15.233:8000/api/hangout/email', {"email": email}).then((res)=>{
+    })
+  }else{
+      this.props.checkInNotification(false)
     }
   }
 
@@ -67,21 +82,25 @@ class ResultsPage extends Component {
             <Chat/>
           </FloatingActionButton>  
           </a>*/}
+          <Snackbar
+          open={this.props.checkIn}
+          message="Your date has been notified of your check-in!"
+          autoHideDuration={4000}
+          onRequestClose={this.handleRequestClose.bind(this)}
+        />
       </div>
     )
   }
 }
 
 function mapStateToProps(state){
-  if (state.user.secondUser != null){
-  console.log('state in results', state)
-  }
   return {
     user: state.user.user,
     secondUser: state.user.secondUser,
     authenticated: state.authenticated,
-    geolocation: state.user.geolocation
+    geolocation: state.user.geolocation,
+    checkIn: state.events.checkIn
   }
 }
 
-export default connect(mapStateToProps, {getProfile, getSecondProfile})(ResultsPage);
+export default connect(mapStateToProps, {getProfile, getSecondProfile, checkInNotification})(ResultsPage);

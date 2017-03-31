@@ -13,7 +13,6 @@ export default class CheckInConfirmation extends React.Component {
 
   handleClick = ()=>{
     this.handleOpen()
-    this.props.handleCheckIn()
   }
   handleOpen = () => {
     this.setState({open: true});
@@ -22,6 +21,11 @@ export default class CheckInConfirmation extends React.Component {
   handleClose = () => {
     this.setState({open: false});
   };
+
+  handleSubmit =(email, activity) =>{
+    this.setState({open: false});
+    this.props.handleCheckIn(email, activity)
+  }
 
   render() {
     const actions = [
@@ -33,8 +37,7 @@ export default class CheckInConfirmation extends React.Component {
       <FlatButton
         label="Submit"
         primary={true}
-        disabled={true}
-        onTouchTap={this.handleClose}
+        onTouchTap={()=>this.handleSubmit(this.props.secondEmail, this.props.eventLocation)}
       />,
     ];
 
@@ -47,7 +50,7 @@ export default class CheckInConfirmation extends React.Component {
           modal={true}
           open={this.state.open}
         >
-          Notify your date that you're at 
+          Notify your date that you're at the event?
         </Dialog>
       </div>
     );

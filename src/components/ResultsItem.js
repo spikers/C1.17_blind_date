@@ -9,6 +9,7 @@ import CheckIn from './CheckInConfirmation';
 
 class ResultsItem extends Component {
   render(){
+
     let {activity, restaurant} = this.props.hangout || {}
     // let matchNotification;
     // let matchNotificationColor;
@@ -44,12 +45,14 @@ class ResultsItem extends Component {
         </div>
         </CardHeader>
         <CardActions style={cardActionsVisibility}>
-          <div style = {{width:"100%", display: "flex", justifyContent: "flex-end"}}>   
+          <div style = {{width:"100%", display: "flex", justifyContent: "space-around"}}>   
             <CheckIn
               handleCheckIn = {this.props.handleCheckIn}
+              secondEmail={this.props.secondUser && this.props.secondUser.email}
+              eventLocation={activity.coordinates}
             />
             <MapContainer style={{display:"inline-block"}} geolocation={this.props.geolocation} activity={activity} restaurant={restaurant}/>
-            <a href={"http://wynk.world/chat?" + "user1=" + this.props.user + "user2=" + (this.props.secondUser ?this.props.secondUser.fbToken : '') }><FlatButton
+            <a href={"http://wynk.world/chat?" + "fbToken=" + this.props.user} target="_blank"><FlatButton
               style={{display:"inline-block"}}
               icon={<Chat/>}/></a>
           </div>
