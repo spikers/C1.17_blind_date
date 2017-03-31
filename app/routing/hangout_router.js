@@ -145,16 +145,14 @@ hangoutRouter.route('/')
                                         },
                                     ],
                                     from: {
-                                        email: 'test@example.com',
+                                        email: 'support@wynk.world',
                                     },
                                     content: [
                                         {
                                             type: 'text/html',
-                                            value: '<img src="logo.png"></br>' +
-                                            '<img src="match.jpg"></br>' +
-                                            '<h1>Hello friend,</h1></br>' +
+                                            value: '<h1>Hello friend,</h1></br>' +
                                             '<h2>We found a match for you!</h2></br>' +
-                                            '<h2>Click <a href="wynk.world/results">here</a> to see who your match is! Then celebrate!</h2>',
+                                            '<h2>Click <a href="http://www.wynk.world/results">here</a> to see who your match is! Then celebrate!</h2>',
                                         },
                                     ],
                                 },
@@ -162,8 +160,9 @@ hangoutRouter.route('/')
 
                             sg.API(emptyReq, function (error, response) {
                                 if (error) {
-                                    console.log('Error response received');
+                                    res.json({'status': '400'});
                                 }
+                                res.json({'status': '200'});
                             });
                         })
                     });
@@ -210,6 +209,45 @@ hangoutRouter.route('/user/:user_fb_token')
         res.json(hangoutObject);
     });
   })
+
+  hangoutRouter.route('/email')
+    .post(function (req, res) {
+
+      var sg = require('sendgrid')(config.apiEmailKey);
+      var emptyReq = sg.emptyRequest({
+          method: 'POST',
+          path: '/v3/mail/send',
+          body: {
+              personalizations: [
+                  {
+                      to: [
+                          {
+                              email: req.body.email,
+                          }
+                      ],
+                      subject: '[WYNK] Your Date Has Arrived!',
+                  },
+              ],
+              from: {
+                  email: 'support@wynk.world',
+              },
+              content: [
+                  {
+                      type: 'text/html',
+                      value: '<h1>Hello friend,</h1></br>' +
+                      '<h2>Your date has checked in!</h2></br>',
+                  },
+              ],
+          },
+      });
+
+      sg.API(emptyReq, function (error, response) {
+          if (error) {
+              res.json({'status': '400'});
+          }
+          res.json({'status': '200'});
+      });
+    });
 
 function get_restaurant (req, categories) {
     req.body.latitude = req.body.latitude || 33.6506;

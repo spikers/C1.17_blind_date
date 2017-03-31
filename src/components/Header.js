@@ -59,7 +59,7 @@ class Sidebar extends React.Component {
                         <Link to='/aboutus'><MenuItem onTouchTap={this.handleClose}>About Us</MenuItem></Link>
                         <Link to='/faq'><MenuItem onTouchTap={this.handleClose}>FAQ</MenuItem></Link>
                         <Link to='/contactus'><MenuItem onTouchTap={this.handleClose}>Contact Us</MenuItem></Link>
-                         <Link to='https://medium.com/@lfzwynk/wynk-b55b17d5b7d3' style={link} target='_blank'><MenuItem onTouchTap={this.handleClose}>Blog</MenuItem></Link>
+                         <Link to='https://wynkworld.wordpress.com/' style={link} target='_blank'><MenuItem onTouchTap={this.handleClose}>Blog</MenuItem></Link>
                         <Link to='/'><MenuItem onTouchTap={this.logout}>{this.props.authenticated ? 'Logout':'Login'}</MenuItem></Link>
                     </Drawer>
                 </div>
