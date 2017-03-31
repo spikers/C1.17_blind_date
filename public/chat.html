@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Application</title>
+  <script src="./js/socket.io.js"></script>
+  <script>
+    var userObject = {
+        "_id": {
+            "$oid": "58d8edc7ef2dc61b57c0308a"
+        },
+        "fbToken": "111082239432346",
+        "hangouts": [
+            {
+                "__v": 0,
+                "first_person": "112913882581911",
+                "activity": {
+                    "review_count": 83,
+                    "distance": 12263.8064893,
+                    "is_closed": false,
+                    "phone": "+17142104585",
+                    "rating": 4.5,
+                    "name": "Lyon Air Museum",
+                    "display_phone": "(714) 210-4585",
+                    "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/IaXGgBY7H3gfX-lVhoUYjg/o.jpg",
+                    "id": "lyon-air-museum-santa-ana",
+                    "url": "https://www.yelp.com/biz/lyon-air-museum-santa-ana?adjust_creative=RacSYb9qeA-Ow3Om2netXA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=RacSYb9qeA-Ow3Om2netXA",
+                    "_id": {
+                        "$oid": "58d8f0506e9d1a1bf75b32c1"
+                    },
+                    "activity_status": "active",
+                    "categories": [
+                        {
+                            "title": "Museums",
+                            "alias": "museums",
+                            "_id": {
+                                "$oid": "58d8f0506e9d1a1bf75b32c3"
+                            }
+                        },
+                        {
+                            "title": "Venues & Event Spaces",
+                            "alias": "venues",
+                            "_id": {
+                                "$oid": "58d8f0506e9d1a1bf75b32c2"
+                            }
+                        }
+                    ],
+                    "transactions": [],
+                    "coordinates": {
+                        "longitude": -117.873524129391,
+                        "latitude": 33.6735375970602
+                    },
+                    "location": {
+                        "city": "Santa Ana",
+                        "address1": "19300 Ike Jones Rd",
+                        "address3": "",
+                        "state": "CA",
+                        "zip_code": "92707",
+                        "address2": "",
+                        "country": "US",
+                        "display_address": [
+                            "19300 Ike Jones Rd",
+                            "Santa Ana, CA 92707"
+                        ]
+                    }
+                },
+                "_id": {
+                    "$oid": "58d8f0506e9d1a1bf75b32c0"
+                },
+                "second_person": "111082239432346",
+                "chat": [],
+                "created": {
+                    "$date": "2017-03-27T10:58:20.819Z"
+                }
+            }
+        ],
+        "admin": false,
+        "status": "active",
+        "interests": [],
+        "looking_for": [],
+        "dietary_restrictions": [],
+        "__v": 1,
+        "age": 122151,
+        "biography": "I am a test account hurray!",
+        "email": "pleasedate@gmail.com",
+        "family_name": "Dateme",
+        "gender": "Female",
+        "given_name": "BettyHeyhey",
+        "username": "Betty"
+    }
+                
+    
+
+    window.addEventListener('load', function () {
+
+      //fake data
+
+      var name = '';
+      var room = userObject.hangouts[0]._id;
+
+      var socket = io();
+      socket.emit('changeRoom', { roomName: room });
+
+      addChatToPage(userObject, socket);
+
+      // Username Fix
+      // socket.emit('changeUserName', { userName: Math.floor(Math.random()*100) });
+      // Username Hack
+
+      var form = document.getElementById('form');
+
+      form.addEventListener('submit', function (e) {
+        submitMessage(e, socket, room);
+      });
+
+      socket.on('chat message', function (msg) {
+        ulElement = document.getElementById('messages');
+        var li = getElementFromText(msg, 'li');
+        ulElement.appendChild(li);
+        ulElement.scrollTop = ulElement.scrollHeight;
+      });
+
+      // Change Room or Name
+
+      document.getElementById('change-name').addEventListener('click', function () {
+        name = document.getElementById('name').value;
+        socket.emit('changeUserName', { userName: name });
+        console.log('name: ' + name);
+      });
+
+      document.querySelectorAll('.change-room').forEach(function (item) {
+        item.addEventListener('click', function () {
+          room = this.innerText;
+          console.log(room);
+          socket.emit('changeRoom', { roomName: room });
+          console.log('room: ' + room);
+        });
+      });
+
+      socket.on('join', function (room) {
+        console.log('join room', room);
+        socket.room = room;
+        socket.join(room);
+      })
+
+      document.getElementById('input').addEventListener('input', function (e) {
+        if (document.getElementById('input').value) {
+          socket.emit('keypress', { message: true });
+        } else if (document.getElementById('input').value === '') {
+          socket.emit('keypress', { message: false });
+        }
+      })
+
+
+      socket.on('keypress', function (nickname) {
+        var typing = document.getElementById('typing');
+        if (nickname) {
+          typing.textContent = nickname + ' is typing';
+        } else if (!nickname) {
+          typing.textContent = '';
+        }
+      });
+
+    });
+
+    function submitMessage(e, socket, room) {
+      e.preventDefault();
+      if (document.getElementById('input').value === '') return;
+      var message = document.getElementById('input').value;
+      console.log('socket: ', socket);
+      socket.emit('chat message', { 
+        given_name: userObject.given_name, 
+        fbToken: userObject.fbToken, 
+        message: message 
+      });
+      document.getElementById('input').value = '';
+      socket.emit('keypress', { message: false });
+      return false;
+    }
+
+    function getElementFromText(text, type) {
+      var tn = document.createTextNode(text);
+      var element = document.createElement(type);
+      element.appendChild(tn);
+      return element;
+    }
+
+    function addChatToPage(userObject, socket) {
+      var roomContainer = document.getElementById('room-container');
+      for (var i = 0; i < userObject.hangouts.length; i++) {
+        (function () {
+          if (!userObject.hangouts[i].second_person) return;
+
+          var hangout = userObject.hangouts[i];
+
+          var chatId = hangout._id.$oid;
+          console.log('hangoutId: ', chatId);
+
+          var otherPerson = (userObject.fbToken === userObject.hangouts[i].first_person.fbToken) ? userObject.hangouts[i].second_person : userObject.hangouts[i].first_person;
+          console.log('Other Person: ', otherPerson);
+          var btn = document.createElement('button');
+          var tn = document.createTextNode(otherPerson);
+          btn.appendChild(tn);
+
+          btn.addEventListener('click', function (e) {
+            socket.emit('changeRoom', { roomName: chatId })
+          })
+
+          roomContainer.appendChild(btn);
+        }())
+      }
+    }
+
+
+  </script>
+  <style>
+    body { font-size: 0; }
+    body > * { font-size: 1rem; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font: 13px Helvetica, Arial; }
+    form { padding: 3px; width: 100%; width: 100%; }
+    form input { height: 3em; width: 78%; }
+    form button { height: 3em; width: 20%; background: rgb(130, 224, 255); border: none; }
+    #messages { list-style-type: none; margin: 0; padding: 0; height: 300px; overflow-y: scroll; }
+    #messages li { padding: 5px 10px; }
+    #messages li:nth-child(odd) { background: #eee; }
+
+    #text-container { width: 100% }
+    #typing { height: 1em; }
+
+    .chat-window { max-width: 300px; max-height: 280px; }
+
+  </style>
+</head>
+<body>
+  <h1>Generic Chat Application</h1>
+  <div id="room-container"></div>
+  <br />
+  <input id="name" name="name" placeholder="name"><button id="change-name">Change Name</button>
+  <div class="chat-window">
+    <ul id="messages"></ul>
+
+    <div id="text-container">
+      <p id='typing'></p>
+      <form id="form" action="">
+        <input id="input"><button>Send</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

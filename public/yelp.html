@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+  window.addEventListener('load', () => {
+    document.getElementById('form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      let lat = document.getElementById('lat').value;
+        long = document.getElementById('long').value;
+        term = document.getElementById('term').value;
+
+      let qs = `latitude=${lat}&longitude=${long}&term=${term}`;
+      
+      let xhr = new XMLHttpRequest();
+      
+      //xhr.open('POST', 'http://localhost:8000/date/restaurant');
+      xhr.open('POST', 'http://localhost:8000/api/hangout/activity');
+      xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+
+      xhr.addEventListener('load', (data) => {
+        if (data.target.response[0] === "E") {
+          console.log("You are not in range");
+        } else {
+          let serverResponse = data.target.response;
+          console.log(serverResponse);
+          
+          let srJSON = JSON.parse(serverResponse);
+          console.log(srJSON);
+        }
+      });
+      xhr.send(qs);
+
+    });
+  });
+</script>
+<style>
+</style>
+</head>
+<body>
+  <form id="form">
+    <!-- Southern Chino Hills
+     Latitude: <input type="text" name="lat" id="lat" value="33.946232">
+    Longitude: <input type="text" name="long" id="long" value="-117.678676"> -->
+    <!--Middle of the Ocean
+     Latitude: <input type="text" name="lat" id="lat" value="33.745439">
+    Longitude: <input type="text" name="long" id="long" value="-125.975072"> -->
+    <!-- The Shoppes at Chino Hills -->
+
+    <!-- 
+    LFZ
+    33.635986, -117.739676
+     -->
+    Latitude: <input type="text" name="lat" id="lat" value="33.635986">
+    Longitude: <input type="text" name="long" id="long" value="-117.739676">
+    Term: <input type="text" name="term" id="term" value="restaurants">
+    <button>Submit</button>
+  </form>
+</body>
+</html>

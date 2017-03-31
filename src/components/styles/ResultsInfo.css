@@ -1,0 +1,11 @@
+.content{
+  width: 50%;
+  height:50%;
+  background-color: lightpink;
+  margin: 0 auto;
+  font-size: 3em;
+}
+
+.hide{
+  display:none;
+}
