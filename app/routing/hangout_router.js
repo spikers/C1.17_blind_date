@@ -84,16 +84,21 @@ hangoutRouter.route('/')
               if (!suitableHangout.second_person) {
                 suitableHangout.second_person = req.body.user;
 
-                console.log('Suitable Hangout Found');
+                console.log('Suitable Hangout Found', suitableHangout);
                 let hangoutId = suitableHangout.id;
                 let firstPerson = suitableHangout.first_person;
                 let secondPerson = req.body.user;
                 let categories = ['restaurants'];
 
+                req.body.latitude = suitableHangout.activity.coordinates.latitude;
+                req.body.longitude = suitableHangout.activity.coordinates.longitude;
+                console.log('suitable.activity.coords', suitableHangout.activity.coordinates);
+                console.log('suitable .activity.longi', suitableHangout.activity.coordinates.latitude);
+                console.log('reqbodylat', req.body.latitude);
 
                 //look for restaurant here ++++++++++++++++++
                 //restaurant = getRestaurant() +++++++++++++++++++++
-                let restaurant_promise = get_restaurant(req,categories); //+++++++++++++++++++++
+                let restaurant_promise = get_restaurant(req, categories); //+++++++++++++++++++++
                 //console.log(restaurant);
                 Promise.all(restaurant_promise).then(values => {
                     let restaurantListObject = convertValueArrayAndCategoriesToObject(values, categories)
@@ -106,7 +111,7 @@ hangoutRouter.route('/')
 
 
                 suitableHangout.restaurant = restaurant; //+++++++++++++++++++++++++++++++++
-                console.log(restaurant);
+                console.log('this is the restaurant', restaurant);
                 console.log('type', typeof restaurant);
                 console.log('suitable hangout', suitableHangout);
 
@@ -121,8 +126,10 @@ hangoutRouter.route('/')
 
                 //Save the hangout object to second_person (Working) ################################
                 let secondPersonPromise;
-                User.findOne({'fbToken': secondPerson}, function (err, secondPersonObject) {
+                let secondPersonObject2;
+                secondPersonPromise = User.findOne({'fbToken': secondPerson}, function (err, secondPersonObject) {
                   console.log(secondPersonObject);
+                  secondPersonObject2 = secondPersonObject;
                   secondPersonObject.hangouts.unshift(suitableHangout);
                   secondPersonObject.save(function (err) {
                     if (err) {
@@ -134,9 +141,11 @@ hangoutRouter.route('/')
 
                 // Save the second_person to the first_person.activity[i].second_person in the db (Working)##################
                 let firstPersonPromise;
-                User.findOne({'fbToken': firstPerson}, function (err, firstPersonObject) {
+                let firstPersonObject2;
+                firstPersonPromise = User.findOne({'fbToken': firstPerson}, function (err, firstPersonObject) {
                   // console.log(err);
                   // console.log(firstPersonObject.hangouts);
+                    firstPersonObject2 = firstPersonObject;
                   let i = 0;
                   while (i < firstPersonObject.hangouts.length && firstPersonObject.hangouts[i].id !== hangoutId) {
                     i++;
@@ -157,9 +166,55 @@ hangoutRouter.route('/')
                 });
 
 
-                Promise.all([hangoutPromise]).then(function (values) {
+                Promise.all([hangoutPromise, firstPersonPromise, secondPersonPromise]).then(function (values) {
                     res.status(200).json({'Message': 'Matched'});
-                    return;
+                    console.log('++++++++++++++email1+++++', firstPersonObject2.email);
+                    console.log('++++++++++++++email2+++++', secondPersonObject2.email);
+                    var sg = require('sendgrid')(config.apiEmailKey);
+                    var emptyReq = sg.emptyRequest({
+                        method: 'POST',
+                        path: '/v3/mail/send',
+                        body: {
+                            personalizations: [
+                                {
+                                    to: [
+                                        {
+                                            email: firstPersonObject2.email,
+                                        },
+                                    ],
+                                    bcc: [
+                                        {
+                                            email: secondPersonObject2.email,
+                                        }
+                                    ],
+                                    subject: '[WYNK] We found a match for you!',
+                                },
+                            ],
+                            from: {
+                                email: 'test@example.com',
+                            },
+                            content: [
+                                {
+                                    type: 'text/html',
+                                    value:'<img src="logo.png"></br>' +
+                                    '<img src="match.jpg"></br>' +
+                                    '<h1>Hello friend,</h1></br>' +
+                                    '<h2>We found a match for you!</h2></br>' +
+                                    '<h2>Click <a href="wynk.world/results">here</a> to see who your match is! Then celebrate!</h2>',
+                                },
+                            ],
+                        },
+                    });
+
+                    sg.API(emptyReq, function(error, response) {
+                        if (error) {
+                            console.log('Error response received');
+                        }
+                        console.log('statusCode',response.statusCode);
+                        console.log('body',response.body);
+                        console.log('headers',response.headers);
+                    });
+                    //return;
                     //return;
                   })
                 });
@@ -410,8 +465,8 @@ hangoutRouter.route('/user/:user_fb_token')
   })
 
 function get_restaurant (req, categories) {
-    req.body.latitude = 33.6506;
-    req.body.longitude = -117.7435; //irvine spectrum
+    req.body.latitude = req.body.latitude || 33.6506;
+    req.body.longitude = req.body.longitude || -117.7435; //irvine spectrum
     req.body.price = '1,2';
     req.body.limit = 20;
     //let categories = ['restaurants'];
