@@ -3,11 +3,26 @@ import Hangout from '../models/hangout';
 import User from '../models/user';
 
 export default (io) => {
+  //When it connects, everything begins
   io.on('connection', (socket) => {
     socket = leaveAllRooms(Object.keys(io.sockets.adapter.sids[socket.id]), socket);
 
-    socket.join('Room 1');
-    socket.nickname = Math.floor(Math.random()*100);
+    //Join the 'default' room
+    socket.join('default');
+
+    // Upon receiving the 'init', get the correct chat and set the user's first name
+    socket.on('init', (userObject) => {
+      socket.nickname = userObject.given_name;
+
+      //This is for initially joining the room
+      let i = 0;
+      while (userObject.hangouts[i] && !userObject.hangouts[i].second_person) {
+        i++;
+      }
+      var room = (userObject.hangouts[i]) ? userObject.hangouts[i]._id : 'default';
+      console.log('joined: ', room);
+      socket.join(room);
+    })
     
     /**
      * @param {object} messageObject
@@ -18,69 +33,63 @@ export default (io) => {
     socket.on('chat message', (messageObject) => {
       var room = getRoom(socket, io);
       var nickname = socket.nickname;
-      console.log('nickname', nickname);
-      console.log('msg object', messageObject);
+      console.log('room', room);
 
-      io.to(room).emit('chat message', messageObject.name + ': ' + messageObject.message);
+      io.to(room).emit('chat message', messageObject.given_name + ': ' + messageObject.message);
 
-      // Hangout Object
+      // DUPE #1: Hangout Object
+      // We duplicated data, so this is the first round of duplication, HANGOUT
       Hangout.findById(room, function (err, foundHangout) {
-        if (err) return err;
+        if (err || !foundHangout) return err;
 
-        //This should slip right in, assuming we have the properties: fbToken, given_name, message
+        //Unshift is used for future lazy loading
         foundHangout.chat.unshift(messageObject);
         foundHangout.save(function (err) {
           if (err) return err;
         })
 
-
-
-
-
-      // Receiving User
-      var receivingUser = (foundHangout.first_person === messageObject.fbToken) ? foundHangout.second_person : foundHangout.first_person;
-
+        var receivingUser = (foundHangout.first_person === messageObject.fbToken) ? foundHangout.second_person : foundHangout.first_person;
+          
+        // DUPE #2: Finding the Receiving User
+        // The first user needs duplicated Hangout data (chat) on his user object. 
         User.findOne({ 'fbToken': receivingUser }, function (err, foundUser) {
+          console.log('recfounduser', foundUser);
           if (err) return err;
-          let i = 0;
-          while (foundUser.hangouts[i]._id != room) {
-            console.log(i);
-            i++;
-          }
+          
 
-          foundUser.hangouts[i].chat.unshift(messageObject);
-          foundUser.save(function (err) {
-            if (err) return err;
-          })
+          for (var i = 0; i < foundUser.hangouts.length; i++) {
+            
+            if (foundUser.hangouts[i]._id == room) {
+              foundUser.hangouts[i].chat.unshift(messageObject);
+              console.log('rec', foundUser.hangouts[i].chat);
+              foundUser.save(function (err) {
+                console.log('Saved 1!');
+                if (err) return err;
+              })
+            };
+          }
         });
 
-
-      })
-
-      // Sending User
-      User.findOne({ 'fbToken': messageObject.fbToken }, function (err, foundUser) {
-        if (err) return err;
-        console.log('hangout0', foundUser.hangouts[0]);
-        console.log(room);
-        console.log('hangout0 id', foundUser.hangouts[0]._id);
-        console.log('check if true', foundUser.hangouts[0]._id != room);
-        let i = 0;
-        while (foundUser.hangouts[i]._id != room) {
-          console.log(i);
-          i++;
-        }
-
-        foundUser.hangouts[i].chat.unshift(messageObject);
-        foundUser.save(function (err) {
+        // DUPE #3: Finding the Sending User and saving it
+        // The last duplicated object is this one. 
+        User.findOne({ 'fbToken': messageObject.fbToken }, function (err, foundUser) {
           if (err) return err;
-        })
-      });
+          for (var i = 0; i < foundUser.hangouts.length; i++) {
+            if (foundUser.hangouts[i]._id == room) {
+              foundUser.hangouts[i].chat.unshift(messageObject);
+              foundUser.save(function (err) {
+                if (err) return err;
+              })
+            };
 
+          }
+        });
+      })
 
     });
 
+    // From chat.js, this is the thing that sends the 'Tim is typing...'
     socket.on('keypress', (messageObject) => {
-      console.log(messageObject);
       if (messageObject.message) {
         socket.to(getRoom(socket, io)).broadcast.emit('keypress', socket.nickname);
       } else if (!messageObject.message) {
@@ -88,60 +97,53 @@ export default (io) => {
       }
     });
 
+    // Future Proofing. Not currently used.
     socket.on('disconnect', (data) => {
-      console.log('roomname');
-      //sendDisconnectionMessage(data.roomName, socket);
+
     });
 
+    // Used to leave current rooms and join a new room.
     socket.on('changeRoom', (data) => {
-      console.log('changeroom called', data.roomName);
-      console.log('data' + data.roomName);
-      console.log('sid' + Object.keys(io.sockets.adapter.sids[socket.id])[0]);
-
       if (data.roomName === getRoom(socket, io)) return;
-
       socket = leaveAllRooms(Object.keys(io.sockets.adapter.sids[socket.id]), socket);
-
       socket.join(data.roomName);
-      sendConnectionMessage(data.roomName, socket);
-
-      // console.log('clients tim=  ', io.sockets.adapter.rooms);
-      // console.log('rooms of user=', Object.keys(io.sockets.adapter.sids[socket.id]))
     });
 
+    // Future Proofing. Just in case. Not used at all.
     socket.on('changeUserName', (data) => {
-      console.log('changeuser called', data.userName);
-      console.log(socket.conn.id);
       socket.nickname = data.userName;
     });
   });
 }
 
+// Helper function to kill all the rooms before joining one. Reduces confusion
 function leaveAllRooms(roomArray, socket) {
   for (var i = 0; i < roomArray.length; i++) {
     socket.leave(roomArray[i]);
-    sendDisconnectionMessage(roomArray[i], socket);
   }
   return socket;
 }
 
+// Can't be accessed, future proofing.
 function sendDisconnectionMessage(roomItem, socket) {
   socket.broadcast.to(roomItem).emit('chat message', socket.nickname + ' has disconnected!');
 }
 
+// Can't be accessed, future proofing
 function sendConnectionMessage(room, socket) {
   socket.broadcast.to(room).emit('chat message', socket.nickname + ' has connected')
 }
 
+// Helper function to grab the room the user is in. Should only have one room. 
 function getRoom(socket, io) {
   return Object.keys(io.sockets.adapter.sids[socket.id])[0];
 }
 
+// Helper function to format dates.
 function getDate() {
   var newDate = new Date();
   var fullDate = newDate.getFullYear().toString();
   
-  // This is 0-indexed. So September is 8, November is 9. November should not have a leading 0
   if (newDate.getMonth() + 1 < 10) {
     fullDate += 0;
   }
