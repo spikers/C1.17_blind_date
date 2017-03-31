@@ -2,10 +2,10 @@ const { resolve } = require('path');
 
 module.exports = {
     entry: [
-        './index.js'
+        './src/index.js'
     ],
     output: {
-        filename: 'bundle.js',
+        filename: 'public/js/bundle.js',
         path: resolve(__dirname, 'dist'),
         publicPath: '/'
     },
