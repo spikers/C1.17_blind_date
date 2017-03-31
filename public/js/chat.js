@@ -1,6 +1,7 @@
 var socket = io();
 
 window.addEventListener('load', function () {
+  //Gets the user immediately on page load, then uses the user object to create chat buttons and initialize
     $.ajax({
         url: "http://localhost:8000/api/user/" + getFbToken(),
         type: "GET",
@@ -12,12 +13,17 @@ window.addEventListener('load', function () {
         }
     });
 });
+
+//Simple little function used to populate the chat window
 function chatHistory(chat) {
     for(var j=chat.length-1; j>=0; j--){
         var msg = chat[j].given_name + ': ' + chat[j].message;
         $('#messages').append($('<li>').append(msg));
     }
 }
+
+// Grabs the name of the person you're talking to from the database. 
+// It also creates button handlers and the buttons themselves.
 function getName(fbToken, hangoutData){
   if (!fbToken) return;
 
@@ -56,6 +62,8 @@ function getName(fbToken, hangoutData){
       }
   });
 }
+
+// THis is misnamed. This just calls the button maker. This can probably be refactored.
 function createButton(data){
     for(var i = 0; i<data.hangouts.length; i++){
         (function () {
@@ -72,6 +80,7 @@ function createButton(data){
     }
 }
 
+// This is starting us off in the right room and attaching a bunch of listeners.
 function initialize(userObject) {
   var name = '';
   var room = userObject.hangouts[0]._id;
@@ -90,6 +99,7 @@ function initialize(userObject) {
     submitMessage(e, socket, room, userObject);
   });
 
+  // When the server sends a 'chat message', append it to the DOM
   socket.on('chat message', function (msg) {
     ulElement = document.getElementById('messages');
     var li = getElementFromText(msg, 'li');
@@ -97,11 +107,13 @@ function initialize(userObject) {
     ulElement.scrollTop = ulElement.scrollHeight;
   });
 
+  // 'join', I don't think is ever called. Delete this.
   socket.on('join', function (room) {
     socket.room = room;
     socket.join(room);
   })
 
+  // This is for the 'Tim is typing...' message
   document.getElementById('input').addEventListener('input', function (e) {
     if (document.getElementById('input').value) {
       socket.emit('keypress', { message: true });
@@ -110,6 +122,7 @@ function initialize(userObject) {
     }
   })
 
+  // The server sends the 'Tim is typing' to the receiver.
   socket.on('keypress', function (nickname) {
     var typing = document.getElementById('typing');
     if (nickname) {
@@ -120,6 +133,7 @@ function initialize(userObject) {
   });
 }
 
+// Send the message to the server, along with a bunch of other stuff
 function submitMessage(e, socket, room, userObject) {
   e.preventDefault();
   if (document.getElementById('input').value === '') return;
@@ -134,6 +148,7 @@ function submitMessage(e, socket, room, userObject) {
   return false;
 }
 
+// This is a legacy function which is not used anymore
 function getElementFromText(text, type) {
   var tn = document.createTextNode(text);
   var element = document.createElement(type);
@@ -141,6 +156,7 @@ function getElementFromText(text, type) {
   return element;
 }
 
+// This has been replaced with chatHistory()
 function addChatToPage(userObject, socket) {
   var roomContainer = document.getElementById('room-container');
   for (var i = 0; i < userObject.hangouts.length; i++) {
@@ -154,6 +170,7 @@ function addChatToPage(userObject, socket) {
   }
 }
 
+//Used to deal with the query strings. 
 function getFbToken() {
   var url = window.location.href;
   if (url.indexOf('=') === -1) return '111082239432346';
