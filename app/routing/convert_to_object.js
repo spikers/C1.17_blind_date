@@ -1,11 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import User from '../models/user';
-//import hangoutRouter from './hangout_router'
-//import restaurantActivity from './restaurant_activity';
-
-// const app = express();
-// const convertAndRandomize = express.Router();
 
 export default function convertValueArrayAndCategoriesToObject(valueArray, categories) {
     let valueObject = {};
@@ -14,5 +9,3 @@ export default function convertValueArrayAndCategoriesToObject(valueArray, categ
     }
     return valueObject;
 }
-
-//export default convertValueArrayAndCategoriesToObject;

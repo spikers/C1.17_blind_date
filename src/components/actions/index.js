@@ -9,6 +9,7 @@ const instance = axios.create({
     'Content-Type' : 'application/x-www-form-urlencoded'
   }
 });
+
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const GET_PROFILE = 'GET_PROFILE';
 export const GET_SECOND_PROFILE = 'GET_SECOND_PROFILE'
@@ -22,6 +23,8 @@ export const GET_RESTAURANT="GET_RESTAURANT";
 export const CHANGE_AUTH ="CHANGE_AUTH";
 export const SET_FB_TOKEN="SET_FB_TOKEN";
 export const SET_GEOLOCATION="SET_GEOLOCATION";
+export const CHECK_IN = "CHECK_IN";
+export const CHECK_IN_NOTIFICATION="CHECK_IN_NOTIFICATION";
 
 const BASE_URL = 'http://54.202.15.233:8000/api/';
 
@@ -48,7 +51,6 @@ export function getProfile(id){
 }
 
 export function getSecondProfile(id){
-  console.log('getSecondProfile', id)
   const request = instance.get(`${BASE_URL}user/${id}`);
   return ({
     type: GET_SECOND_PROFILE,
@@ -132,9 +134,14 @@ export function authenticate(isLoggedIn){
 }
 
 export function setGeolocation(loc){
-  console.log('geolocation', loc)
   return{
     type: SET_GEOLOCATION,
     payload: loc
+  }
+}
+export function checkInNotification(bool){
+  return{
+    type: CHECK_IN_NOTIFICATION,
+    payload: bool
   }
 }

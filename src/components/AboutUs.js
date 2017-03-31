@@ -32,6 +32,8 @@ class AboutUs extends Component {
                         Not only that, WYNK also recommends a place to eat that is
                         near the place where the activity occurs. With WYNK, you don't
                         have to worry about planning anymore!
+                        <br/>
+                        Special thanks to Bill Cunningham and the fine folks at LearningFuze!
                     </p>
                     <p style={bold}>
                         Welcome to WYNK ;)

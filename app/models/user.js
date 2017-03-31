@@ -4,9 +4,7 @@ import { hangout } from './hangout';
 let Schema = mongoose.Schema;
 
 let user = new Schema({
-  /*password: {type: String, required: true},*/
-
-  //This is basic user info from hangout.js, I hate this solution
+  //This is basic user info from hangout.js
   username: String,
   given_name: String,
   gender: String,
@@ -15,11 +13,11 @@ let user = new Schema({
   dietary_restrictions: {
     type: Array,
     default: ['none']
-  }, //Vegan or not. Maybe beefless and porkless
+  }, //Vegan or not
   looking_for: {
     gender: String,
     pet: String
-  }, //This for for matching you, Cat dog fish bird
+  }, //This is for matching you, cat dog fish bird
   interests: {
       pet: String
   }, //This is for yourself, cat dog fish bird
@@ -42,7 +40,6 @@ let user = new Schema({
   },
   hangouts: [ hangout ]
 });
-
 
 //Mongoose automatically finds collection 'users'
 export default mongoose.model('user', user);

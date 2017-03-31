@@ -6,7 +6,6 @@ import hangoutRouter from './hangout_router';
 import convertValueArrayAndCategoriesToObject from './convert_to_object';
 import randomizeSelection from './randomize';
 
-
 const app = express();
 const restaurantActivity = express.Router();
 
@@ -21,7 +20,6 @@ hangoutRouter.route('/test')
 hangoutRouter.route('/hangout/:hangout_id')
     .get(function (req, res) {
         Hangout.findById(req.params.hangout_id, (err, hangoutObject) => {
-            console.log(hangoutObject.activity.rating);
             res.json(hangoutObject);
         });
     });
@@ -46,7 +44,6 @@ hangoutRouter.route('/restaurant')
 
 hangoutRouter.route('/activity')
     .post(function (req, res) {
-        console.log('Activity Endpoint Called');
         req.body.latitude = 33.6506;
         req.body.longitude = -117.7435;
         req.body.limit = 3;

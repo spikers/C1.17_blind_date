@@ -22,6 +22,9 @@ class Sidebar extends React.Component {
 
     handleClose = () => this.setState({open: false});
 
+    goBack = () => window.history.back();
+
+    render() {
     logout = () => {
         localStorage.removeItem('token')
         this.setState({open:false})
@@ -33,7 +36,6 @@ class Sidebar extends React.Component {
             this.setState({authenticated:true})
         }
     }
-
     render() {
 
         return (
@@ -43,6 +45,8 @@ class Sidebar extends React.Component {
                         onLeftIconButtonTouchTap={this.handleToggle}
                         title={this.props.title}
                         style={this.props.style}
+                        iconElementRight={<FlatButton label="Back" />}
+                        onRightIconButtonTouchTap={this.goBack}
                     />
                 </div>
                 <div>
@@ -60,7 +64,7 @@ class Sidebar extends React.Component {
                         <Link to='https://wynkworld.wordpress.com/' target="_blank"><MenuItem onTouchTap={this.handleClose}>Blog</MenuItem></Link>
                         <Link to='/faq'><MenuItem onTouchTap={this.handleClose}>FAQ</MenuItem></Link>
                         <Link to='/contactus'><MenuItem onTouchTap={this.handleClose}>Contact Us</MenuItem></Link>
-                         <Link to='https://medium.com/@lfzwynk/wynk-b55b17d5b7d3' style={link} target='_blank'><MenuItem onTouchTap={this.handleClose}>Blog</MenuItem></Link>
+                        <Link to='https://wynkworld.wordpress.com/' target='_blank'><MenuItem onTouchTap={this.handleClose}>Blog</MenuItem></Link>
                         <Link to='/'><MenuItem onTouchTap={this.logout}>{this.props.authenticated ? 'Logout':'Login'}</MenuItem></Link>
                     </Drawer>
                 </div>

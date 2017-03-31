@@ -7,7 +7,6 @@ class App extends Component {
     componentDidMount(){
         if (navigator.geolocation){
             navigator.geolocation.getCurrentPosition(function(position){
-                console.log('position in callback', position)
                 this.setPosition.call(this, position)
             }.bind(this))
         }else{
@@ -16,7 +15,6 @@ class App extends Component {
     }
 
     setPosition(position){
-        console.log('geolocation was called', position)
         let latLong={
             lat: position.coords.latitude,
             lng: position.coords.longitude
@@ -25,7 +23,6 @@ class App extends Component {
     }
 
     render(){
-        console.log('props in app', this.props)
         let titleName = {};
         switch(this.props.router.location.pathname){
         case '/':
@@ -50,7 +47,6 @@ class App extends Component {
             titleName = 'Contact Us';
             break;
     }
-
     return(
         <div>
             <Header
