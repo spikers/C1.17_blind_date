@@ -215,13 +215,13 @@ class ProfilePage extends Component{
                   src={(this.props.user && this.props.user.profile_picture) || require('./img/flip_person.png')}/>
                 </div>
               </Paper>
-              <FloatingActionButton style={{
+              {/*<FloatingActionButton style={{
                   position:"absolute",
                   bottom:"2%",
                   right:"2%"
                 }}>
                     <ContentAdd />
-                </FloatingActionButton>
+                </FloatingActionButton>*/}
             </Paper>
             <form>
               <Paper style={containerStyle} zDepth={1}>

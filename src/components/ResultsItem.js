@@ -5,6 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Directions from 'material-ui/svg-icons/maps/directions';
 import Chat from 'material-ui/svg-icons/communication/chat';
 import MapContainer from './MapContainer';
+import CheckIn from './CheckInConfirmation';
 
 class ResultsItem extends Component {
   render(){
@@ -44,10 +45,13 @@ class ResultsItem extends Component {
         </CardHeader>
         <CardActions style={cardActionsVisibility}>
           <div style = {{width:"100%", display: "flex", justifyContent: "flex-end"}}>   
+            <CheckIn
+              handleCheckIn = {this.props.handleCheckIn}
+            />
             <MapContainer style={{display:"inline-block"}} geolocation={this.props.geolocation} activity={activity} restaurant={restaurant}/>
-            <FlatButton
+            <a href="http://wynk.world:8000/chat"><FlatButton
               style={{display:"inline-block"}}
-              icon={<Chat/>}/>
+              icon={<Chat/>}/></a>
           </div>
         </CardActions>
         

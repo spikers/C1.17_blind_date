@@ -109,13 +109,15 @@ class EventsPage extends React.Component {
 
         <Paper style={showing} className={css.eventChoice} zDepth={1}>
           <p>Current Selection: <strong>{name}</strong> </p>
-          <h1>Are you ready to <span style={{color:'#C2185B'}}><strong>FLIP?</strong></span></h1>
+          <h1>Are you ready to <span style={{color:'#C2185B'}}><strong>WYNK?</strong></span></h1>
         </Paper>
-
+        
         <div style={showing} className={css.container}>
-          <Paper className={css.shadow} circle={true} zDepth={2} onClick={this.handleEventChoice.bind(this, this.props.user.fbToken, this.props.eventChoice)}>
+          <div className={css.shadow} onClick={this.handleEventChoice.bind(this, this.props.user.fbToken, this.props.eventChoice)}>
+            {/*<div className={css.shadow} circle={true} zDepth={2} onClick={this.handleEventChoice.bind(this, this.props.user.fbToken, this.props.eventChoice)}>*/}
             <Link to='/results'><img className={css.flip} src={require("./img/wynk.png")} alt="wynk"/></Link>
-          </Paper>
+          </div>
+          <Link style={{position:"absolute"}} to='/results'>I'll choose later. Show me my dates!</Link>
         </div>
       </div>
     );

@@ -32,16 +32,20 @@ class Sidebar extends React.Component {
         }
 
     render() {
+
         return (
                 <div>
+                    <div>
                     <AppBar
                         onLeftIconButtonTouchTap={this.handleToggle}
                         title={this.props.title}
                         style={this.props.style}
                     />
+                    </div>
+                    <div>
                     <Drawer
-                        containerStyle={{height: '100%', top: '8.5%'}}
-                        docked={true}
+                        containerStyle={{height: '100%', top: '0'}}
+                        docked={false}
                         width={200}
                         open={this.state.open}
                         onRequestChange={(open) => this.setState({open})}
@@ -54,6 +58,7 @@ class Sidebar extends React.Component {
                         <Link to='/contactus'><MenuItem onTouchTap={this.handleClose}>Contact Us</MenuItem></Link>
                         <Link to='/'><MenuItem onTouchTap={this.logout}>{this.props.authenticated ? 'Logout':'Login'}</MenuItem></Link>
                     </Drawer>
+                    </div>
                 </div>
         );
     }

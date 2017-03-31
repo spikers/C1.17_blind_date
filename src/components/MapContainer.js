@@ -49,7 +49,7 @@ export default class MapContainer extends React.Component {
           onRequestClose={this.handleClose}
           contentStyle={{width: "90%", height: "80vh", backgroundColor:"none"}}
         >
-        <GMap initialCenter={this.props.geolocation} restaurantLocation={this.props.activity || ''} activityLocation={this.props.restaurant || ''}/>
+        <GMap initialCenter={!this.props.geolocation ? {lat: 33.6362183, lng: -117.7416661} : this.props.geolocation} restaurantLocation={this.props.activity || ''} activityLocation={this.props.restaurant || ''}/>
         </Dialog>
       </div>
     );

@@ -19,7 +19,11 @@ class LoginPage extends Component {
     componentWillMount(){
         if(this.props.authenticated){
             this.props.getProfile(this.props.token).then(()=>{
+                if(localStorage.getItem('token')){
                 this.context.router.push('/profile')
+                }else{
+                this.context.router.push('/events')
+                }
             })
         }
     }
