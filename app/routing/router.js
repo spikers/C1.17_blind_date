@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import User from '../models/user';
 import fs from 'fs';
+import path from 'path';
 
 const app = express();
 const router = express.Router();
@@ -21,6 +22,11 @@ router.get('/', function (req, res) {
         }
         res.send(data);
     });
+});
+
+
+router.get('/:bundle', function (req, res) {
+    res.sendFile(path.resolve(__dirname, '..', '..', 'public', req.params.bundle));
 });
 
 router.get('/choose', function (req, res) {
