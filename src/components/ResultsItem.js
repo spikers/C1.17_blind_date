@@ -49,7 +49,7 @@ class ResultsItem extends Component {
               handleCheckIn = {this.props.handleCheckIn}
             />
             <MapContainer style={{display:"inline-block"}} geolocation={this.props.geolocation} activity={activity} restaurant={restaurant}/>
-            <a href="http://wynk.world:8000/chat"><FlatButton
+            <a href={"http://wynk.world/chat?" + "user1=" + this.props.user + "user2=" + (this.props.secondUser ?this.props.secondUser.fbToken : '') }><FlatButton
               style={{display:"inline-block"}}
               icon={<Chat/>}/></a>
           </div>

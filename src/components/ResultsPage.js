@@ -52,7 +52,7 @@ class ResultsPage extends Component {
     if(this.props.user && this.props.user.hangouts){
       resultsArr = this.props.user.hangouts.map((hangout, index)=>{
         return(
-          <ResultsItem key={index} index={index} secondUser={this.props.secondUser || null} hangout={hangout} geolocation={this.props.geolocation || ''} handleCheckIn={this.handleCheckIn.bind(this)}/>
+          <ResultsItem key={index} index={index} user = {this.props.user.fbToken} secondUser={this.props.secondUser || null} hangout={hangout} geolocation={this.props.geolocation || ''} handleCheckIn={this.handleCheckIn.bind(this)}/>
         )
       })
     }
