@@ -15,7 +15,6 @@ export default function(ComposedComponent){
         this.props.authenticate(true)
         this.props.setFBToken(localStorage.getItem('token'))
       }
-      console.log('props in requireAuth', this.props)
       if(!this.props.user){
         this.props.getProfile(localStorage.getItem('token'))
       }
@@ -28,7 +27,6 @@ export default function(ComposedComponent){
         this.props.authenticate(true)
         this.props.setFBToken(localStorage.getItem('token'))
       }
-      console.log('props in requireAuth', this.props)
       if(!this.props.user && this.props.authenticated){
         this.props.getProfile(localStorage.getItem('token'))
       }

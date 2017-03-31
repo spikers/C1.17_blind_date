@@ -4,19 +4,24 @@ import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import Directions from 'material-ui/svg-icons/maps/directions';
 import Chat from 'material-ui/svg-icons/communication/chat';
+import MapContainer from './MapContainer';
+import CheckIn from './CheckInConfirmation';
 
 class ResultsItem extends Component {
   render(){
-    console.log('secondUser in resultsitem', this.props)
+
     let {activity, restaurant} = this.props.hangout || {}
-    let matchNotification;
-    let matchNotificationColor;
-    if (this.props.secondUser !== null){
-      matchNotification = "Match Found!"
-      matchNotificationColor = {color: "green"}
+    // let matchNotification;
+    // let matchNotificationColor;
+    // let cardActionsVisibility;
+    if (this.props.matched){
+      var matchNotification = "Matched!"
+      var matchNotificationColor = {color: "green"}
+      var cardActionsVisibility = {display:"initial"}
    }else{ "Match Pending..."
-    matchNotification = "Match Pending..."
-    matchNotificationColor = {color: "red"}
+      var matchNotification = "Match Pending..."
+      var matchNotificationColor = {color: "red"}
+      var cardActionsVisibility = {display:"none"}
    }
     return (
       <Card
@@ -24,7 +29,7 @@ class ResultsItem extends Component {
         style={{margin: "2vw auto"}}
       >
         <CardHeader
-          actAsExpander={this.props.secondUser === null ? false : true}
+          actAsExpander={this.props.matched}
           showExpandableButton={false}
         >
         <div className = {styles.cardHeader}>
@@ -39,12 +44,17 @@ class ResultsItem extends Component {
           </div>
         </div>
         </CardHeader>
-        <CardActions>
-          <div style = {{width:"100%", textAlign:"right"}}>   
-            <FlatButton 
-              icon={<Directions/>}/>
-            <FlatButton
-              icon={<Chat/>}/>
+        <CardActions style={cardActionsVisibility}>
+          <div style = {{width:"100%", display: "flex", justifyContent: "space-around"}}>   
+            <CheckIn
+              handleCheckIn = {this.props.handleCheckIn}
+              secondEmail={this.props.secondUser && this.props.secondUser.email}
+              eventLocation={activity.coordinates}
+            />
+            <MapContainer style={{display:"inline-block"}} geolocation={this.props.geolocation} activity={activity} restaurant={restaurant}/>
+            <a href={"http://wynk.world/chat?" + "fbToken=" + this.props.user} target="_blank"><FlatButton
+              style={{display:"inline-block"}}
+              icon={<Chat/>}/></a>
           </div>
         </CardActions>
         

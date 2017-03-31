@@ -55,6 +55,7 @@ const EventsGrids = (props) => {
           rows={tile.featured ? 2 : 1}
         >
           <img src={tile.img} />
+          {tile.featured ? <img style={{position:"absolute", bottom: "0", width: "20%", height: "auto"}} src={require('./img/featured.png')}/> : ''}
         </GridTile>
       )})
   }

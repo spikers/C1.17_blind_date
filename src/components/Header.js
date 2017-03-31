@@ -37,8 +37,10 @@ class Sidebar extends React.Component {
             }
         }
     render() {
+
         return (
                 <div>
+                    <div>
                     <AppBar
                         onLeftIconButtonTouchTap={this.handleToggle}
                         title={this.props.title}
@@ -46,9 +48,11 @@ class Sidebar extends React.Component {
                         iconElementRight={<FlatButton label="Back" />}
                         onRightIconButtonTouchTap={this.goBack}
                     />
+                    </div>
+                    <div>
                     <Drawer
-                        containerStyle={{height: '100%', top: '8.5%', opacity: '0.8'}}
-                        docked={true}
+                        containerStyle={{height: '100%', top: '0'}}
+                        docked={false}
                         width={200}
                         open={this.state.open}
                         onRequestChange={(open) => this.setState({open})}
@@ -62,6 +66,7 @@ class Sidebar extends React.Component {
                          <Link to='https://wynkworld.wordpress.com/' style={link} target='_blank'><MenuItem onTouchTap={this.handleClose}>Blog</MenuItem></Link>
                         <Link to='/'><MenuItem onTouchTap={this.logout}>{this.props.authenticated ? 'Logout':'Login'}</MenuItem></Link>
                     </Drawer>
+                    </div>
                 </div>
         );
     }

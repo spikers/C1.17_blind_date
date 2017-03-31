@@ -9,6 +9,7 @@ const instance = axios.create({
     'Content-Type' : 'application/x-www-form-urlencoded'
   }
 });
+
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const GET_PROFILE = 'GET_PROFILE';
 export const GET_SECOND_PROFILE = 'GET_SECOND_PROFILE'
@@ -21,6 +22,9 @@ export const GET_HANGOUT="GET_HANGOUT";
 export const GET_RESTAURANT="GET_RESTAURANT";
 export const CHANGE_AUTH ="CHANGE_AUTH";
 export const SET_FB_TOKEN="SET_FB_TOKEN";
+export const SET_GEOLOCATION="SET_GEOLOCATION";
+export const CHECK_IN = "CHECK_IN";
+export const CHECK_IN_NOTIFICATION="CHECK_IN_NOTIFICATION";
 
 const BASE_URL = 'http://54.202.15.233:8000/api/';
 
@@ -55,9 +59,6 @@ export function getSecondProfile(id){
 }
 
 export function updateProfile(id, forms){
-  console.log('forms in updateProfile', forms)
-  // let encodedURI = encodeURIComponent(JSON.stringify(forms))
-  // console.log('this is encodedURI', encodedURI)
   let encodedURI = encodeURI(
     'username=' + (forms.username || '') + 
     '&givenName=' + (forms.given_name || '') + 
@@ -72,8 +73,6 @@ export function updateProfile(id, forms){
 
     let xhr = new XMLHttpRequest();
     xhr.addEventListener('load', function(data) {
-      console.log('Update Worked', data, id);
-      console.log(data.target.response);
       getProfile(id);
     }.bind(this));
     xhr.open('PUT', `${BASE_URL}user/${id}`);
@@ -81,16 +80,8 @@ export function updateProfile(id, forms){
     xhr.send(encodedURI);
   return ({
     type:UPDATE_PROFILE,
-    payload: true
+    payload: forms
   });
-}
-
-export function saveProfile(user){
-  const request = instance.post(BASE_URL, user);
-  return({
-    type:SAVE_PROFILE,
-    payload: request
-  })
 }
 
 //EVENTS PAGE ACTIONS
@@ -139,5 +130,18 @@ export function authenticate(isLoggedIn){
   return {
     type: CHANGE_AUTH,
     payload: isLoggedIn
+  }
+}
+
+export function setGeolocation(loc){
+  return{
+    type: SET_GEOLOCATION,
+    payload: loc
+  }
+}
+export function checkInNotification(bool){
+  return{
+    type: CHECK_IN_NOTIFICATION,
+    payload: bool
   }
 }

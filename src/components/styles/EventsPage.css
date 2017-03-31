@@ -1,11 +1,13 @@
 .flip{
   width: 100%;
+  box-shadow: 3%
 }
 
 .shadow{
   border-radius: 50%;
   width:40vw;
   margin: 5vh auto;
+  box-shadow: 5%
 }
 .container{
   width:100%;

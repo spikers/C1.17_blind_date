@@ -15,13 +15,8 @@ export default function(ComposedComponent){
         this.props.setFBToken(localStorage.getItem('token'))
         this.props.authenticate(true)
       }
-      console.log('props after setting token', this.props)
-    }
-    componentWillUpdate(nextProps){
-      console.log('componentWillUpdate', nextProps)
     }
     render(){
-      console.log('this.props in render of HPA', this.props)
       return(
         <ComposedComponent {...this.props}/>
       )

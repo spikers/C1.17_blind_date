@@ -7,17 +7,25 @@ body{
   overflow-x:hidden;
 }
 
+@media screen and (min-width: 480px) {
+    body {
+        width: 80vw;
+    }
+}
+
 a{
   text-decoration: none;
 }
 
 .GMap {
-  height: 100%;
   position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
   width: 100%;
 }
 .GMap-canvas {
-  top: 20px;
+  top:0;
   display: block;
   width: 100%;
   height: 100%;
