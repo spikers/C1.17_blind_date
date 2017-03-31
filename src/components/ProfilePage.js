@@ -200,7 +200,7 @@ class ProfilePage extends Component{
       const {handleSubmit} = this.props;
       let props = this.props;
       return (
-        <div> 
+        <div style={{width:"55vh", margin:"auto"}}>
           <Paper style={containerStyle} zDepth={1}>
             <h3>What's up, {this.props.user !== null ? this.props.user.username: 'User'}?</h3>
               <Paper style={picStyle}circle={true} zDepth={2}>

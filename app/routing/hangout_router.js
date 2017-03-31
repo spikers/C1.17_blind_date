@@ -59,6 +59,7 @@ hangoutRouter.route('/')
               //If it's here, then there was a good hangout to join
               let suitableHangout = open[i];
               // If you can find a suitable hangout to join,
+
               // You're definitely gonna be the second person.
                 if (!suitableHangout.second_person) {
                     suitableHangout.second_person = req.body.user;

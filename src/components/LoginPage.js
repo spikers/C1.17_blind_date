@@ -28,9 +28,7 @@ class LoginPage extends Component {
         <div>
             <div className={styles.container}>
                 <Logo classNameName="LogoStyles.logo"/>
-                <div style={{width:"60vw", height: "auto"}}>
-                    <a href="http://localhost:8000/auth/facebook"><img style={{width:"100%", height: "auto"}} src={require('./img/fb_login.png')}/></a>
-                </div>
+                    <a href="http://localhost:8000/auth/facebook"><img style={{width:"30vh", margin:"auto"}} src={require('./img/fb_login.png')}/></a>
             </div>
         </div>
         )

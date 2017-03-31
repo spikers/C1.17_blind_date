@@ -45,7 +45,6 @@ class RoutesContainer extends Component {
           <Route path='/aboutus' component={AboutUs} />
           <Route path='/faq' component={Faq} />
           <Route path='/contactus' component={ContactUs} />
-          <Route path='/blog' component={Blog} />
         </Route>
         <Route path='*' components={NotFound} />
       </Router>

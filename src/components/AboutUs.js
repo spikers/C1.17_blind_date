@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import LogoGray from './LogoGray';
 const textDiv = {
-    width: "90%",
+    width: "50vh",
     textAlign: "center",
     margin: "auto"
 }
@@ -20,14 +20,14 @@ class AboutUs extends Component {
             <div>
                 <LogoGray/>
                 <img style={{
-                    width:'60%',
-                    margin:'0 20%'}}
+                    width:'30vh',
+                    margin:'auto',
+                    display:'block'}}
                      src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/5/005/095/0d0/0796c17.jpg"/>
                 <div style={textDiv}>
                     <p style={text}>
                         What is the most frustrating part about dating? PLANNING!
                         Different from other dating apps, WYNK lets you choose an activity
-                        (movies, outdoor activities, live performances)
                         of your interest, and matches your date according to that activity!
                         Not only that, WYNK also recommends a place to eat that is
                         near the place where the activity occurs. With WYNK, you don't
@@ -36,7 +36,7 @@ class AboutUs extends Component {
                         Special thanks to Bill Cunningham and the fine folks at LearningFuze!
                     </p>
                     <p style={bold}>
-                        Welcome to WYNK
+                        Welcome to WYNK ;)
                     </p>
                 </div>
             </div>
