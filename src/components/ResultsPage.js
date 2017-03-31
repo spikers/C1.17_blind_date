@@ -37,8 +37,8 @@ class ResultsPage extends Component {
   }
 
   handleCheckIn = (email, activity) => {
-    // let loc1 = new google.maps.LatLng(this.props.geolocation.lat, this.props.geolocation.lng)
-    let loc1 = new google.maps.LatLng(activity.latitude, activity.longitude)
+    let loc1 = new google.maps.LatLng(this.props.geolocation.lat, this.props.geolocation.lng)
+    // let loc1 = new google.maps.LatLng(activity.latitude, activity.longitude)
     let loc2 = new google.maps.LatLng(activity.latitude, activity.longitude)
     let distance = google.maps.geometry.spherical.computeDistanceBetween(loc1, loc2)
     if (distance < 1000){
@@ -52,6 +52,7 @@ class ResultsPage extends Component {
     })
   }else{
       this.props.checkInNotification(false)
+      console.log('You need to be at the event location to check in!')
     }
   }
 
