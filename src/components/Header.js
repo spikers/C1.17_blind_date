@@ -47,7 +47,7 @@ export default class Sidebar extends React.Component {
                         <Link to='/aboutus' style={link}><MenuItem onTouchTap={this.handleClose}>About Us</MenuItem></Link>
                         <Link to='/faq' style={link}><MenuItem onTouchTap={this.handleClose}>FAQ</MenuItem></Link>
                         <Link to='/contactus' style={link}><MenuItem onTouchTap={this.handleClose}>Contact Us</MenuItem></Link>
-                        <Link to='https://medium.com/@lfzwynk/wynk-b55b17d5b7d3' style={link} target='_blank'><MenuItem onTouchTap={this.handleClose}>Blog</MenuItem></Link>
+                        <Link to='https://wynkworld.wordpress.com/' style={link} target='_blank'><MenuItem onTouchTap={this.handleClose}>Blog</MenuItem></Link>
                     </Drawer>
                 </div>
         );
