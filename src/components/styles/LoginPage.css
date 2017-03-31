@@ -4,9 +4,10 @@
   align-items: center;
   justify-content:center;
   background-color: rgb(195, 24, 92);
-  height:100vh;
-  width:100vw;
+  height: 95vh;
+  width:100%;
   overflow: hidden;
+
 }
 
 .biggerText{

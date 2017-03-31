@@ -2,10 +2,14 @@ import React, {Component} from 'react';
 import {Link} from 'react-router';
 import ResultsItem from './ResultsItem';
 import {connect} from 'react-redux';
-import {getProfile, getSecondProfile, getRestaurant} from './actions'
-import axios from 'axios'
+import {getProfile, getSecondProfile} from './actions'
 import Logo from './Logo'
 import styles from './styles/ResultsPage.css'
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import Chat from 'material-ui/svg-icons/communication/chat';
+import Snackbar from 'material-ui/Snackbar';
+import RaisedButton from 'material-ui/RaisedButton';
+
 
 const mainTitleStyle = {
     textAlign: 'center',
@@ -19,75 +23,65 @@ const subtitleStyle = {
     fontWeight: 'bold'
 }
 class ResultsPage extends Component {
-  componentWillMount(){
-    this.props.getRestaurant()
-    if (this.props.user === null){
-      this.props.getProfile(100162377184177)
-    }
-  }
 
   shouldComponentUpdate(nextProps, nextState){
-    if (this.props.secondUser != undefined && this.props.restaurant != undefined){
+    if (this.props.secondUser != undefined){
       return false
     }
     return true
   }
 
-  createContentObj(type){
-    switch (type){
-      case 'person':
-        return {
-          type,
-          title: this.props.secondUser.name,
-          content: this.props.secondUser.biography,
-          image: 'https://media.licdn.com/mpr/mpr/shrinknp_200_200/p/5/005/095/0d0/0796c17.jpg'
-        }
-      case 'restaurant':
-        if (this.props.restaurant == null){
-          return {}
-        }
-        return {
-            type,
-            title: this.props.restaurant.name,
-            content: this.props.restaurant.display_phone,
-            image: this.props.restaurant.image_url
-        }
-      default:
-        return {}
+  handleCheckIn = () => {
+    let loc1 = new google.maps.LatLng(this.props.geolocation.lat, this.props.geolocation.lng)
+    let loc2 = new google.maps.LatLng(this.props.user.hangouts.activity.coordinates.latitude, this.props.user.hangouts.activity.coordinates.longitude)
+    let distance = google.maps.geometry.spherical.computeDistanceBetween(loc1, loc2)
+    if (distance < 1000){
+      //need to hit the endpoint somehow
     }
   }
 
   render(){
     let fullDate = '';
-    let secondPerson = null;
+    // let secondPerson = null;
     let resultsArr = [];
-    if (this.props.user!== null && this.props.user.hangouts[0].second_person != null && secondPerson===null){
-      secondPerson = this.props.user.hangouts[0].first_person === this.props.userfbToken ? this.props.user.hangouts[0].second_person : this.props.user.hangouts[0].first_person
-      this.props.getSecondProfile(secondPerson).then(()=>{console.log('we should have the second profile now', this.props)})
-    }
-    if(this.props.user && this.props.secondUser && this.props.restaurant){
+    if(this.props.user && this.props.user.hangouts){
       resultsArr = this.props.user.hangouts.map((hangout, index)=>{
+        let matched = false;
+      //   if (this.props.user && this.props.user.hangouts && this.props.user.hangouts[0] && this.props.user.hangouts[0].second_person != null && secondPerson===null){
+      // secondPerson = this.props.user.hangouts[index].first_person === this.props.userfbToken ? this.props.user.hangouts[index].second_person : this.props.user.hangouts[index].first_person
+      if (hangout.second_person){
+        this.props.getSecondProfile(hangout.first_person == this.props.userfbToken ? hangout.second_person : hangout.first_person)
+        matched = true
+      }
         return(
-          <ResultsItem expanded={index === 0 ? true:false} key={index} index={index} secondUser={secondPerson} hangout={hangout}/>
+          <ResultsItem key={index} index={index} user = {this.props.user.fbToken} secondUser={this.props.secondUser || null} hangout={hangout} geolocation={this.props.geolocation || ''} handleCheckIn={this.handleCheckIn.bind(this)} matched = {matched}/>
         )
       })
     }
+
     return (        
       <div style={{width:"95vw", margin: "2.5vw auto"}}>
           {resultsArr}
+          {/*<a href="http://wynk.world/chat">
+          <FloatingActionButton style = {{position:"fixed", bottom: "4%", right: "4%", zIndex:"2"}}>
+            <Chat/>
+          </FloatingActionButton>  
+          </a>*/}
       </div>
     )
   }
 }
 
 function mapStateToProps(state){
+  if (state.user.secondUser != null){
+  console.log('state in results', state)
+  }
   return {
     user: state.user.user,
     secondUser: state.user.secondUser,
-    events: state.events.events,
-    restaurant: state.user.restaurant,
-    authenticated: state.authenticated
+    authenticated: state.authenticated,
+    geolocation: state.user.geolocation
   }
 }
 
-export default connect(mapStateToProps, {getProfile, getSecondProfile, getRestaurant})(ResultsPage);
+export default connect(mapStateToProps, {getProfile, getSecondProfile})(ResultsPage);

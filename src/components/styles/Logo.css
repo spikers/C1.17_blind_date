@@ -1,11 +1,10 @@
 .logo_login{
-    width: 60%;
+    width: 40vh;
     margin: 50% auto 10% auto;
     display: block;
 }
 .logo{
-    width: 50%;
-    height: auto;
-    margin: 5% auto;
+    width: 30vh;
+    margin: 2% auto;
     display: block;
 }

@@ -7,7 +7,7 @@ const style = {
     margin: 12,
 }
 const div = {
-    width: "65%",
+    width: "40vh",
     margin: "auto"
 }
 const button = {
@@ -24,10 +24,10 @@ class ContactUs extends Component {
                 <div style={div}>
                     <TextField
                         floatingLabelText="Name"
-                    />
+                    /><br />
                     <TextField
                         floatingLabelText="Email"
-                    />
+                    /><br />
                     <TextField
                         floatingLabelText="Message"
                         multiLine={true}

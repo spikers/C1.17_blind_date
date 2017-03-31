@@ -1,6 +1,6 @@
 import React,{Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {authenticate} from './actions'
+import {authenticate, setFBToken, getProfile} from './actions'
 
 export default function(ComposedComponent){
   class Auth extends Component {
@@ -8,22 +8,27 @@ export default function(ComposedComponent){
         router: PropTypes.object
       }
     componentWillMount(){
-    //   console.log('this was touched')
-    // if (this.props.user && this.props.user.user.fbToken){
-    //   console.log('we should be authenticating to true here')
-    //   this.props.authenticate(true)
-    // }
-    if(!this.props.authenticated){
-      this.context.router.push('/');
+      if(!this.props.authenticated && !localStorage.getItem('token')){
+        this.context.router.push('/');
+        }
+      else if(localStorage.getItem('token') && !this.props.authenticated){
+        this.props.authenticate(true)
+        this.props.setFBToken(localStorage.getItem('token'))
+      }
+      if(!this.props.user){
+        this.props.getProfile(localStorage.getItem('token'))
       }
     }
     componentWillUpdate(nextProps){
-      // console.log('nextProps in componentWillUpdate', nextProps)
-      // if (nextProps.user.user && nextProps.user.user.fbToken){
-      //   this.props.authenticate(true)
-      // }
-      if(!nextProps.authenticated){
-        this.context.router.push('/')
+      if(!this.props.authenticated && !localStorage.getItem('token')){
+        this.context.router.push('/');
+        }
+      else if(localStorage.getItem('token') && !this.props.authenticated){
+        this.props.authenticate(true)
+        this.props.setFBToken(localStorage.getItem('token'))
+      }
+      if(!this.props.user && this.props.authenticated){
+        this.props.getProfile(localStorage.getItem('token'))
       }
     }
     render(){
@@ -33,7 +38,11 @@ export default function(ComposedComponent){
     }
   }
   function mapStateToProps(state){
-    return {authenticated: state.authenticated}
+    return {
+      authenticated: state.authenticated,
+      token: state.user.token,
+      user: state.user.user
+    }
   }
-  return connect(mapStateToProps, authenticate)(Auth);
+  return connect(mapStateToProps, {authenticate,setFBToken, getProfile})(Auth);
 }
