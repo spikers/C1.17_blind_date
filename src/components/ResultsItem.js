@@ -10,17 +10,17 @@ import CheckIn from './CheckInConfirmation';
 class ResultsItem extends Component {
   render(){
     let {activity, restaurant} = this.props.hangout || {}
-    let matchNotification;
-    let matchNotificationColor;
-    let cardActionsVisibility;
-    if (this.props.secondUser !== null){
-      matchNotification = "Match Found!"
-      matchNotificationColor = {color: "green"}
-      cardActionsVisibility = {display:"initial"}
+    // let matchNotification;
+    // let matchNotificationColor;
+    // let cardActionsVisibility;
+    if (this.props.matched){
+      var matchNotification = "Matched!"
+      var matchNotificationColor = {color: "green"}
+      var cardActionsVisibility = {display:"initial"}
    }else{ "Match Pending..."
-    matchNotification = "Match Pending..."
-    matchNotificationColor = {color: "red"}
-    cardActionsVisibility = {display:"none"}
+      var matchNotification = "Match Pending..."
+      var matchNotificationColor = {color: "red"}
+      var cardActionsVisibility = {display:"none"}
    }
     return (
       <Card
@@ -28,7 +28,7 @@ class ResultsItem extends Component {
         style={{margin: "2vw auto"}}
       >
         <CardHeader
-          actAsExpander={this.props.secondUser === null ? false : true}
+          actAsExpander={this.props.matched}
           showExpandableButton={false}
         >
         <div className = {styles.cardHeader}>

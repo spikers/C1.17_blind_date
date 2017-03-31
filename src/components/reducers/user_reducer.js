@@ -9,7 +9,7 @@ export default function (state = INITIAL_STATE, action){
     case GET_PROFILE:
       return{...state, user: action.payload.data}
     case GET_SECOND_PROFILE:
-      return{...state, secondUser: action.payload.data}
+      return{...state, secondUser: action.payload && action.payload.data}
     case GET_RESTAURANT:
       return{...state, restaurant: action.payload.data}
     case SET_FB_TOKEN:

@@ -39,7 +39,6 @@ export default class MapContainer extends React.Component {
         onTouchTap={this.handleClose}
       />,
     ];
-    console.log('props in MapContainer', this.props)
     return (
       <div>
         <FlatButton icon={<Directions/>} onTouchTap={this.handleOpen}/>

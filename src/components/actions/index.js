@@ -48,6 +48,7 @@ export function getProfile(id){
 }
 
 export function getSecondProfile(id){
+  console.log('getSecondProfile', id)
   const request = instance.get(`${BASE_URL}user/${id}`);
   return ({
     type: GET_SECOND_PROFILE,

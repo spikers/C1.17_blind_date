@@ -3,7 +3,6 @@ import {Link} from 'react-router';
 import ResultsItem from './ResultsItem';
 import {connect} from 'react-redux';
 import {getProfile, getSecondProfile} from './actions'
-import axios from 'axios'
 import Logo from './Logo'
 import styles from './styles/ResultsPage.css'
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -43,16 +42,19 @@ class ResultsPage extends Component {
 
   render(){
     let fullDate = '';
-    let secondPerson = null;
+    // let secondPerson = null;
     let resultsArr = [];
-    if (this.props.user && this.props.user.hangouts && this.props.user.hangouts[0] && this.props.user.hangouts[0].second_person != null && secondPerson===null){
-      secondPerson = this.props.user.hangouts[0].first_person === this.props.userfbToken ? this.props.user.hangouts[0].second_person : this.props.user.hangouts[0].first_person
-      this.props.getSecondProfile(secondPerson)
-    }
     if(this.props.user && this.props.user.hangouts){
       resultsArr = this.props.user.hangouts.map((hangout, index)=>{
+        let matched = false;
+      //   if (this.props.user && this.props.user.hangouts && this.props.user.hangouts[0] && this.props.user.hangouts[0].second_person != null && secondPerson===null){
+      // secondPerson = this.props.user.hangouts[index].first_person === this.props.userfbToken ? this.props.user.hangouts[index].second_person : this.props.user.hangouts[index].first_person
+      if (hangout.second_person){
+        this.props.getSecondProfile(hangout.first_person == this.props.userfbToken ? hangout.second_person : hangout.first_person)
+        matched = true
+      }
         return(
-          <ResultsItem key={index} index={index} user = {this.props.user.fbToken} secondUser={this.props.secondUser || null} hangout={hangout} geolocation={this.props.geolocation || ''} handleCheckIn={this.handleCheckIn.bind(this)}/>
+          <ResultsItem key={index} index={index} user = {this.props.user.fbToken} secondUser={this.props.secondUser || null} hangout={hangout} geolocation={this.props.geolocation || ''} handleCheckIn={this.handleCheckIn.bind(this)} matched = {matched}/>
         )
       })
     }
@@ -60,15 +62,20 @@ class ResultsPage extends Component {
     return (        
       <div style={{width:"95vw", margin: "2.5vw auto"}}>
           {resultsArr}
+          {/*<a href="http://wynk.world/chat">
           <FloatingActionButton style = {{position:"fixed", bottom: "4%", right: "4%", zIndex:"2"}}>
             <Chat/>
           </FloatingActionButton>  
+          </a>*/}
       </div>
     )
   }
 }
 
 function mapStateToProps(state){
+  if (state.user.secondUser != null){
+  console.log('state in results', state)
+  }
   return {
     user: state.user.user,
     secondUser: state.user.secondUser,
