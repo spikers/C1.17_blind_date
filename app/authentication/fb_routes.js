@@ -2,7 +2,7 @@ module.exports = function(app, passport) {
 //Logout
     app.get('/logout', function (req, res) {
         req.logout();
-        res.redirect('http://localhost:3000/?fbtoken='+req.user.fbToken);
+        res.redirect('http://localhost:8000/?fbtoken='+req.user.fbToken);
     });
 
 //Authenticate First Login
@@ -13,7 +13,7 @@ module.exports = function(app, passport) {
         //successRedirect: '/?fbtoken='+req.user.fbToken,
         failureRedirect: '/'
         }), function (req, res) {
-            res.redirect('http://localhost:3000/?fbtoken='+ req.user.fbToken);
+            res.redirect('http://localhost:8000/?fbtoken='+ req.user.fbToken);
         }
     );
 
@@ -25,7 +25,7 @@ module.exports = function(app, passport) {
         //successRedirect: '/?fbtoken='+req.user.fbToken,
         failureRedirect: '/'
         }), function (req, res) {
-            res.redirect('http://localhost:3000/?fbtoken='+req.user.fbToken)
+            res.redirect('http://localhost:8000/?fbtoken='+req.user.fbToken)
         }
     );
 
@@ -34,7 +34,7 @@ module.exports = function(app, passport) {
         var user = req.user;
         user.facebook.token = undefined;
         user.save(function(err) {
-            res.redirect('http://localhost:3000/?fbtoken='+req.user.fbToken);
+            res.redirect('http://localhost:8000/?fbtoken='+req.user.fbToken);
         });
     });
 
@@ -44,6 +44,6 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
     //if they aren't redirect them to the home page
-    res.redirect('http://localhost:3000/?fbtoken='+req.user.fbToken);
+    res.redirect('http://localhost:8000/?fbtoken='+req.user.fbToken);
     res.redirect('/?fbtoken='+req.user.fbToken);
 }};
