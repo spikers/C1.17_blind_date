@@ -68,7 +68,7 @@ let basic_user_information = new Schema({
   'looking_for': {
     //Other person
     'pet': String
-  }, //This for for matching you, Cat dog fish bird
+  }, //This for for matching you, cat dog fish bird
   'interests': {
     'pet': String
   } //This is for yourself, cat dog fish bird

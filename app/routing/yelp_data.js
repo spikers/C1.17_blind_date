@@ -45,7 +45,7 @@ function getYelpData(params) {
                     //Expand range if not enough
                     paramObject.radius *= 2;
                     paramStr = qs.stringify(paramObject);
-                    recursiveYelpHandler(paramStr);;
+                    recursiveYelpHandler(paramStr);
                 } else if (body.total < paramObject.limit) {
                     //If range is too large, give up
                     reject("Error: Out of Range");

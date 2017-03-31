@@ -23,14 +23,11 @@ hangoutRouter.route('/')
   })
 
   //POST: Searches the database for an empty secondPerson. If it finds an open date, add user to Hangout obj
-  //      Adds date to User obj
-  //      If it can't, 
-  //      Creates new date object in DB. Populates the firstPerson and Event simultaneously. 
-  //      Then adds it to the user object
+  //Adds date to User obj
+  //If it can't, creates new date object in DB. Populates the firstPerson and Event simultaneously, then adds it to the user object
   .post(function (req, res) {
     let hangout = new Hangout();
     let activityObject = parseJSON(req.body.activity);
-
     let userData = User.findOne({ 'fbToken': req.body.user });
 
     userData.then(function (user) {
@@ -40,13 +37,10 @@ hangoutRouter.route('/')
             $or: [{ 'first_person': null }, { 'second_person': null }]
           },
           {'activity.id': activityObject.id}
-        //Put preferences here
         ]
       })
 
       checkOpenDates.then(function (open) {
-        
-        
         var promiseArray = [];
 
         for (let i = 0; i < open.length; i++) {
@@ -63,121 +57,119 @@ hangoutRouter.route('/')
           for (let i = 0; i < values.length; i++) {
             if (matching_algorithm(user, values, i)) {
               //If it's here, then there was a good hangout to join
-
               let suitableHangout = open[i];
-
               // If you can find a suitable hangout to join,
               // You're definitely gonna be the second person.
                 if (!suitableHangout.second_person) {
-                suitableHangout.second_person = req.body.user;
+                    suitableHangout.second_person = req.body.user;
 
-                let hangoutId = suitableHangout.id;
-                let firstPerson = suitableHangout.first_person;
-                let secondPerson = req.body.user;
-                let categories = ['restaurants'];
+                    let hangoutId = suitableHangout.id;
+                    let firstPerson = suitableHangout.first_person;
+                    let secondPerson = req.body.user;
+                    let categories = ['restaurants'];
 
-                req.body.latitude = suitableHangout.activity.coordinates.latitude;
-                req.body.longitude = suitableHangout.activity.coordinates.longitude;
+                    req.body.latitude = suitableHangout.activity.coordinates.latitude;
+                    req.body.longitude = suitableHangout.activity.coordinates.longitude;
 
-                //look for restaurant here
-                let restaurant_promise = get_restaurant(req, categories);
-                Promise.all(restaurant_promise).then(values => {
-                    let restaurantListObject = convertValueArrayAndCategoriesToObject(values, categories)
-                        .restaurants.businesses;
-                    let restaurant = randomizeSelection(restaurantListObject);
+                    //look for restaurant here
+                    let restaurant_promise = get_restaurant(req, categories);
+                    Promise.all(restaurant_promise).then(values => {
+                        let restaurantListObject = convertValueArrayAndCategoriesToObject(values, categories)
+                            .restaurants.businesses;
+                        let restaurant = randomizeSelection(restaurantListObject);
 
-                suitableHangout.restaurant = restaurant;
+                        suitableHangout.restaurant = restaurant;
 
-                // Save this to the HANGOUT in the db (Working)
-                let hangoutPromise = suitableHangout.save(function (err) {
-                  if (err) {
-                    res.status(401).json(err);
-                    return;
-                  }
-                });
+                        // Save this to the HANGOUT in the db
+                        let hangoutPromise = suitableHangout.save(function (err) {
+                            if (err) {
+                                res.status(401).json(err);
+                                return;
+                            }
+                        });
 
-                //Save the hangout object to second_person (Working)
-                let secondPersonPromise;
-                let secondPersonObject2;
-                secondPersonPromise = User.findOne({'fbToken': secondPerson}, function (err, secondPersonObject) {
-                  secondPersonObject2 = secondPersonObject;
-                  secondPersonObject.hangouts.unshift(suitableHangout);
-                  secondPersonObject.save(function (err) {
-                    if (err) {
-                      res.status(404).json(err);
-                      return;
-                    }
-                  });
-                });
+                        //Save the hangout object to second_person
+                        let secondPersonPromise;
+                        let secondPersonObject2;
+                        secondPersonPromise = User.findOne({'fbToken': secondPerson}, function (err, secondPersonObject) {
+                            secondPersonObject2 = secondPersonObject;
+                            secondPersonObject.hangouts.unshift(suitableHangout);
+                            secondPersonObject.save(function (err) {
+                                if (err) {
+                                    res.status(404).json(err);
+                                    return;
+                                }
+                            });
+                        });
 
-                // Save the second_person to the first_person.activity[i].second_person in the db (Working)
-                let firstPersonPromise;
-                let firstPersonObject2;
-                firstPersonPromise = User.findOne({'fbToken': firstPerson}, function (err, firstPersonObject) {
-                  firstPersonObject2 = firstPersonObject;
-                  let i = 0;
-                  while (i < firstPersonObject.hangouts.length && firstPersonObject.hangouts[i].id !== hangoutId) {
-                    i++;
-                  }
-                  firstPersonObject.hangouts[i].second_person = secondPerson;
-                  firstPersonObject.hangouts[i].restaurant = restaurant;
+                        // Save the second_person to the first_person.activity[i].second_person in the db
+                        let firstPersonPromise;
+                        let firstPersonObject2;
+                        firstPersonPromise = User.findOne({'fbToken': firstPerson}, function (err, firstPersonObject) {
+                            firstPersonObject2 = firstPersonObject;
+                            let i = 0;
+                            while (i < firstPersonObject.hangouts.length && firstPersonObject.hangouts[i].id !== hangoutId) {
+                                i++;
+                            }
+                            firstPersonObject.hangouts[i].second_person = secondPerson;
+                            firstPersonObject.hangouts[i].restaurant = restaurant;
 
-                  firstPersonObject.save(function (err) {
-                    if (err) {
-                      res.status(404).json(err);
-                      return;
-                    }
-                  });
-                });
+                            firstPersonObject.save(function (err) {
+                                if (err) {
+                                    res.status(404).json(err);
+                                    return;
+                                }
+                            });
+                        });
 
-                Promise.all([hangoutPromise, firstPersonPromise, secondPersonPromise]).then(function (values) {
-                    res.status(200).json({'Message': 'Matched'});
-                    var sg = require('sendgrid')(config.apiEmailKey);
-                    var emptyReq = sg.emptyRequest({
-                        method: 'POST',
-                        path: '/v3/mail/send',
-                        body: {
-                            personalizations: [
-                                {
-                                    to: [
+                        Promise.all([hangoutPromise, firstPersonPromise, secondPersonPromise]).then(function (values) {
+                            res.status(200).json({'Message': 'Matched'});
+                            var sg = require('sendgrid')(config.apiEmailKey);
+                            var emptyReq = sg.emptyRequest({
+                                method: 'POST',
+                                path: '/v3/mail/send',
+                                body: {
+                                    personalizations: [
                                         {
-                                            email: firstPersonObject2.email,
+                                            to: [
+                                                {
+                                                    email: firstPersonObject2.email,
+                                                },
+                                            ],
+                                            bcc: [
+                                                {
+                                                    email: secondPersonObject2.email,
+                                                }
+                                            ],
+                                            subject: '[WYNK] We found a match for you!',
                                         },
                                     ],
-                                    bcc: [
+                                    from: {
+                                        email: 'test@example.com',
+                                    },
+                                    content: [
                                         {
-                                            email: secondPersonObject2.email,
-                                        }
+                                            type: 'text/html',
+                                            value: '<img src="logo.png"></br>' +
+                                            '<img src="match.jpg"></br>' +
+                                            '<h1>Hello friend,</h1></br>' +
+                                            '<h2>We found a match for you!</h2></br>' +
+                                            '<h2>Click <a href="wynk.world/results">here</a> to see who your match is! Then celebrate!</h2>',
+                                        },
                                     ],
-                                    subject: '[WYNK] We found a match for you!',
                                 },
-                            ],
-                            from: {
-                                email: 'test@example.com',
-                            },
-                            content: [
-                                {
-                                    type: 'text/html',
-                                    value:'<img src="logo.png"></br>' +
-                                    '<img src="match.jpg"></br>' +
-                                    '<h1>Hello friend,</h1></br>' +
-                                    '<h2>We found a match for you!</h2></br>' +
-                                    '<h2>Click <a href="wynk.world/results">here</a> to see who your match is! Then celebrate!</h2>',
-                                },
-                            ],
-                        },
-                    });
+                            });
 
-                    sg.API(emptyReq, function(error, response) {
-                        if (error) {
-                            console.log('Error response received');
-                        }
+                            sg.API(emptyReq, function (error, response) {
+                                if (error) {
+                                    console.log('Error response received');
+                                }
+                            });
+                        })
                     });
-                  })
-                });
-            }
+                }
             //DEAD ZONE
-            else {
+                else {
 
             }
             //THIS IS GOOD
@@ -195,7 +187,6 @@ hangoutRouter.route('/')
     })
   })
 })
-
   //PUT: Adds to User Document in the Database (Used for restaurant finder and user finder)
   .put(function (req, res) {
     Hangout.findOne({
@@ -209,7 +200,6 @@ hangoutRouter.route('/')
   });
   
 hangoutRouter.route('/user/:user_fb_token')
-  
   //GET: Returns the user
   .get(function (req, res) {
     Hangout.findOne({
@@ -226,7 +216,6 @@ function get_restaurant (req, categories) {
     req.body.longitude = req.body.longitude || -117.7435; //irvine spectrum
     req.body.price = '1,2';
     req.body.limit = 20;
-    //let categories = ['restaurants'];
 
     let promiseArray = getEvent(req.body, categories);
     return promiseArray;
@@ -236,8 +225,8 @@ function save_solo_hangout(req, res, hangout, activityObject) {
   hangout.first_person = req.body.user;
   hangout.activity = activityObject;
 
-  //// Saves to the USER and HANGOUT document
-  // Saves to Hangout 
+  //Saves to the USER and HANGOUT document
+  //Saves to Hangout
   let hangoutPromise = hangout.save(function (err) {
     if (err) {
       res.status(401).json('Error', err);

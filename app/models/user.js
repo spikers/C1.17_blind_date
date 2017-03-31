@@ -41,6 +41,5 @@ let user = new Schema({
   hangouts: [ hangout ]
 });
 
-
 //Mongoose automatically finds collection 'users'
 export default mongoose.model('user', user);
