@@ -3,7 +3,7 @@ var socket = io();
 window.addEventListener('load', function () {
   //Gets the user immediately on page load, then uses the user object to create chat buttons and initialize
     $.ajax({
-        url: "http://localhost:8000/api/user/" + getFbToken(),
+        url: "http://www.wynk.world:8000/api/user/" + getFbToken(),
         type: "GET",
         dataType: "json",
         success: function (userObject) {
@@ -28,7 +28,7 @@ function getName(fbToken, hangoutData){
   if (!fbToken) return;
 
   $.ajax({
-      url: "http://localhost:8000/api/user/" + fbToken,
+      url: "http://wynk.world:8000/api/user/" + fbToken,
       type: "GET",
       dataType: "json",
       success: function (data) {
@@ -43,7 +43,7 @@ function getName(fbToken, hangoutData){
         button.click(function () {
           socket.emit('changeRoom', { roomName: hod._id });
           $.ajax({
-            url: "http://localhost:8000/api/user/" + fbToken,
+            url: "http://wynk.world:8000/api/user/" + fbToken,
             type: "GET",
             dataType: "json",
             success: function (data) {
