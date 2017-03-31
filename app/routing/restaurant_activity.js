@@ -6,7 +6,6 @@ import hangoutRouter from './hangout_router';
 import convertValueArrayAndCategoriesToObject from './convert_to_object';
 import randomizeSelection from './randomize';
 
-
 const app = express();
 const restaurantActivity = express.Router();
 

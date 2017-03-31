@@ -64,14 +64,14 @@ let basic_user_information = new Schema({
   'dietary_restrictions': {
     'type': Array,
     'default': []
-  }, //Vegan or not. Maybe beefless and porkless
+  }, //Vegan or not
   'looking_for': {
-    //Gwen Change Here
+    //Other person
     'pet': String
   }, //This for for matching you, Cat dog fish bird
   'interests': {
     'pet': String
-  } //This is for yourself, cat dog fish birde
+  } //This is for yourself, cat dog fish bird
 })
 
 let hangout = new Schema({
