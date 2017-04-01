@@ -81,9 +81,9 @@ app.use('/', router);
 app.use('/api', apiRouter);
 app.use('/api/yelp', yelpRouter);
 app.use('/api/hangout', hangoutRouter);
-app.use('*', function (req, res) {
-  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
-});
+//app.use('*', function (req, res) {
+//  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+//});
 
 const server = app.listen(port);
 
