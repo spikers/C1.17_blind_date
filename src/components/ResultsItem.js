@@ -52,7 +52,7 @@ class ResultsItem extends Component {
               eventLocation={activity.coordinates}
             />
             <MapContainer style={{display:"inline-block"}} geolocation={this.props.geolocation} activity={activity} restaurant={restaurant}/>
-            <a href={"http://wynk.world/chat?" + "fbToken=" + this.props.user} target="_blank"><FlatButton
+            <a href={"http://wynk.world/chat.html?" + "fbToken=" + this.props.user} target="_blank"><FlatButton
               style={{display:"inline-block"}}
               icon={<Chat/>}/></a>
           </div>
