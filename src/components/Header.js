@@ -24,7 +24,6 @@ class Sidebar extends React.Component {
 
     goBack = () => window.history.back();
 
-    render() {
     logout = () => {
         localStorage.removeItem('token')
         this.setState({open:false})

@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import User from '../models/user';
 import fs from 'fs';
+import { resolve } from 'path';
 
 const app = express();
 const router = express.Router();
@@ -13,6 +14,8 @@ router.use(function (req, res, next) {
     next();
 });
 
+router.use('/', express.static(resolve(__dirname, '..', '..', 'public')));
+
 router.get('/', function (req, res) {
     fs.readFile('./public/index.html', 'utf8', (err, data) => {
         if (err) {
@@ -22,6 +25,11 @@ router.get('/', function (req, res) {
         res.send(data);
     });
 });
+
+// router.get('/bundle.js', function (req, res) {
+//     console.log('got it');
+//     res.sendFile(resolve(__dirname, '..', '..', 'public', 'bundle.js'));
+// });
 
 router.get('/choose', function (req, res) {
     fs.readFile('./public/choose.html', 'utf8', (err, data) => {
