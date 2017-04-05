@@ -14,6 +14,8 @@ router.use(function (req, res, next) {
     next();
 });
 
+router.use(express.static(path.resolve(__dirname, '..', '..', 'public')));
+
 router.get('/', function (req, res) {
     fs.readFile('./public/index.html', 'utf8', (err, data) => {
         if (err) {
@@ -25,43 +27,8 @@ router.get('/', function (req, res) {
 });
 
 
-// router.get('/:bundle', function (req, res) {
-//     res.sendFile(path.resolve(__dirname, '..', '..', 'public', req.params.bundle));
-// });
-
-router.get('/choose', function (req, res) {
-    fs.readFile('./public/choose.html', 'utf8', (err, data) => {
-        if (err) {
-            res.send(err);
-            return;
-        }
-        res.send(data);
-    });
-});
-
-router.get('/login', function (req, res) {
-    fs.readFile('./public/login.html', 'utf8', (err, data) => {
-        if (err) res.send(err);
-        res.send(data);
-    });
-});
-
-router.get('/chat', function (req, res) {
-    fs.readFile('./public/chat.html', 'utf8', (err, data) => {
-        res.send(data);
-    });
-})
-
-router.get('/css/:css', function (req, res) {
-    fs.readFile('./public/css/' + req.params.css, 'utf8', (err, data) => {
-        res.send(data);
-    });
-});
-
-router.get('/js/:js', function (req, res) {
-    fs.readFile('./public/js/' + req.params.js, 'utf8', (err, data) => {
-        res.send(data);
-    });
+router.get('/bundle.js', function (req, res) {
+    res.sendFile(path.resolve(__dirname, '..', '..', 'public', 'bundle.js'));
 });
 
 export default router;
