@@ -25,9 +25,9 @@ router.get('/', function (req, res) {
 });
 
 
-router.get('/:bundle', function (req, res) {
-    res.sendFile(path.resolve(__dirname, '..', '..', 'public', req.params.bundle));
-});
+// router.get('/:bundle', function (req, res) {
+//     res.sendFile(path.resolve(__dirname, '..', '..', 'public', req.params.bundle));
+// });
 
 router.get('/choose', function (req, res) {
     fs.readFile('./public/choose.html', 'utf8', (err, data) => {
