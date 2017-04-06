@@ -16,7 +16,7 @@ class Sidebar extends React.Component {
             open: false,
             authenticated: false
         };
-    }
+    };
 
     handleToggle = () => this.setState({open: !this.state.open});
 
@@ -28,13 +28,13 @@ class Sidebar extends React.Component {
         localStorage.removeItem('token')
         this.setState({open:false})
         this.props.authenticate(false)
-    }
+    };
 
     componentWillMount(){
         if (this.props.authenticated){
             this.setState({authenticated:true})
         }
-    }
+    };
     render() {
 
         return (
