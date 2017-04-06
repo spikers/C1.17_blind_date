@@ -59,7 +59,7 @@
           console.log('Worked', data);
         });
 
-        xhr.open('PUT', 'http://localhost:8000/api/user/' + res.id);
+        xhr.open('PUT', 'http://wynk.world/api/user/' + res.id);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
 
         xhr.send(encodedURI);
