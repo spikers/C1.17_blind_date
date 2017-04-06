@@ -1,2 +1,2 @@
-const domain = "http://localhost/"
+const domain = "http://localhost"
 export default domain
