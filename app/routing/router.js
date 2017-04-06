@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import User from '../models/user';
 import fs from 'fs';
-import path from 'path';
+import { resolve } from 'path';
 
 const app = express();
 const router = express.Router();
@@ -14,6 +14,8 @@ router.use(function (req, res, next) {
     next();
 });
 
+router.use('/', express.static(resolve(__dirname, '..', '..', 'public')));
+
 router.get('/', function (req, res) {
     fs.readFile('./public/index.html', 'utf8', (err, data) => {
         if (err) {
@@ -22,11 +24,6 @@ router.get('/', function (req, res) {
         }
         res.send(data);
     });
-});
-
-
-router.get('/:bundle', function (req, res) {
-    res.sendFile(path.resolve(__dirname, '..', '..', 'public', req.params.bundle));
 });
 
 router.get('/choose', function (req, res) {
