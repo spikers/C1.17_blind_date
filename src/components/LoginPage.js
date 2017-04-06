@@ -8,7 +8,7 @@ import Logo from './Logo';
 import {white} from 'material-ui/styles/colors';
 import {authenticate, getProfile} from './actions';
 
-import {domain} from '../../change_active_domain';
+import domain from '../../change_active_domain';
 
 const inputStyle = {
     color: white
@@ -30,7 +30,7 @@ class LoginPage extends Component {
         <div>
             <div className={styles.container}>
                 <Logo classNameName="LogoStyles.logo"/>
-                    <a href={`${domain}:8000/auth/facebook`}><img style={{width:"30vh", margin:"auto"}} src={require('./img/fb_login.png')}/></a>
+                    <a href={`${domain}/auth/facebook`}><img style={{width:"30vh", margin:"auto"}} src={require('./img/fb_login.png')}/></a>
             </div>
         </div>
         )

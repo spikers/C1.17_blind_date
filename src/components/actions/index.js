@@ -59,6 +59,8 @@ export function getSecondProfile(id){
 }
 
 export function updateProfile(id, forms){
+  console.log('forms', forms)
+  debugger;
   let encodedURI = encodeURI(
     'username=' + (forms.username || '') + 
     '&givenName=' + (forms.given_name || '') + 
