@@ -115,7 +115,7 @@ class EventsPage extends React.Component {
         <div style={showing} className={css.container}>
           <div className={css.shadow} onClick={this.handleEventChoice.bind(this, this.props.user.fbToken, this.props.eventChoice)}>
             {/*<div className={css.shadow} circle={true} zDepth={2} onClick={this.handleEventChoice.bind(this, this.props.user.fbToken, this.props.eventChoice)}>*/}
-            <Link to='/results'><img className={css.flip} src={require("./img/wynk.png")} alt="wynk"/></Link>
+            <img className={css.flip} src={require("./img/wynk.png")} alt="wynk"/>
           </div>
           <Link style={{position:"absolute"}} to='/results'>I'll choose later. Show me my dates!</Link>
         </div>

@@ -2,7 +2,8 @@ import axios from 'axios';
 import yelp from '../../test_data/yelp_obj';
 import user from '../../test_data/user_obj';
 import events from '../../test_data/events_obj';
-import {browserHistory} from 'react-router'
+import {browserHistory} from 'react-router';
+import {store} from '../../index'
 
 const instance = axios.create({
   headers:{
@@ -43,6 +44,7 @@ export function sendLogin(){
 
 //PROFILE PAGE ACTIONS
 export function getProfile(id){
+  console.log('getProfile called')
   const request = instance.get(`${BASE_URL}user/${id}`);
   return ({
     type: GET_PROFILE,
@@ -59,8 +61,6 @@ export function getSecondProfile(id){
 }
 
 export function updateProfile(id, forms){
-  console.log('forms', forms)
-  debugger;
   let encodedURI = encodeURI(
     'username=' + (forms.username || '') + 
     '&givenName=' + (forms.given_name || '') + 
@@ -96,12 +96,13 @@ export function getEvents(){
 }
 
 export function sendEventChoice(id, choice){
+  console.log('event choice sent')
 var id = id
 var data = "user=" + id + "&activity=" + encodeURIComponent(JSON.stringify(choice));
 var xhr = new XMLHttpRequest();
-xhr.addEventListener("readystatechange", function () {
-    // getProfile(id)
-  });
+xhr.addEventListener("load", function () {
+        getProfileDelayed(id)
+  }.bind(this));
 
 xhr.open("POST", "http://54.202.15.233:8000/api/hangout");
 xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
@@ -111,6 +112,24 @@ xhr.send(data);
     type:SEND_EVENT_CHOICE,
     payload: true
   })
+}
+
+export function getProfileDelayed(id){
+  console.log('getProfileDelayed heey', id)
+  return function (dispatch) {
+    console.log('id', id)
+    instance.get(`${BASE_URL}user/${id}`)
+    .then(resp=>{
+      dispatch({
+        type: GET_PROFILE,
+        payload: resp
+      })
+      browserHistory.push('/results')
+    })
+    .catch(err=>{
+      console.log('Oops, error!', err)
+    })
+  }
 }
 
 export function setEventChoice(choice){

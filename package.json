@@ -54,6 +54,7 @@
     "redux": "^3.6.0",
     "redux-form": "^6.5.0",
     "redux-promise": "^0.5.3",
+    "redux-thunk": "^2.2.0",
     "request": "^2.81.0",
     "sendgrid": "^4.8.4",
     "socket.io": "^1.7.3",

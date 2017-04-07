@@ -187,7 +187,6 @@ class ProfilePage extends Component{
   
   
   onSubmit(formProp){
-    console.log('sup')
     let forms = formProp
     forms.dietary_restrictions[0]= forms.diet || forms.dietary_restrictions[0]
   forms.looking_for = {
@@ -195,7 +194,6 @@ class ProfilePage extends Component{
     pet: forms.lookforpet
   }
   forms.interests= {pet: forms.pet}
-  console.log('formProp', formProp)
     this.props.updateProfile(this.props.user.fbToken, forms);
     this.context.router.push('/events');
   }
