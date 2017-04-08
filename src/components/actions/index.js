@@ -102,7 +102,7 @@ var data = "user=" + id + "&activity=" + encodeURIComponent(JSON.stringify(choic
 var xhr = new XMLHttpRequest();
 xhr.addEventListener("load", function () {
         getProfileDelayed(id)
-  }.bind(this));
+  }.bind(this)); //callback is bound in order to maintain "id"
 
 xhr.open("POST", "http://54.202.15.233:8000/api/hangout");
 xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
