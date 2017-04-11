@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serverstart": "nodemon server.js --exec babel-node --presets es2015,stage-2",
+    "serverstart": "node_modules/.bin/webpack --config webpack.deploy.config.js --progress --colors && nodemon server.js --exec babel-node --presets es2015,stage-2",
     "foreverstart": "forever start ./node_modules/babel-cli/bin/babel-node.js server.js --presets es2015,stage-2",
     "start": "node dev_server.js",
     "pack": "node_modules/.bin/webpack --config webpack.deploy.config.js --progress --colors"
@@ -54,6 +54,7 @@
     "redux": "^3.6.0",
     "redux-form": "^6.5.0",
     "redux-promise": "^0.5.3",
+    "redux-thunk": "^2.2.0",
     "request": "^2.81.0",
     "sendgrid": "^4.8.4",
     "socket.io": "^1.7.3",

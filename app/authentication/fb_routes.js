@@ -1,8 +1,13 @@
+import domain from '../../change_active_domain';
+//This is http://localhost
+//or..... http://wynk.world
+//No ending slash
+
 module.exports = function(app, passport) {
 //Logout
     app.get('/logout', function (req, res) {
         req.logout();
-        res.redirect('http://wynk.world/?fbtoken='+req.user.fbToken);
+        res.redirect(domain + '/?fbtoken='+req.user.fbToken);
     });
 
 //Authenticate First Login
@@ -13,7 +18,7 @@ module.exports = function(app, passport) {
         //successRedirect: '/?fbtoken='+req.user.fbToken,
         failureRedirect: '/'
         }), function (req, res) {
-            res.redirect('http://wynk.world/?fbtoken='+ req.user.fbToken);
+            res.redirect(domain + '/?fbtoken='+ req.user.fbToken);
         }
     );
 
@@ -25,7 +30,7 @@ module.exports = function(app, passport) {
         //successRedirect: '/?fbtoken='+req.user.fbToken,
         failureRedirect: '/'
         }), function (req, res) {
-            res.redirect('http://wynk.world/?fbtoken='+req.user.fbToken)
+            res.redirect(domain + '/?fbtoken='+req.user.fbToken)
         }
     );
 
@@ -34,7 +39,7 @@ module.exports = function(app, passport) {
         var user = req.user;
         user.facebook.token = undefined;
         user.save(function(err) {
-            res.redirect('http://wynk.world/?fbtoken='+req.user.fbToken);
+            res.redirect(domain + '/?fbtoken='+req.user.fbToken);
         });
     });
 
@@ -44,6 +49,6 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
     //if they aren't redirect them to the home page
-    res.redirect('http://wynk.world/?fbtoken='+req.user.fbToken);
+    res.redirect(domain + '/?fbtoken='+req.user.fbToken);
     res.redirect('/?fbtoken='+req.user.fbToken);
 }};

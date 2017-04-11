@@ -193,6 +193,7 @@ class ProfilePage extends Component{
     gender: forms.lookforgender,
     pet: forms.lookforpet
   }
+  forms.interests= {pet: forms.pet}
     this.props.updateProfile(this.props.user.fbToken, forms);
     this.context.router.push('/events');
   }
