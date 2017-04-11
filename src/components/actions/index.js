@@ -110,22 +110,22 @@ export function getEvents(){
 // xhr.send(data);
 // }
 
-export function getProfileDelayed(id){
-  return function (dispatch) {
-    console.log('id', id)
-    instance.get(`${BASE_URL}user/${id}`)
-    .then(resp=>{
-      dispatch({
-        type: GET_PROFILE,
-        payload: resp
-      })
-      browserHistory.push('/results')
-    })
-    .catch(err=>{
-      console.log('Oops, error!', err)
-    })
-  }.bind(this)
-}
+// export function getProfileDelayed(id){
+//   return function (dispatch) {
+//     console.log('id', id)
+//     instance.get(`${BASE_URL}user/${id}`)
+//     .then(resp=>{
+//       dispatch({
+//         type: GET_PROFILE,
+//         payload: resp
+//       })
+//       browserHistory.push('/results')
+//     })
+//     .catch(err=>{
+//       console.log('Oops, error!', err)
+//     })
+//   }.bind(this)
+// }
 
 export function setEventChoice(choice){
   return({

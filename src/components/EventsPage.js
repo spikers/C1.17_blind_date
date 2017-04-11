@@ -9,6 +9,7 @@ import {getEvents, setEventChoice, getProfileDelayed} from './actions';
 import Logo from './Logo';
 import Spinner from './Spinner'
 import css from './styles/EventsPage.css'
+
 import axios from 'axios'
 import {store} from '../index.js'
 import {browserHistory} from 'react-router'
@@ -35,34 +36,7 @@ const instance = axios.create({
 });
 
 const BASE_URL = 'http://54.202.15.233:8000/api/';
-
-function sendEventChoice(id, choice){
-  console.log('event choice sent')
-var id = id
-var data = "user=" + id + "&activity=" + encodeURIComponent(JSON.stringify(choice));
-var xhr = new XMLHttpRequest();
-xhr.addEventListener("load", function () {
-        // getProfileDelayed(id)
-    console.log('id', id)
-    instance.get(`${BASE_URL}user/${id}`)
-    .then(resp=>{
-      store.dispatch({
-        type: "GET_PROFILE",
-        payload: resp
-      })
-      browserHistory.push('/results')
-    })
-    .catch(err=>{
-      console.log('Oops, error!', err)
-    })
-  }.bind(this)); //callback is bound in order to maintain "id"
-
-xhr.open("POST", "http://54.202.15.233:8000/api/hangout");
-xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
-
-xhr.send(data);
-}
-
+let clickable = true;
 
 class EventsPage extends React.Component {
   static contextTypes =  {
@@ -75,6 +49,31 @@ class EventsPage extends React.Component {
     };
   }
 
+  sendEventChoice(id, choice){
+var id = id
+var data = "user=" + id + "&activity=" + encodeURIComponent(JSON.stringify(choice));
+var xhr = new XMLHttpRequest();
+xhr.addEventListener("load", function (res) {
+    setTimeout(function(){instance.get(`${BASE_URL}user/${id}`)
+    .then(resp=>{
+      store.dispatch({
+        type: "GET_PROFILE",
+        payload: resp
+      })
+      clickable = true;
+      browserHistory.push('/results')
+    })
+    .catch(err=>{
+      console.log('Oops, error!', err)
+    })
+  }.bind(this), 200)}) //callback is bound in order to maintain "id"
+
+xhr.open("POST", "http://54.202.15.233:8000/api/hangout");
+xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+
+xhr.send(data);
+}
+
   handleChange = (value) => {
     this.setState({
       slideIndex: value,
@@ -82,11 +81,17 @@ class EventsPage extends React.Component {
   };
 
   handleEventChoice(id, choice){
-    sendEventChoice(id, choice)
+    if (clickable){
+      this.sendEventChoice(id, choice)
+    }
+    clickable = false;
   }
 
   componentWillMount(){
     this.props.getEvents();
+  }
+  componentDidMount(){
+    window.scrollTo(0, 0)
   }
 
   render() {

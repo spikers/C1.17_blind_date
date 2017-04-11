@@ -15,7 +15,7 @@ import ContactUs from './ContactUs';
 import NotFound from './NotFound';
 import App from './App';
 import requireAuth from './RequireAuth';
-import homeRedirect from './HomePageAuth'
+import homeRedirect from './HomePageAuth';
 
 injectTapEventPlugin();
 

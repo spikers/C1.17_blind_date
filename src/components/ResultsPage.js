@@ -24,6 +24,9 @@ const subtitleStyle = {
     fontWeight: 'bold'
 }
 class ResultsPage extends Component {
+  componentDidMount () {
+  window.scrollTo(0, 0)
+}
   shouldComponentUpdate(nextProps, nextState){
     if (this.props.secondUser != undefined){
       return false
