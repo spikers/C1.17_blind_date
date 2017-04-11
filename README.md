@@ -12,6 +12,7 @@ Young, urban professionals who are tech-savvy and looking for a fun and low-stre
 - Javascript
 - MongoDB
 - Node.js
+- Express.js
 - Passport.js
 - Google Maps API
 - Yelp API
