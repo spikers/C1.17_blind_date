@@ -24,7 +24,9 @@ const subtitleStyle = {
     fontWeight: 'bold'
 }
 class ResultsPage extends Component {
-
+  componentDidMount () {
+  window.scrollTo(0, 0)
+}
   shouldComponentUpdate(nextProps, nextState){
     if (this.props.secondUser != undefined){
       return false
@@ -58,7 +60,6 @@ class ResultsPage extends Component {
 
   render(){
     let fullDate = '';
-    // let secondPerson = null;
     let resultsArr = [];
     if(this.props.user && this.props.user.hangouts){
       resultsArr = this.props.user.hangouts.map((hangout, index)=>{
@@ -78,11 +79,6 @@ class ResultsPage extends Component {
     return (        
       <div style={{width:"95vw", margin: "2.5vw auto"}}>
           {resultsArr}
-          {/*<a href="http://wynk.world/chat">
-          <FloatingActionButton style = {{position:"fixed", bottom: "4%", right: "4%", zIndex:"2"}}>
-            <Chat/>
-          </FloatingActionButton>  
-          </a>*/}
           <Snackbar
           open={this.props.checkIn}
           message="Your date has been notified of your check-in!"

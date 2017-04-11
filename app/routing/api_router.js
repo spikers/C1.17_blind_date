@@ -50,7 +50,6 @@ apiRouter.route('/user')
     });
 apiRouter.route('/user/:user_id')
     .get(function (req, res) {
-        //User.findById(req.params.user_id, function (err, user) {
         User.findOne({'fbToken': req.params.user_id}, function (err, user) {
             if (err) {
                 res.send(err);

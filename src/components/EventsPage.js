@@ -5,10 +5,14 @@ import SwipeableViews from 'react-swipeable-views';
 import Paper from 'material-ui/Paper';
 import EventsGrid from './EventsGrids';
 import {connect} from 'react-redux';
-import {getEvents, sendEventChoice, setEventChoice} from './actions';
+import {getEvents, setEventChoice, getProfileDelayed} from './actions';
 import Logo from './Logo';
 import Spinner from './Spinner'
 import css from './styles/EventsPage.css'
+
+import axios from 'axios'
+import {store} from '../index.js'
+import {browserHistory} from 'react-router'
 
 const styles = {
   headline: {
@@ -25,6 +29,14 @@ const styles = {
 const paperStyle = {
     margin: 10,
 }
+const instance = axios.create({
+  headers:{
+    'Content-Type' : 'application/x-www-form-urlencoded'
+  }
+});
+
+const BASE_URL = 'http://54.202.15.233:8000/api/';
+let clickable = true;
 
 class EventsPage extends React.Component {
   static contextTypes =  {
@@ -37,6 +49,31 @@ class EventsPage extends React.Component {
     };
   }
 
+  sendEventChoice(id, choice){
+var id = id
+var data = "user=" + id + "&activity=" + encodeURIComponent(JSON.stringify(choice));
+var xhr = new XMLHttpRequest();
+xhr.addEventListener("load", function (res) {
+    setTimeout(function(){instance.get(`${BASE_URL}user/${id}`)
+    .then(resp=>{
+      store.dispatch({
+        type: "GET_PROFILE",
+        payload: resp
+      })
+      clickable = true;
+      browserHistory.push('/results')
+    })
+    .catch(err=>{
+      console.log('Oops, error!', err)
+    })
+  }.bind(this), 200)}) //callback is bound in order to maintain "id"
+
+xhr.open("POST", "http://54.202.15.233:8000/api/hangout");
+xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+
+xhr.send(data);
+}
+
   handleChange = (value) => {
     this.setState({
       slideIndex: value,
@@ -44,11 +81,17 @@ class EventsPage extends React.Component {
   };
 
   handleEventChoice(id, choice){
-    this.props.sendEventChoice(id, choice)
+    if (clickable){
+      this.sendEventChoice(id, choice)
+    }
+    clickable = false;
   }
 
   componentWillMount(){
     this.props.getEvents();
+  }
+  componentDidMount(){
+    window.scrollTo(0, 0)
   }
 
   render() {
@@ -115,7 +158,7 @@ class EventsPage extends React.Component {
         <div style={showing} className={css.container}>
           <div className={css.shadow} onClick={this.handleEventChoice.bind(this, this.props.user.fbToken, this.props.eventChoice)}>
             {/*<div className={css.shadow} circle={true} zDepth={2} onClick={this.handleEventChoice.bind(this, this.props.user.fbToken, this.props.eventChoice)}>*/}
-            <Link to='/results'><img className={css.flip} src={require("./img/wynk.png")} alt="wynk"/></Link>
+            <img className={css.flip} src={require("./img/wynk.png")} alt="wynk"/>
           </div>
           <Link style={{position:"absolute"}} to='/results'>I'll choose later. Show me my dates!</Link>
         </div>
@@ -131,4 +174,4 @@ function mapStateToProps(state){
     authenticated: state.authenticated
     }
 }
-export default connect(mapStateToProps, {getEvents, setEventChoice, sendEventChoice})(EventsPage);
+export default connect(mapStateToProps, {getEvents, setEventChoice})(EventsPage);

@@ -8,5 +8,3 @@ export default function randomizeSelection(choicesObject) {
     console.log(selection);
     return selection;
 }
-
-//export default randomizeSelection;

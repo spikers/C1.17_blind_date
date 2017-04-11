@@ -4,13 +4,13 @@ const webpack = require('webpack');
 module.exports = {
     entry: [
         //'react-hot-loader/patch',
-        'webpack-dev-server/client?http://localhost:3000',
+        'webpack-dev-server/client?http://localhost:8000',
         //'webpack/hot/only-dev-server',
         './index.js'
     ],
     output: {
         filename: 'bundle.js',
-        path: resolve(__dirname, 'dist'),
+        path: resolve(__dirname, 'public'),
         publicPath: '/'
     },
     context: resolve(__dirname, 'src'),

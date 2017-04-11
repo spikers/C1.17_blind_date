@@ -15,7 +15,7 @@ import ContactUs from './ContactUs';
 import NotFound from './NotFound';
 import App from './App';
 import requireAuth from './RequireAuth';
-import homeRedirect from './HomePageAuth'
+import homeRedirect from './HomePageAuth';
 
 injectTapEventPlugin();
 
@@ -45,8 +45,8 @@ class RoutesContainer extends Component {
           <Route path='/aboutus' component={AboutUs} />
           <Route path='/faq' component={Faq} />
           <Route path='/contactus' component={ContactUs} />
-          <Route path='*' components={NotFound} />
         </Route>
+        <Route path='*' components={NotFound} />
       </Router>
       </MuiThemeProvider>
     )

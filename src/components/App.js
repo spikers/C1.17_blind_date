@@ -47,7 +47,7 @@ class App extends Component {
             titleName = 'Contact Us';
             break;
     }
-        return(
+    return(
         <div>
             <Header
                 title={titleName}

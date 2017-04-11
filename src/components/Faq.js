@@ -7,7 +7,7 @@ const question = {
     lineHeight: '200%',
     fontWeight: 'bold',
     color: 'rgb(194, 24, 91)',
-    fontSize: '4vw'
+    fontSize: '2.5vh'
 }
 const answer = {
     lineHeight: '200%',
