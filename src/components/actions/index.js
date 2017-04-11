@@ -95,27 +95,22 @@ export function getEvents(){
   })
 }
 
-export function sendEventChoice(id, choice){
-  console.log('event choice sent')
-var id = id
-var data = "user=" + id + "&activity=" + encodeURIComponent(JSON.stringify(choice));
-var xhr = new XMLHttpRequest();
-xhr.addEventListener("load", function () {
-        getProfileDelayed(id)
-  }.bind(this)); //callback is bound in order to maintain "id"
+// export function sendEventChoice(id, choice){
+//   console.log('event choice sent')
+// var id = id
+// var data = "user=" + id + "&activity=" + encodeURIComponent(JSON.stringify(choice));
+// var xhr = new XMLHttpRequest();
+// xhr.addEventListener("load", function () {
+//         getProfileDelayed(id)
+//   }.bind(this)); //callback is bound in order to maintain "id"
 
-xhr.open("POST", "http://54.202.15.233:8000/api/hangout");
-xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+// xhr.open("POST", "http://54.202.15.233:8000/api/hangout");
+// xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
 
-xhr.send(data);
-  return({
-    type:SEND_EVENT_CHOICE,
-    payload: true
-  })
-}
+// xhr.send(data);
+// }
 
 export function getProfileDelayed(id){
-  console.log('getProfileDelayed heey', id)
   return function (dispatch) {
     console.log('id', id)
     instance.get(`${BASE_URL}user/${id}`)
@@ -129,7 +124,7 @@ export function getProfileDelayed(id){
     .catch(err=>{
       console.log('Oops, error!', err)
     })
-  }
+  }.bind(this)
 }
 
 export function setEventChoice(choice){
