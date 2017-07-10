@@ -2,6 +2,8 @@
 ## What We Do
 We take the planning out of first dates. Our platform connects users with an activity and restaurant so that there's less pressure and less planning.
 
+<a href="http://wynk.world/">Link to live site. Go on a Date!</a>
+
 ## Demographic
 Young, urban professionals who are tech-savvy and looking for a fun and low-stress way to meet new people and try new things.
 
